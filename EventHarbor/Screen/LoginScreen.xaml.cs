@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EventHarbor.Screen;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,43 @@ namespace EventHarbor
         public LoginScreen()
         {
             InitializeComponent();
+        }
+
+       
+
+        private void CloseBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+            
+        }
+
+
+        private void Hyperlink_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ForgotUri_Click(object sender, RoutedEventArgs e)
+        {
+            ForgotScreen screen = new ForgotScreen();
+            this.Visibility = Visibility.Collapsed;
+            screen.ShowDialog();
+            this.Visibility = Visibility.Visible;
+        }
+
+        private void RegisterUri_Click(object sender, RoutedEventArgs e)
+        {
+            RegisterScreen register = new RegisterScreen();
+            this.Visibility = Visibility.Collapsed;
+            register.ShowDialog();
+            this.Visibility = Visibility.Visible;
+        }
+
+        private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var move = sender as System.Windows.Controls.Border;
+            var win = Window.GetWindow(move);
+            win.DragMove();
         }
     }
 }

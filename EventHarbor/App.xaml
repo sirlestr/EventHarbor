@@ -2,7 +2,8 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:EventHarbor"
-             StartupUri="Screen/LoginScreen.xaml">
+             StartupUri="Screen/LoginScreen.xaml"
+             ShutdownMode="OnLastWindowClose">
     <Application.Resources>
          
     </Application.Resources>

@@ -1,104 +1,86 @@
-﻿<Window x:Class="EventHarbor.LoginScreen"
+﻿<Window x:Class="EventHarbor.Screen.RegisterScreen"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:EventHarbor"
+        xmlns:local="clr-namespace:EventHarbor.Screen"
         mc:Ignorable="d"
-        Title="Přihlášení"
-        Height="440" Width="320" 
-        WindowStartupLocation="CenterScreen" 
-        ResizeMode="NoResize" 
-        Background="#01FFFFFF"
+        Title="RegisterScreen"
+        Height="450" Width="305"
+        WindowStartupLocation="CenterScreen"
+        Background="#02FFFFFF"
+        ResizeMode="NoResize"
         WindowStyle="None"
         AllowsTransparency="True">
     <Border Width="300"
-            Background="White"
-            CornerRadius="6" MouseLeftButtonDown="Border_MouseLeftButtonDown" Margin="9,0,9,0">
+         Height="450"
+         Background="White"
+         CornerRadius="6"
+         MouseLeftButtonDown="Border_MouseLeftButtonDown">
         <Border.Effect>
             <DropShadowEffect BlurRadius="15"
-                              Direction ="-90" 
-                              RenderingBias ="Quality" 
-                              ShadowDepth ="2" 
-                              Color ="Gray" />
+                           Direction ="-90" 
+                           RenderingBias ="Quality" 
+                           ShadowDepth ="2" 
+                           Color ="Gray" />
         </Border.Effect>
         <StackPanel Orientation="Vertical"
-                    Margin="20">
-            <TextBlock Text="Přihlášení" 
+            Margin="20">
+            <TextBlock Text="Registrace" 
                        FontSize="25"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Top"
                        FontWeight="Bold"
                        Padding="10"
                        />
-            <Grid VerticalAlignment="Center">
+            <Grid Height="260" VerticalAlignment="Center">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="Uživatelské jméno" 
-                   Grid.Row="0"
-                   Margin="0,15"
-                   HorizontalAlignment="Left"/>
-                <TextBox  Grid.Column="1"
-                  Grid.Row="1"
-                  Padding="0,5"
-                  Width="255"
-                  BorderThickness="0,0,0,1"
-                  HorizontalAlignment="Left"
-                  Text="MP Codes"/>
+                    Grid.Row="0"
+                    Margin="0,15"
+                    HorizontalAlignment="Left"/>
+                <TextBox x:Name="UserNameTextBox"  Grid.Column="1"
+                    Grid.Row="1"
+                    Padding="0,5"
+                    Width="255"
+                    BorderThickness="0,0,0,1"
+                    HorizontalAlignment="Left"
+                    Text="MP Codes"/>
                 <TextBlock Text="Heslo" 
-                   Grid.Row="2"
-                   Margin="0,15"
-                   HorizontalAlignment="Left"/>
-                <PasswordBox Grid.Row="3"
-                      Password="mpcodes"
-                      Padding="0,5"                           
-                      Width="255"
-                      BorderThickness="0,0,0,1"
-                      HorizontalAlignment="Left"/>
+                    Grid.Row="2"
+                    Margin="0,15"
+                    HorizontalAlignment="Left"/>
+                <PasswordBox x:Name="PwdBox1" Grid.Row="3"
+                    Password="mpcodes"
+                    Padding="0,5"                           
+                    Width="255"
+                    BorderThickness="0,0,0,1"
+                    HorizontalAlignment="Left"/>
+                <TextBlock Text="Heslo znovu" 
+                    Grid.Row="4"
+                    Margin="0,5,0,25"
+                    HorizontalAlignment="Left"/>
+                <PasswordBox x:Name="PwdBox2" Grid.Row="4"
+                    Password="mpcodes"
+                    Padding="0,5"                           
+                    Width="255"
+                    BorderThickness="0,0,0,1"
+                    HorizontalAlignment="Left" Margin="0,37,0,10" Grid.RowSpan="2"/>
             </Grid>
-            <TextBlock Text="" 
-                       HorizontalAlignment="Right"  >
-                <Hyperlink x:Name="ForgotUri" NavigateUri="ForgotScreen.xaml" Click="ForgotUri_Click">Zapomenuté heslo ?</Hyperlink>
-            </TextBlock>
-            <Button x:Name="LoginBtn" 
-                    Content="Přihlásit" 
-                    Foreground="White"
-                    Background="Black"
-                    Margin="0,25"
-                    Height="35"
-                    Width="250">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type Button}">
-                                    <Border x:Name="LoginBorder" Background="{TemplateBinding Background}"
-                                            CornerRadius="16">
-                                        <ContentPresenter HorizontalAlignment="Center" 
-                                                          VerticalAlignment="Center"/>
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="AliceBlue" TargetName="LoginBorder"  />
-                                            <Setter Property="TextBlock.Foreground" Value="Black"  TargetName="LoginBorder" />
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </Button.Style>
-            </Button>
-            <Button x:Name="CloseBtn" 
-                Content="Zavřít" 
+            <Button x:Name="RegisterBtn" 
+                Content="Registrovat" 
                 Foreground="White"
                 Background="Black"
                 Height="35"
-                Width="86" Click="CloseBtn_Click">
+                Width="250"
+                    Margin="0 5 0 0">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
                         <Setter Property="Template">
@@ -121,16 +103,36 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <TextBlock Text="Nemáš účet ?"
-                         Margin="0,5"
-                       VerticalAlignment="Bottom"
-                       HorizontalAlignment="Center"/>
-            <TextBlock Text=""
-                         Margin="0,10"
-                       VerticalAlignment="Bottom"
-                       HorizontalAlignment="Center">
-                <Hyperlink x:Name="RegisterUri" NavigateUri="RegisterScreen.xaml" Click="RegisterUri_Click">Registrovat</Hyperlink>
-            </TextBlock>
+            <Button x:Name="BackBtn" 
+                Content="Zpět" 
+                Foreground="White"
+                Background="Black"
+                Height="35"
+                Width="180"
+                    Margin="0 10 0 0" Click="BackBtn_Click">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border x:Name="LoginBorder" Background="{TemplateBinding Background}"
+                                        CornerRadius="16">
+                                        <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="AliceBlue" TargetName="LoginBorder"  />
+                                            <Setter Property="TextBlock.Foreground" Value="Black"  TargetName="LoginBorder" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
+
         </StackPanel>
     </Border>
 </Window>
