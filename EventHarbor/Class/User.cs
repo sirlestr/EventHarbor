@@ -24,6 +24,7 @@ namespace EventHarbor.Class
         [NotMapped]
         public string? UserPasswd { get; set; }
         public static int lastId = 0;
+        
 
         public User(){}
 

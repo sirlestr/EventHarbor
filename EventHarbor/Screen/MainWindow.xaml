@@ -5,8 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EventHarbor"
         mc:Ignorable="d"
-        Title="EventHarbor" Height="800" Width="1500">
-    <Grid>
+        Title="EventHarbor"
+        Height="800" Width="1000"
+        WindowStartupLocation="CenterScreen"
+        >
+    <Border
+        Background="White"
+        CornerRadius="6" MouseLeftButtonDown="Border_MouseLeftButtonDown" Margin="0,0,1,-6">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="15"
+                          Direction ="-90" 
+                          RenderingBias ="Quality" 
+                          ShadowDepth ="2" 
+                          Color ="Gray" />
+        </Border.Effect>
+    </Border>
 
-    </Grid>
 </Window>

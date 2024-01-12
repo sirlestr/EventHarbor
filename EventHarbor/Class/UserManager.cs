@@ -3,7 +3,7 @@
     internal class UserManager
     {
         public UserManager() { }
-
+        public int LoggedUserId { get; private set; }
         /// <summary>
         /// Add new user to Db
         /// </summary>
@@ -45,6 +45,7 @@
                 }
                 else
                 {
+                    LoggedUserId = user.UserId;
                     return result = 1; // login success
                 }
             }
