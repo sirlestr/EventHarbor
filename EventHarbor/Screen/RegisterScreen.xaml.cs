@@ -1,17 +1,6 @@
 ﻿using EventHarbor.Class;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace EventHarbor.Screen
 {
@@ -29,7 +18,7 @@ namespace EventHarbor.Screen
         {
             this.Close();
         }
-
+        //move window
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var move = sender as System.Windows.Controls.Border;
@@ -38,29 +27,37 @@ namespace EventHarbor.Screen
 
         }
 
+        //Registration
         private void RegisterBtn_Click(object sender, RoutedEventArgs e)
         {
             UserManager userManager = new UserManager();
-           
-                if (UserNameTextBox.Text != null && PwdBox1.Password == PwdBox2.Password)
+
+            if (UserNameTextBox.Text != null && PwdBox1.Password == PwdBox2.Password)
+            {
+                try
                 {
-                    if(userManager.AddUser(UserNameTextBox.Text, PwdBox1.Password))
+                    if (userManager.AddUser(UserNameTextBox.Text, PwdBox1.Password))
                     {
                         MessageBox.Show("Registrace proběhla");
+                        this.Close();
+                        return;
                     }
                     else
                     {
-                        {
-                            MessageBox.Show("Nepovedlo se vytvořit uživatele");
-                        }
+                        MessageBox.Show("Nepovedlo se vytvořit uživatele");
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Zadejte prosím uživatelské jméno a heslo");
+                    MessageBox.Show(ex.Message);
                 }
-          
-
+            }
+            else
+            {
+                MessageBox.Show("Zadejte prosím uživatelské jméno a heslo");
+            }
         }
+
+
     }
 }

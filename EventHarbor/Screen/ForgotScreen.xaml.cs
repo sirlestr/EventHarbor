@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EventHarbor.Class;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,6 +37,37 @@ namespace EventHarbor.Screen
             var move = sender as System.Windows.Controls.Border;
             var win = Window.GetWindow(move);
             win.DragMove();
+
+        }
+
+
+        //Reset user password
+        private void ResetPwdBtn_Click(object sender, RoutedEventArgs e)
+        {
+            UserManager userManager = new UserManager();
+
+            if (UserNameTextBox.Text != null && PwdBox.Password != null)
+            {
+                try
+                {
+                    if (userManager.ResetPassword(UserNameTextBox.Text, PwdBox.Password))
+                    {
+                        MessageBox.Show("Heslo bylo resetováno");
+                        this.Close();
+                        return;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Nepovedlo se resetovat heslo, uživatel nenalezen");
+                    }
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+
+            
 
         }
     }

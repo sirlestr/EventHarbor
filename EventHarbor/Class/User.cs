@@ -15,33 +15,45 @@ namespace EventHarbor.Class
     public class User
     {
         /// <summary>
-        /// Base user Object
+        /// Definition User Object
         /// </summary>
         [Key]
         public int UserId { get; set; }
-        public string UserName { get;  set; }
-        
-        public string UserHash { get;  set; } 
+        public string UserName { get; set; }
+        public string UserHash { get; set; }
         [NotMapped]
-        public string? UserPasswd { get;  set; }
+        public string? UserPasswd { get; set; }
         public static int lastId = 0;
-        
+
+        public User(){}
 
         public User(string userName, string userPasswd)
         {
-            UserId = lastId;
-            lastId++;
+            
             UserName = userName;
-
-            UserHash = userPasswd;
+            UserHash = getHashEncryption(userPasswd);
+            
 
         }
 
-        public User()
+        /// <summary>
+        /// Basic hash function for password
+        /// </summary>
+        /// <param name="userPasswd">input password from form or other sources</param>
+        /// <returns>hashed password</returns>
+        public string getHashEncryption(string userPasswd)
         {
+            string hash = "";
+            using (SHA256 sha256Hash = SHA256.Create())
+            {
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(userPasswd));
+                hash = Convert.ToBase64String(bytes);
+            }
 
+            return  hash;
         }
 
+       
 
 
     }
