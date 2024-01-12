@@ -1,4 +1,5 @@
-﻿using EventHarbor.Screen;
+﻿using EventHarbor.Class;
+using EventHarbor.Screen;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,9 +58,25 @@ namespace EventHarbor
 
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var move = sender as System.Windows.Controls.Border;
+            var move = sender as Border;
             var win = Window.GetWindow(move);
             win.DragMove();
+        }
+
+        private void LoginBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+            using (DatabaseContextManager dbManager = new DatabaseContextManager())
+            {
+                if (dbManager.Database.EnsureDeleted())
+                {
+                    MessageBox.Show("smazano");
+                }
+                if (dbManager.Database.EnsureCreated())
+                {
+                    MessageBox.Show("Vytvořeno");
+                }
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EventHarbor.Class;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,6 +35,31 @@ namespace EventHarbor.Screen
             var move = sender as System.Windows.Controls.Border;
             var win = Window.GetWindow(move);
             win.DragMove();
+
+        }
+
+        private void RegisterBtn_Click(object sender, RoutedEventArgs e)
+        {
+            UserManager userManager = new UserManager();
+           
+                if (UserNameTextBox.Text != null && PwdBox1.Password == PwdBox2.Password)
+                {
+                    if(userManager.AddUser(UserNameTextBox.Text, PwdBox1.Password))
+                    {
+                        MessageBox.Show("Registrace proběhla");
+                    }
+                    else
+                    {
+                        {
+                            MessageBox.Show("Nepovedlo se vytvořit uživatele");
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Zadejte prosím uživatelské jméno a heslo");
+                }
+          
 
         }
     }

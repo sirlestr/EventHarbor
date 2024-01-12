@@ -80,7 +80,7 @@
                 Background="Black"
                 Height="35"
                 Width="250"
-                    Margin="0 5 0 0">
+                    Margin="0 5 0 0" Click="RegisterBtn_Click">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
                         <Setter Property="Template">
