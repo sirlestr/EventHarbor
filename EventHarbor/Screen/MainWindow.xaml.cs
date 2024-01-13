@@ -20,5 +20,17 @@ namespace EventHarbor
         {
             InitializeComponent();
         }
+
+        private void CloseBtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var move = sender as System.Windows.Controls.Border;
+            var win = Window.GetWindow(move);
+            win.DragMove();
+        }
     }
 }

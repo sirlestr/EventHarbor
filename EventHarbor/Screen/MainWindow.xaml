@@ -6,19 +6,72 @@
         xmlns:local="clr-namespace:EventHarbor"
         mc:Ignorable="d"
         Title="EventHarbor"
-        Height="800" Width="1000"
+                Height="450" Width="800"
+        AllowsTransparency="True" 
+        Background="Transparent"
+        WindowStyle="None" 
+        Foreground="#00000000"
+        ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         >
     <Border
-        Background="White"
-        CornerRadius="6" MouseLeftButtonDown="Border_MouseLeftButtonDown" Margin="0,0,1,-6">
-        <Border.Effect>
-            <DropShadowEffect BlurRadius="15"
-                          Direction ="-90" 
-                          RenderingBias ="Quality" 
-                          ShadowDepth ="2" 
-                          Color ="Gray" />
-        </Border.Effect>
-    </Border>
+       Style="{StaticResource AppBorder}"
+        MouseLeftButtonDown="Border_MouseLeftButtonDown">
+        <Grid Margin="1,1,1,1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30*"/>
+                <RowDefinition Height="420*"/>
+            </Grid.RowDefinitions>
+            <Grid Margin="5,26,5,5" Grid.RowSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <DataGrid x:Name="dataGrid" Margin="10,5,10,10" d:ItemsSource="{d:SampleData ItemCount=10}"/>
+                <StackPanel Grid.Column="1" Margin="5,5,5,5">
+                    <TextBlock x:Name="textBlock4" Text="Ovladani :" TextWrapping="Wrap" Foreground="Black" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                    <StackPanel Orientation="Vertical">
 
+                        <TextBlock x:Name="textBlock2" TextWrapping="NoWrap" Text="Zakladni akce" Foreground="Black" HorizontalAlignment="Center"/>
+
+                        <Button x:Name="AddBtn" Content="Přidat událost" Style="{StaticResource MenuButton}"/>
+                        <Button x:Name="ChangeBtn" Content="Upravit událost" Style="{StaticResource MenuButton}"/>
+                        <Button x:Name="RemoveBtn" Content="Smazat událost" Style="{StaticResource MenuButton}"/>
+
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="0,20,0,0">
+                        <TextBlock x:Name="textBlock3" TextWrapping="NoWrap" Foreground="Black" Width="81"><Run Language="cs-cz" Text="Rozsirene akce"/></TextBlock>
+                        <Button x:Name="button" Content="Zobraz statistiku" Style="{StaticResource MenuButton}"/>
+                        <Button x:Name="button1" Content="Export do souboru" Style="{StaticResource MenuButton}"/>
+                        <Button x:Name="button2" Content="Testovací tlačítko" Style="{StaticResource MenuButton}"/>
+
+                    </StackPanel>
+
+                </StackPanel>
+            </Grid>
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="CloseBtn"
+                  Style="{StaticResource CloseBtn}"
+                Content="X" 
+                Click="CloseBtn_Click"/>
+
+                <TextBlock 
+                    x:Name="textBlock"
+                    TextWrapping="Wrap"
+                    Text="EventHarbour"
+                    Width="115" 
+                    FontSize="16"
+                    FontWeight="Bold" 
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Foreground="Black"
+                    FontFamily="Segoe Print"
+                    Margin="10,0,0,0"/>
+                <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="60,0,0,0">
+                    <TextBlock x:Name="textBlock1" TextWrapping="Wrap" Text="Přihlášen uživatel : " Foreground="Black" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="LoggedUserNameTextBlock" TextWrapping="Wrap" Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Left"><Run Language="cs-cz" Text="Jana"/></TextBlock>
+                </WrapPanel>
+            </StackPanel>
+        </Grid>
+    </Border>
 </Window>
