@@ -1,9 +1,11 @@
 ﻿namespace EventHarbor.Class
 {
-    internal class UserManager
+    public class UserManager
     {
         public UserManager() { }
+        public UserManager manager;
         public int LoggedUserId { get; private set; }
+        public string LoggedUserName { get; private set; }
         /// <summary>
         /// Add new user to Db
         /// </summary>
@@ -46,6 +48,7 @@
                 else
                 {
                     LoggedUserId = user.UserId;
+                    LoggedUserName = user.UserName;
                     return result = 1; // login success
                 }
             }

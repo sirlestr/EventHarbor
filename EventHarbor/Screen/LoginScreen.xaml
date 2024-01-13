@@ -57,7 +57,8 @@
             </TextBlock>
             <Button x:Name="LoginBtn" 
                     Content="Přihlásit" 
-                    Style="{StaticResource LoginButtonStyle}"/>
+                    Style="{StaticResource LoginButtonStyle}" Click="LoginBtn_Click"
+                    />
 
 
             <Button x:Name="CloseBtn" 

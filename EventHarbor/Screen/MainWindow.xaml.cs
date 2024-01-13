@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using EventHarbor.Class;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -16,19 +17,31 @@ namespace EventHarbor
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        UserManager userManager;
+        private CultureActionManager cultureActionManager = new CultureActionManager();
+
+        public MainWindow(UserManager manager)
+        
         {
+             userManager = manager;
+
             InitializeComponent();
+            CultureActionDataGrid.ItemsSource = cultureActionManager.CultureActions;
+
+            int UserId = userManager.LoggedUserId;
+            string UserName = userManager.LoggedUserName;
+            LoggedUserNameTextBlock.Text = userManager.LoggedUserName;
+
         }
 
         private void CloseBtn_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+           this.Close();
         }
 
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var move = sender as System.Windows.Controls.Border;
+            var move = sender as Border;
             var win = Window.GetWindow(move);
             win.DragMove();
         }

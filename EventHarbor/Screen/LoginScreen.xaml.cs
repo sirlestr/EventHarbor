@@ -14,9 +14,11 @@ namespace EventHarbor
         public LoginScreen()
         {
             DatabaseContextManager dbManager = new DatabaseContextManager();
+            
             InitializeComponent();
 
             //temporary for development
+            /*
             if (dbManager.Database.EnsureDeleted())
             {
                 MessageBox.Show("smazano");
@@ -25,6 +27,7 @@ namespace EventHarbor
             {
                 MessageBox.Show("Vytvořeno");
             }
+            */
 
         }
 
@@ -78,6 +81,10 @@ namespace EventHarbor
                             break;
                         case 1:
                             MessageBox.Show("Přihlášeno");
+                            MainWindow mainWindow = new MainWindow(userManager);
+                            this.Visibility = Visibility.Collapsed;
+                            mainWindow.ShowDialog();
+                            this.Visibility = Visibility.Visible;
                             break;
 
                     }
