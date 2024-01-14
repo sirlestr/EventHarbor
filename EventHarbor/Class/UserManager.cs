@@ -2,10 +2,12 @@
 {
     public class UserManager
     {
-        public UserManager() { }
+        
         public UserManager manager;
         public int LoggedUserId { get; private set; }
         public string LoggedUserName { get; private set; }
+
+        public UserManager() { }
         /// <summary>
         /// Add new user to Db
         /// </summary>

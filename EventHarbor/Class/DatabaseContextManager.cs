@@ -12,7 +12,7 @@ namespace EventHarbor.Class
     internal class DatabaseContextManager : DbContext
     {
         public DbSet<User> Users { get; set; }
-        public DbSet<CultureAction> CultureActions { get; set; }
+        public DbSet<CultureAction> CultureActionsDatabase { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

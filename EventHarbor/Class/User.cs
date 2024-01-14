@@ -23,7 +23,7 @@ namespace EventHarbor.Class
         public string UserHash { get; set; }
         [NotMapped]
         public string? UserPasswd { get; set; }
-        public static int lastId = 0;
+       
         
 
         public User(){}

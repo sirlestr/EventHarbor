@@ -1,14 +1,7 @@
 ﻿using EventHarbor.Class;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace EventHarbor
 {
@@ -19,24 +12,44 @@ namespace EventHarbor
     {
         UserManager userManager;
         private CultureActionManager cultureActionManager = new CultureActionManager();
+        private int UserId;
+        private string UserName;
 
         public MainWindow(UserManager manager)
-        
+
         {
-             userManager = manager;
-
             InitializeComponent();
-            CultureActionDataGrid.ItemsSource = cultureActionManager.CultureActions;
+            // for user ID and name of logged user
+            userManager = manager;
 
-            int UserId = userManager.LoggedUserId;
-            string UserName = userManager.LoggedUserName;
+
+
+
+            //assing user data to variables for display in view
+            UserId = userManager.LoggedUserId;
+            UserName = userManager.LoggedUserName;
             LoggedUserNameTextBlock.Text = userManager.LoggedUserName;
+            CultureActionDataGrid.ItemsSource = cultureActionManager.CultureActions;
+            //load all culture actions from db to DataGrid
+            if (cultureActionManager.GetAllCultureActionsFromDb(cultureActionManager, UserId))
+            {
+                MessageBox.Show("Načteno");
+                CultureActionDataGrid.Items.Refresh();
+            }
+
+
+            
+           
+
+            //binding collection to datagrid
+
+
 
         }
 
         private void CloseBtn_Click(object sender, RoutedEventArgs e)
         {
-           this.Close();
+            this.Close();
         }
 
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -44,6 +57,13 @@ namespace EventHarbor
             var move = sender as Border;
             var win = Window.GetWindow(move);
             win.DragMove();
+        }
+
+        private void AddBtn_Click(object sender, RoutedEventArgs e)
+        {
+            // cultureActionManager.AddCultureActionToDb(UserId);
+            cultureActionManager.GetAllCultureActionsFromDb(cultureActionManager, UserId);
+
         }
     }
 }
