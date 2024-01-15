@@ -39,7 +39,8 @@ namespace EventHarbor.Class
                 {
                     CultureActions.Add(cultureAction);     
                 }
-                
+
+                //this don't work, need to fix... get last id from collection based on user id, not last id from db
                 LastId = CultureActions.Last().CultureActionId;
                 LastId++;
 
