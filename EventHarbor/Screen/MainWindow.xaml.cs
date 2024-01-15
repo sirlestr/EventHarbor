@@ -1,4 +1,5 @@
 ﻿using EventHarbor.Class;
+using EventHarbor.Screen;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -63,6 +64,9 @@ namespace EventHarbor
         {
             // cultureActionManager.AddCultureActionToDb(UserId);
             //cultureActionManager.GetAllCultureActionsFromDb(cultureActionManager, UserId);
+
+            CultureActionDetail AddActionWindow = new CultureActionDetail(userManager);
+            AddActionWindow.ShowDialog();
 
         }
     }

@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:sys="clr-namespace:System;assembly=mscorlib" 
-        xmlns:local="clr-namespace:EventHarbor.Screen"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:EventHarbor.Class"
         mc:Ignorable="d"
         Title="CultureActionDetail"
                 Height="450" Width="800"
@@ -15,15 +15,6 @@
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         >
-    <Window.Resources>
-        <ObjectDataProvider x:Key="EnumDataSource"
-                            ObjectType="{x:Type sys:Enum}"
-                            MethodName="GetValues">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="HorizontalAlignment"/>
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
-    </Window.Resources>
     <Border
        Style="{StaticResource AppBorder}"
         MouseLeftButtonDown="Border_MouseLeftButtonDown">
@@ -80,13 +71,16 @@
                     </StackPanel>
                     <StackPanel Grid.Row="3" Orientation="Horizontal">
                         <TextBlock x:Name="textBlock7" Style="{StaticResource FormBlockStyle}" Text="Typ akce: "/>
-                        <ComboBox x:Name="comboBox" Width="120" Height="25" FontSize="16"
+                        <ComboBox x:Name="CultureActionTypeComboBox" Width="120" Height="25" FontSize="16"
+                                  ItemsSource="{Binding Source={local:EnumBindingSource {x:Type local:CultureActionType} }}" SelectedIndex="0"
                         />
-                        <TextBlock x:Name="textBlock7_Copy" Style="{StaticResource FormBlockStyle}"><Run Language="cs-cz" Text="Typ výstavy: "/></TextBlock>
-                        <ComboBox x:Name="comboBox_Copy" Width="120" Height="25" FontSize="16"
+                        <TextBlock x:Name="textBlock7_Copy" Style="{StaticResource FormBlockStyle}" Text="Typ výstavy: "/>
+                        <ComboBox x:Name="CultureExhibitionType" Width="120" Height="25" FontSize="16"
+                                  ItemsSource="{Binding Source={local:EnumBindingSource {x:Type local:ExhibitionType} }}" SelectedIndex="0"
                         />
-                        <TextBlock x:Name="textBlock7_Copy1" Style="{StaticResource FormBlockStyle}"><Run Language="cs-cz" Text="Pořadatel: "/><Run Text=" "/></TextBlock>
-                        <ComboBox x:Name="comboBox_Copy1" Width="120" Height="25" FontSize="16"
+                        <TextBlock x:Name="textBlock7_Copy1" Style="{StaticResource FormBlockStyle}" Text="Pořadatel: "/>
+                        <ComboBox x:Name="OrganiseComboBox" Width="120" Height="25" FontSize="16"
+                                  ItemsSource="{Binding Source={local:EnumBindingSource {x:Type local:Organiser} }}" SelectedIndex="0"
                         />
                     </StackPanel>
                     <StackPanel Grid.Row="4">
