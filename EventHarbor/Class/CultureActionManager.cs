@@ -9,11 +9,12 @@ namespace EventHarbor.Class
 {
     class CultureActionManager
     {
-        private ObservableCollection<CultureAction> UnionCultureAction = new ObservableCollection<CultureAction>();
+       
         public ObservableCollection<CultureAction> CultureActions = new ObservableCollection<CultureAction>();
         private ObservableCollection<CultureAction> cultureActionsDbCollection;
+        public int LastId { get; private set; }
 
-        public CultureActionManager() 
+    public CultureActionManager() 
         {
            
             
@@ -31,18 +32,23 @@ namespace EventHarbor.Class
         {
             using (DatabaseContextManager context = new DatabaseContextManager())
             {
-                cultureActionsDbCollection = new ObservableCollection<CultureAction>(context.CultureActionsDatabase.ToList());
+                cultureActionsDbCollection = new ObservableCollection<CultureAction>(context.CultureActionsDatabase.Where(x => x.OwnerId == ownerId).ToList());
                 IEnumerable <CultureAction> union = cultureActionsDbCollection.Union(localCultureAction.CultureActions);
 
                 foreach (CultureAction cultureAction in union)
                 {
                     CultureActions.Add(cultureAction);     
                 }
+                
+                LastId = CultureActions.Last().CultureActionId;
+                LastId++;
 
                 return true;
             }
 
         }
+
+       
 
         //testíing function for inster to db, in future probably will be removed
         public bool AddCultureActionToDb(int ownerId)

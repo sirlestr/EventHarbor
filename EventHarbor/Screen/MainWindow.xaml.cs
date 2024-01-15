@@ -62,7 +62,7 @@ namespace EventHarbor
         private void AddBtn_Click(object sender, RoutedEventArgs e)
         {
             // cultureActionManager.AddCultureActionToDb(UserId);
-            cultureActionManager.GetAllCultureActionsFromDb(cultureActionManager, UserId);
+            //cultureActionManager.GetAllCultureActionsFromDb(cultureActionManager, UserId);
 
         }
     }

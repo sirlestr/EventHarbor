@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:EventHarbor"
         mc:Ignorable="d"
         Title="EventHarbor"
-                Height="450" Width="800"
+                Height="450" Width="1000"
         AllowsTransparency="True" 
         Background="Transparent"
         WindowStyle="None" 
