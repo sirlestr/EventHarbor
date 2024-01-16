@@ -15,6 +15,9 @@
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         >
+    <Window.Resources>
+        <local:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
+    </Window.Resources>
     <Border
        Style="{StaticResource AppBorder}"
         MouseLeftButtonDown="Border_MouseLeftButtonDown">
@@ -29,7 +32,7 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="1" Margin="5,5,5,5">
-                    <TextBlock x:Name="textBlock4" Text="Ovladani :" TextWrapping="Wrap" Foreground="Black" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                    <TextBlock x:Name="textBlock4" Text="Ovládani :" TextWrapping="Wrap" Foreground="Black" HorizontalAlignment="Center" Margin="0,0,0,5"/>
                     <StackPanel Orientation="Vertical">
 
                         <TextBlock x:Name="textBlock2" TextWrapping="NoWrap" Text="Zakladni akce" Foreground="Black" HorizontalAlignment="Center"/>
@@ -51,15 +54,16 @@
                     </Grid.RowDefinitions>
                     <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
                         <TextBlock x:Name="textBlock3" Text="Název akce :" Style="{StaticResource FormBlockStyle}" Margin="5,0,0,0"  />
-                        <TextBox x:Name="CultureActionNameTextBox" Text="TextBox" Style="{StaticResource FormBoxStyle}"/>
+                        <TextBox x:Name="CultureActionNameTextBox" Style="{StaticResource FormBoxStyle}"/>
                         <TextBlock x:Name="textBlock3_Copy" Text="Náklady: " Style="{StaticResource FormBlockStyle}"  />
-                        <TextBox x:Name="FinalPriceTextBox" Text="TextBox" Style="{StaticResource FormBoxStyle}"/>
+                        <TextBox x:Name="FinalPriceTextBox" Style="{StaticResource FormBoxStyle}"/>
                     </StackPanel>
                     <StackPanel Grid.Row="1" Orientation="Horizontal">
                         <TextBlock x:Name="textBlock5" Style="{StaticResource FormBlockStyle}" Text="Od :"/>
                         <DatePicker x:Name="StartDatePicker" Height="25" FirstDayOfWeek="Monday"/>
                         <TextBlock x:Name="textBlock5_Copy" Style="{StaticResource FormBlockStyle}" Text="Do :"/>
                         <DatePicker x:Name="EndDatePicker" Height="25" FirstDayOfWeek="Monday"/>
+                        <CheckBox x:Name="IsFreeCheckBox" Content="Akce je zdarma" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30,0,0,0"/>
                     </StackPanel>
                     <StackPanel Grid.Row="2" Orientation="Horizontal">
                         <TextBlock x:Name="textBlock6" Style="{StaticResource FormBlockStyle}" Text="Počet dětí: "/>
@@ -71,13 +75,21 @@
                     </StackPanel>
                     <StackPanel Grid.Row="3" Orientation="Horizontal">
                         <TextBlock x:Name="textBlock7" Style="{StaticResource FormBlockStyle}" Text="Typ akce: "/>
-                        <ComboBox x:Name="CultureActionTypeComboBox" Width="120" Height="25" FontSize="16"
+                        <ComboBox x:Name="CultureActionTypeComboBox" Width="140" Height="25" FontSize="16"
                                   ItemsSource="{Binding Source={local:EnumBindingSource {x:Type local:CultureActionType} }}" SelectedIndex="0"
+                                  
                         />
                         <TextBlock x:Name="textBlock7_Copy" Style="{StaticResource FormBlockStyle}" Text="Typ výstavy: "/>
                         <ComboBox x:Name="CultureExhibitionType" Width="120" Height="25" FontSize="16"
                                   ItemsSource="{Binding Source={local:EnumBindingSource {x:Type local:ExhibitionType} }}" SelectedIndex="0"
-                        />
+                        >
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding  Converter={StaticResource EnumDescriptionConverter}}"></TextBlock>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+
+                        </ComboBox>
                         <TextBlock x:Name="textBlock7_Copy1" Style="{StaticResource FormBlockStyle}" Text="Pořadatel: "/>
                         <ComboBox x:Name="OrganiseComboBox" Width="120" Height="25" FontSize="16"
                                   ItemsSource="{Binding Source={local:EnumBindingSource {x:Type local:Organiser} }}" SelectedIndex="0"

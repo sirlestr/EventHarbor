@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Markup;
+﻿using System.Windows.Markup;
 
 namespace EventHarbor.Class
 {
+    /// <summary>
+    /// Helper class for data binding enum values to ComboBox
+    /// </summary>
     class EnumBindingSourceExtension : MarkupExtension
     {
-        public Type EnumType { get;  private set; }
-        
+        public Type EnumType { get; private set; }
+
         public EnumBindingSourceExtension(Type enumType)
         {
-            if (enumType == null|| !enumType.IsEnum) 
-            {  
+            if (enumType == null || !enumType.IsEnum)
+            {
                 throw new ArgumentNullException(nameof(enumType));
             }
             this.EnumType = enumType;
@@ -22,11 +20,14 @@ namespace EventHarbor.Class
 
 
 
-        
+
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            return Enum.GetNames(this.EnumType);
-            //return Enum.GetValues(EnumType);
+            return Enum.GetValues(EnumType);
         }
+
+
+
+
     }
 }

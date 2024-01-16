@@ -1,12 +1,33 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EventHarbor.Class
 {
-    
-    public enum CultureActionType { Default, Theatre, CastleEvent, OpeningCeremony, Fair, CastleTour }
-    public enum ExhibitionType { Default, Hystorical, Technical, Haptic, Creative }
-    public enum Organiser { Museum, School, City }
+
+    public enum CultureActionType
+    {
+        [Description("Nezvoleno")] Default,
+        [Description("Divadelní představení")] Theatre,
+        [Description("Zámeká akce")] CastleEvent,
+        [Description("Vernisáž")] OpeningCeremony,
+        [Description("Trh")] Fair,
+        [Description("Porhlídka hradu")] CastleTour
+    }
+
+    public enum ExhibitionType
+    {
+        [Description("Nezadáno")] Default,
+        [Description("Hystorická")] Hystorical,
+        [Description("Technická")] Technical,
+        [Description("Haptická")] Haptic,
+        [Description("Kreativní")] Creative
+    }
+    public enum Organiser 
+    { 
+        [Description("Muzeum")] Museum,
+        [Description("Škola")] School,
+        [Description("Město")] City }
     class CultureAction
     {
         [Key]
@@ -23,13 +44,16 @@ namespace EventHarbor.Class
         public Organiser Organiser { get; set; } = Organiser.Museum;
         public string CultureActionNotes { get; set; }
         public int OwnerId { get; set; }
+        public bool IsFree { get; set; }
 
         [NotMapped]
-        private int LastId 
+        private int LastId
         {
-            get {
+            get
+            {
                 int lastId = 0;
-                return lastId; }
+                return lastId;
+            }
             set { GetLastIdFromDb(); }
 
         }
