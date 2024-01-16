@@ -69,20 +69,23 @@
                         <TextBlock x:Name="textBlock6" Style="{StaticResource FormBlockStyle}" Text="Počet dětí: "/>
                         <TextBox x:Name="NumberOfChildrenTextBox" Style="{StaticResource FormBoxStyle}" Width="50"/>
                         <TextBlock x:Name="textBlock6_Copy" Style="{StaticResource FormBlockStyle}" Text="Počet dospělých: "/>
-                        <TextBox x:Name="NumberOfAdultsTextBox" Style="{StaticResource ResourceKey=FormBoxStyle}" Width="50"/>
+                        <TextBox x:Name="NumberOfAdultsTextBox" Style="{StaticResource FormBoxStyle}" Width="50"/>
                         <TextBlock x:Name="textBlock6_Copy1" Style="{StaticResource FormBlockStyle}" Text="Počet seniorů: "/>
-                        <TextBox x:Name="NumberOfSeniorsTextBox" Style="{StaticResource ResourceKey=FormBoxStyle}" Width="50"/>
+                        <TextBox x:Name="NumberOfSeniorsTextBox" Style="{StaticResource FormBoxStyle}" Width="50"/>
                     </StackPanel>
                     <StackPanel Grid.Row="3" Orientation="Horizontal">
                         <TextBlock x:Name="textBlock7" Style="{StaticResource FormBlockStyle}" Text="Typ akce: "/>
                         <ComboBox x:Name="CultureActionTypeComboBox" Width="140" Height="25" FontSize="16"
-                                  ItemsSource="{Binding Source={local:EnumBindingSource {x:Type local:CultureActionType} }}" SelectedIndex="0"
-                                  
-                        />
+                                  ItemsSource="{Binding Source={local:EnumBindingSource {x:Type local:CultureActionType} }}" SelectedIndex="0">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding  Converter={StaticResource EnumDescriptionConverter}}"></TextBlock>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                         <TextBlock x:Name="textBlock7_Copy" Style="{StaticResource FormBlockStyle}" Text="Typ výstavy: "/>
                         <ComboBox x:Name="CultureExhibitionType" Width="120" Height="25" FontSize="16"
-                                  ItemsSource="{Binding Source={local:EnumBindingSource {x:Type local:ExhibitionType} }}" SelectedIndex="0"
-                        >
+                                  ItemsSource="{Binding Source={local:EnumBindingSource {x:Type local:ExhibitionType} }}" SelectedIndex="0">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding  Converter={StaticResource EnumDescriptionConverter}}"></TextBlock>
@@ -92,8 +95,13 @@
                         </ComboBox>
                         <TextBlock x:Name="textBlock7_Copy1" Style="{StaticResource FormBlockStyle}" Text="Pořadatel: "/>
                         <ComboBox x:Name="OrganiseComboBox" Width="120" Height="25" FontSize="16"
-                                  ItemsSource="{Binding Source={local:EnumBindingSource {x:Type local:Organiser} }}" SelectedIndex="0"
-                        />
+                                  ItemsSource="{Binding Source={local:EnumBindingSource {x:Type local:Organiser} }}" SelectedIndex="0">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding  Converter={StaticResource EnumDescriptionConverter}}"></TextBlock>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </StackPanel>
                     <StackPanel Grid.Row="4">
                         <TextBlock x:Name="textBlock8" Style="{StaticResource FormBlockStyle}" Text="Poznámky k akci" HorizontalAlignment="Center"/>
