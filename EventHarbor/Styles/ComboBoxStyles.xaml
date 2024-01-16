@@ -1,0 +1,18 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="ComboBoxDefault" TargetType="ComboBox">
+        
+    </Style>
+    
+    <DataTemplate x:Key="ComboBoxEnumConverter">
+        <TextBlock Text="{Binding Converter={StaticResource descConverter}}" />
+    </DataTemplate>
+
+    <Style x:Key="ComboBoxStyle" TargetType="ComboBox">
+        <Setter Property="Height" Value="25" />
+        <Setter Property="ItemsSource" Value="{Binding Source={StaticResource enmPositions}}" />
+        <Setter Property="Margin" Value="10,2,10,0" />
+        <Setter Property="ItemTemplate" Value="{StaticResource ComboBoxEnumConverter}" />
+    </Style>
+
+</ResourceDictionary>
