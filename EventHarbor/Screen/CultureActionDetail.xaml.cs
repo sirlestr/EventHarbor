@@ -34,11 +34,14 @@ namespace EventHarbor.Screen
             InitializeComponent();
             // for user ID and name of logged user
             userManager = manager;
-            LastId = cultureActionManager.LastId;
+            LastId = cultureActionManager.GetLasIdFromDb();
+            LastIdTextBlock.Text = LastId.ToString();
 
             //assing user data to variables for display in view
-            UserId = userManager.LoggedUserId;
-            LoggedUserNameTextBlock.Text = userManager.LoggedUserName;
+             UserId = userManager.LoggedUserId;
+            OwnerIDTextBlock.Text = UserId.ToString();
+            LoggedUserNameTextBlock.Text =   userManager.LoggedUserName;
+            
             
         }
 

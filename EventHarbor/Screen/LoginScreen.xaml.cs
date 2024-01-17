@@ -13,21 +13,11 @@ namespace EventHarbor
     {
         public LoginScreen()
         {
-            DatabaseContextManager dbManager = new DatabaseContextManager();
+           
             
             InitializeComponent();
 
-            //temporary for development
-            /*
-            if (dbManager.Database.EnsureDeleted())
-            {
-                MessageBox.Show("smazano");
-            }
-            if (dbManager.Database.EnsureCreated())
-            {
-                MessageBox.Show("Vytvořeno");
-            }
-            */
+            
             
             
             
@@ -98,17 +88,23 @@ namespace EventHarbor
                 }
 
 
-                /*
-                if (dbManager.Database.EnsureDeleted())
-                {
-                    MessageBox.Show("smazano");
-                }
-                if (dbManager.Database.EnsureCreated())
-                {
-                    MessageBox.Show("Vytvořeno");
-                }
-                */
+               
 
+            }
+        }
+
+        //For developmen only, will be delted later
+        private void ResetDbButton_Click(object sender, RoutedEventArgs e)
+        {
+            DatabaseContextManager dbManager = new DatabaseContextManager();
+           
+            if (dbManager.Database.EnsureDeleted())
+            {
+                MessageBox.Show("smazano");
+            }
+            if (dbManager.Database.EnsureCreated())
+            {
+                MessageBox.Show("Vytvořeno");
             }
         }
     }

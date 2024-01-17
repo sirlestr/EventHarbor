@@ -12,21 +12,23 @@ namespace EventHarbor.Class
         [Description("Zámeká akce")] CastleEvent,
         [Description("Vernisáž")] OpeningCeremony,
         [Description("Trh")] Fair,
-        [Description("Porhlídka hradu")] CastleTour
+        [Description("Porhlídka Zámku")] CastleTour
     }
 
     public enum ExhibitionType
     {
-        [Description("Nezadáno")] Default,
+        [Description("Všeobecné")] Default,
         [Description("Hystorická")] Hystorical,
         [Description("Technická")] Technical,
-        [Description("Haptická")] Haptic,
-        [Description("Kreativní")] Creative
+        [Description("Interaktivní")] Interactive,       
+        [Description("Umělecká")] Artistic,
+        [Description("Přírodovědná")] Nature
+
     }
     public enum Organiser 
     { 
         [Description("Muzeum")] Museum,
-        [Description("Škola")] School,
+        [Description("Ostatní")] Other,
         [Description("Město")] City }
     class CultureAction
     {
@@ -40,7 +42,7 @@ namespace EventHarbor.Class
         public int NumberOfSeniors { get; set; } = 0;
         public CultureActionType CultureActionType { get; set; } = CultureActionType.Default;
         public ExhibitionType ExhibitionType { get; set; } = ExhibitionType.Default;
-        public float FinalPrice { get; set; }
+        public float TicketPrice { get; set; }
         public Organiser Organiser { get; set; } = Organiser.Museum;
         public string CultureActionNotes { get; set; }
         public int OwnerId { get; set; }
@@ -73,16 +75,16 @@ namespace EventHarbor.Class
         /// <param name="numberOfSenior">Number of seniors participant </param>
         /// <param name="cultureActionType">Type of Action</param>
         /// <param name="exhibitionType">Type of exhibition</param>
-        /// <param name="finalPrice">Finla budget</param>
+        /// <param name="ticketPrice">ticker price</param>
         /// <param name="oraganiser">Who organise this event</param>
         /// <param name="notes">notes</param>
         /// <param name="owner">Id logged user who create this record</param>
         public CultureAction(string actionName, DateOnly startDate, DateOnly endDate,
                              int numberOfChildern, int numberOfAdult, int numberOfSenior,
                              CultureActionType cultureActionType, ExhibitionType exhibitionType,
-                             float finalPrice, Organiser oraganiser, string notes, int owner)
+                             float ticketPrice, Organiser oraganiser, string notes,bool isFree, int owner)
         {
-            //CultureActionId = LastId + 1;
+            
             CultureActionType = cultureActionType;
             CultureActionName = actionName;
             ActionStartDate = startDate;
@@ -91,9 +93,10 @@ namespace EventHarbor.Class
             NumberOfAdults = numberOfAdult;
             NumberOfSeniors = numberOfSenior;
             ExhibitionType = exhibitionType;
-            FinalPrice = finalPrice;
+            TicketPrice = ticketPrice;
             Organiser = oraganiser;
             CultureActionNotes = notes;
+            IsFree = isFree;
             OwnerId = owner;
 
 

@@ -137,8 +137,8 @@
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal" Grid.Row="1">
                         <WrapPanel HorizontalAlignment="Left" VerticalAlignment="Center">
-                            <TextBlock x:Name="textBlock3_Copy" Text="Náklady: " Style="{StaticResource FormBlockStyle}" VerticalAlignment="Center" HorizontalAlignment="Center"  />
-                            <TextBox x:Name="FinalPriceTextBox" Style="{StaticResource FormBoxStyle}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="textBlock3_Copy" Text="Cena Lístku" Style="{StaticResource FormBlockStyle}" VerticalAlignment="Center" HorizontalAlignment="Center"  />
+                            <TextBox x:Name="TicketPriceTextBox" Style="{StaticResource FormBoxStyle}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         </WrapPanel>
                         <CheckBox x:Name="IsFreeCheckBox" Content="Akce je zdarma" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0,0,0"/>
                     </StackPanel>
@@ -167,6 +167,10 @@
                     <TextBlock x:Name="textBlock1" TextWrapping="Wrap" Text="Přihlášen uživatel : " Foreground="Black" VerticalAlignment="Center"/>
                     <TextBlock x:Name="LoggedUserNameTextBlock" TextWrapping="Wrap" Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Center"><Run Language="cs-cz" Text="Jana"/></TextBlock>
                 </WrapPanel>
+                <TextBlock x:Name="textBlock1_Copy" TextWrapping="Wrap" Text="poslendí id: " Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="11,0,0,0"/>
+                <TextBlock x:Name="LastIdTextBlock" TextWrapping="Wrap" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"><Run Language="cs-cz" Text="Jana"/></TextBlock>
+                <TextBlock x:Name="textBlock1_Copy1" TextWrapping="Wrap" Text="Id Přihlášeného" Foreground="Black" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                <TextBlock x:Name="OwnerIDTextBlock" TextWrapping="Wrap" Foreground="Black" VerticalAlignment="Center" Margin="10,0,0,0"><Run Language="cs-cz" Text="Jana"/></TextBlock>
             </StackPanel>
         </Grid>
     </Border>

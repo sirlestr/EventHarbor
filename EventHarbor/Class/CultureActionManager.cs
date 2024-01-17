@@ -40,27 +40,45 @@ namespace EventHarbor.Class
                     CultureActions.Add(cultureAction);     
                 }
 
-                //this don't work, need to fix... get last id from collection based on user id, not last id from db
-                LastId = CultureActions.Last().CultureActionId;
-                LastId++;
-
                 return true;
             }
 
         }
 
-       
-
-        //testíing function for inster to db, in future probably will be removed
-        public bool AddCultureActionToDb(int ownerId)
+       public int GetLasIdFromDb()
         {
+            using(DatabaseContextManager context = new DatabaseContextManager())
+            {
+                if (context.CultureActionsDatabase.Count() > 0)
+                {
+                    LastId = context.CultureActionsDatabase.Max(x => x.CultureActionId);
+                    return LastId + 1;
+                }
+                return LastId = 0;
+            }
+        }
+
+        //testíing function for inster to collection, in future probably will be removed
+        public bool AddCultureAction(string actionName, DateOnly startDate, DateOnly endDate,
+                             int numberOfChildern, int numberOfAdult, int numberOfSenior,
+                             CultureActionType cultureActionType, ExhibitionType exhibitionType,
+                             float ticketPrice, Organiser oraganiser, string notes, bool isFree, int owner)
+        {
+            /*
             using (DatabaseContextManager context = new DatabaseContextManager())
             {
                 CultureAction cultureActionTest = new CultureAction("neco", new DateOnly(1991, 1, 4), new DateOnly(1991, 3, 4), 15, 5, 5, CultureActionType.Default, ExhibitionType.Default, 15200, Organiser.Museum, "Aby tady taky něco bylo", ownerId);
                 context.CultureActionsDatabase.Add(cultureActionTest);
                 context.SaveChanges();
                 return true;
-            }
+            }*/
+
+            CultureAction cultureAction = new CultureAction(actionName,startDate,endDate,
+                                                            numberOfChildern,numberOfAdult,numberOfSenior,
+                                                            cultureActionType,exhibitionType, ticketPrice,
+                                                            oraganiser,notes,isFree,owner);
+            return true;
+
         }
     }
 }
