@@ -54,6 +54,9 @@ namespace EventHarbor.Screen
             win.DragMove();
         }
 
-       
+        private void ExitBtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }
