@@ -26,20 +26,21 @@ namespace EventHarbor.Screen
     {
         UserManager userManager;
         private CultureActionManager cultureActionManager = new CultureActionManager();
-       // CultureActionManager cultureActionManager = MainWindow.cultureActionManager;
+        // CultureActionManager cultureActionManager = MainWindow.cultureActionManager;
+        internal ObservableCollection<CultureAction> LocalAction;
         int UserId;
         int LastId;
 
 
-        public CultureActionDetail(UserManager manager)
+        internal CultureActionDetail(UserManager manager, ObservableCollection<CultureAction> localAction)
         {
             //Initialize
             InitializeComponent();
             // for user ID and name of logged user
             userManager = manager;
-            //cultureActionManager = actionManager;
-            LastId = cultureActionManager.GetLasIdFromDb();
+         
             LastIdTextBlock.Text = LastId.ToString();
+            LocalAction = localAction;
 
             //assing user data to variables for display in view
              UserId = userManager.LoggedUserId;
@@ -82,11 +83,9 @@ namespace EventHarbor.Screen
             bool isFree = IsFreeCheckBox.IsChecked.HasValue ? IsFreeCheckBox.IsChecked.Value : false;
 
 
-            cultureActionManager.AddCultureAction(actionName,start,end,childern,adult,senior,actionType,exhibitionType,ticketPrice,organiser,notes,isFree,UserId);
-            
+            CultureAction action = new CultureAction(actionName, start, end, childern, adult, senior, actionType, exhibitionType, ticketPrice, organiser, notes, isFree, UserId);
 
-
-
+            cultureActionManager.AddAction(action, LocalAction);
             this.Close();
 
 
@@ -97,5 +96,7 @@ namespace EventHarbor.Screen
             TextRange textRange = new TextRange(richText.Document.ContentStart, richText.Document.ContentEnd);
             return textRange.Text;
         }
+
+       
     }
 }

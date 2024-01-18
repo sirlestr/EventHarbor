@@ -7,14 +7,19 @@ using System.Threading.Tasks;
 
 namespace EventHarbor.Class
 {
-    class CultureActionManager
+    internal class CultureActionManager
     {
 
-        public ObservableCollection<CultureAction> CultureActions = new ObservableCollection<CultureAction>();
+        
+       // internal ObservableCollection<CultureAction> CultureActions = new ObservableCollection<CultureAction>();
         private ObservableCollection<CultureAction> cultureActionsDbCollection;
-        public int LastId { get; private set; }
+       
+        
 
-    public CultureActionManager() {}
+        public CultureActionManager() 
+        {
+           
+        }
 
 
         /// <summary>
@@ -24,35 +29,29 @@ namespace EventHarbor.Class
         /// <param name="ownerId">Id Logged user for Db select </param>
         /// <returns></returns>
         
-        public bool GetAllCultureActionsFromDb(CultureActionManager localCultureAction, int ownerId)
+        public bool GetCultureActionsFromDb(ObservableCollection<CultureAction> localCollection, int ownerId)
         {
             using (DatabaseContextManager context = new DatabaseContextManager())
             {
                 cultureActionsDbCollection = new ObservableCollection<CultureAction>(context.CultureActionsDatabase.Where(x => x.OwnerId == ownerId).ToList());
-                IEnumerable <CultureAction> union = cultureActionsDbCollection.Union(localCultureAction.CultureActions);
 
-                foreach (CultureAction cultureAction in union)
+                foreach (CultureAction item in cultureActionsDbCollection)
                 {
-                    CultureActions.Add(cultureAction);
+                    if (!localCollection.Contains(item))
+                    {
+                        localCollection.Add(item);
+                    }
+                        
                 }
-
+  
                 return true;
             }
 
         }
 
-       public int GetLasIdFromDb()
-        {
-            using(DatabaseContextManager context = new DatabaseContextManager())
-            {
-                if (context.CultureActionsDatabase.Count() > 0)
-                {
-                    LastId = context.CultureActionsDatabase.Max(x => x.CultureActionId);
-                    return LastId + 1;
-                }
-                return LastId = 0;
-            }
-        }
+      // public bool InsertDataToDb(ObservableCollection<CultureAction> item) { }
+
+       
 
         //testing function for inster to collection, in future probably will be removed
         public bool AddCultureAction(string actionName, DateOnly? startDate, DateOnly? endDate,
@@ -60,7 +59,7 @@ namespace EventHarbor.Class
                              CultureActionType cultureActionType, ExhibitionType exhibitionType,
                              float ticketPrice, Organiser oraganiser, string notes, bool isFree, int owner)
         {
-            
+            /*
             using (DatabaseContextManager context = new DatabaseContextManager())
             {
                 CultureAction cultureActionTest = new CultureAction(actionName, startDate, endDate,
@@ -71,14 +70,21 @@ namespace EventHarbor.Class
                 context.SaveChanges();
                 return true;
             }
+            */
             
             CultureAction cultureAction = new CultureAction(actionName,startDate,endDate,
                                                             numberOfChildern,numberOfAdult,numberOfSenior,
                                                             cultureActionType,exhibitionType, ticketPrice,
                                                             oraganiser,notes,isFree,owner);
-            CultureActions.Add(cultureAction);
+
+            
             return true;
 
+        }
+
+        public void AddAction(CultureAction cultureAction, ObservableCollection<CultureAction> localAction)
+        {
+            localAction.Add(cultureAction);
         }
     }
 }

@@ -74,9 +74,9 @@ namespace EventHarbor
                         case 1:
                             MessageBox.Show("Přihlášeno");
                             MainWindow mainWindow = new MainWindow(userManager);
-                            this.Visibility = Visibility.Collapsed;
-                            mainWindow.ShowDialog();
-                            this.Visibility = Visibility.Visible;
+                            mainWindow.Show();
+                            this.Close();
+                            
                             break;
 
                     }

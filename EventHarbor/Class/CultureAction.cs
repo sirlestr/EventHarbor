@@ -30,7 +30,7 @@ namespace EventHarbor.Class
         [Description("Muzeum")] Museum,
         [Description("Ostatní")] Other,
         [Description("Město")] City }
-    class CultureAction
+    internal class CultureAction
     {
         [Key]
         public int CultureActionId { get; set; }
@@ -49,19 +49,12 @@ namespace EventHarbor.Class
         public bool IsFree { get; set; }
 
         [NotMapped]
-        private int LastId
-        {
-            get
-            {
-                int lastId = 0;
-                return lastId;
-            }
-            set { GetLastIdFromDb(); }
-
-        }
+        private int LastId { get; set; }
+    
+        
 
         //empty constructor for DataContext
-        public CultureAction() { }
+        internal CultureAction() { }
 
 
         /// <summary>
@@ -79,12 +72,13 @@ namespace EventHarbor.Class
         /// <param name="oraganiser">Who organise this event</param>
         /// <param name="notes">notes</param>
         /// <param name="owner">Id logged user who create this record</param>
-        public CultureAction(string actionName, DateOnly? startDate, DateOnly? endDate,
+        internal CultureAction( string actionName, DateOnly? startDate, DateOnly? endDate,
                              int numberOfChildern, int numberOfAdult, int numberOfSenior,
                              CultureActionType cultureActionType, ExhibitionType exhibitionType,
                              float ticketPrice, Organiser oraganiser, string notes,bool isFree, int owner)
         {
-            
+            LastId = GetLastIdFromDb();
+            CultureActionId = LastId;
             CultureActionType = cultureActionType;
             CultureActionName = actionName;
             ActionStartDate = startDate;
@@ -104,22 +98,35 @@ namespace EventHarbor.Class
 
 
 
-
-
-
-
         //WIP - Get last id from database , probably will be removed
-        private void GetLastIdFromDb()
+        public int GetLastIdFromDb()
         {
-            using (var context = new DatabaseContextManager())
+            using (DatabaseContextManager context = new DatabaseContextManager())
             {
-                var lastRecord = context.CultureActionsDatabase.OrderByDescending(x => x.CultureActionId).LastOrDefault();
-                if (lastRecord != null)
+                if (context.CultureActionsDatabase.Count() > 0)
                 {
-                    LastId = lastRecord.CultureActionId;
+                    LastId = context.CultureActionsDatabase.Max(x => x.CultureActionId);
+                    return LastId + 1;
                 }
-                else { LastId = 0; }
+                return LastId = 0;
             }
+        }
+
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            CultureAction other = (CultureAction)obj;
+            return this.CultureActionId == other.CultureActionId;
+        }
+
+        public override int GetHashCode()
+        {
+            return CultureActionId.GetHashCode();
         }
 
 

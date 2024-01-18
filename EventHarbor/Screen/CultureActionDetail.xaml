@@ -62,31 +62,31 @@
                     <StackPanel Orientation="Horizontal" Grid.Row="1">
                         <WrapPanel Orientation="Horizontal" VerticalAlignment="Center" Width="328">
                             <TextBlock x:Name="textBlock3" Text="Název akce: " Style="{StaticResource FormBlockStyle}"  />
-                            <TextBox x:Name="CultureActionNameTextBox" Style="{StaticResource FormBoxStyle}" Width="226"/>
+                            <TextBox x:Name="CultureActionNameTextBox" Style="{StaticResource FormBoxStyle}" Width="226" Text="Nějaký název"/>
                         </WrapPanel>
                     </StackPanel>
                     <StackPanel Grid.Row="2">
                         <WrapPanel>
                             <TextBlock x:Name="textBlock5" Style="{StaticResource FormBlockStyle}" Text="Od : "/>
-                            <DatePicker x:Name="StartDatePicker" Height="25" FirstDayOfWeek="Monday"/>
+                            <DatePicker x:Name="StartDatePicker" Height="25" FirstDayOfWeek="Monday" Text="1.1.1991"/>
                         </WrapPanel>
                         <WrapPanel Margin="0,1,0,0">
                             <TextBlock x:Name="textBlock5_Copy" Style="{StaticResource FormBlockStyle}" Text="Do : " Margin="5,0,0,0"/>
-                            <DatePicker x:Name="EndDatePicker" Height="25" FirstDayOfWeek="Monday" Margin="1,0,0,0"/>
+                            <DatePicker x:Name="EndDatePicker" Height="25" FirstDayOfWeek="Monday" Margin="1,0,0,0" Text="2.1.1991"/>
                         </WrapPanel>
                     </StackPanel>
                     <StackPanel Grid.Row="3">
                         <WrapPanel Margin="0,0,0,3">
                             <TextBlock x:Name="textBlock6" Style="{StaticResource FormBlockStyle}" Text="Počet dětí: " Width="125"/>
-                            <TextBox x:Name="NumberOfChildrenTextBox" Style="{StaticResource FormBoxStyle}" Width="50" Margin="1,0,0,0"/>
+                            <TextBox x:Name="NumberOfChildrenTextBox" Style="{StaticResource FormBoxStyle}" Width="50" Margin="1,0,0,0" Text="55"/>
                         </WrapPanel>
                         <WrapPanel Margin="0,0,0,3">
                             <TextBlock x:Name="textBlock6_Copy" Style="{StaticResource FormBlockStyle}" Text="Počet dospělých: " Width="125"/>
-                            <TextBox x:Name="NumberOfAdultsTextBox" Style="{StaticResource FormBoxStyle}" Width="50" Margin="1,0,0,0"/>
+                            <TextBox x:Name="NumberOfAdultsTextBox" Style="{StaticResource FormBoxStyle}" Width="50" Margin="1,0,0,0" Text="55"/>
                         </WrapPanel>
                         <WrapPanel Margin="0,0,0,3">
                             <TextBlock x:Name="textBlock6_Copy1" Style="{StaticResource FormBlockStyle}" Text="Počet seniorů: " Width="125"/>
-                            <TextBox x:Name="NumberOfSeniorsTextBox" Style="{StaticResource FormBoxStyle}" Width="50" Margin="1,0,0,0"/>
+                            <TextBox x:Name="NumberOfSeniorsTextBox" Style="{StaticResource FormBoxStyle}" Width="50" Margin="1,0,0,0" Text="55"/>
                         </WrapPanel>
                     </StackPanel>
                     <StackPanel Grid.Row="3" Grid.Column="1">
@@ -138,7 +138,7 @@
                     <StackPanel Grid.Column="1" Orientation="Horizontal" Grid.Row="1">
                         <WrapPanel HorizontalAlignment="Left" VerticalAlignment="Center">
                             <TextBlock x:Name="textBlock3_Copy" Text="Cena Lístku" Style="{StaticResource FormBlockStyle}" VerticalAlignment="Center" HorizontalAlignment="Center"  />
-                            <TextBox x:Name="TicketPriceTextBox" Style="{StaticResource FormBoxStyle}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBox x:Name="TicketPriceTextBox" Style="{StaticResource FormBoxStyle}" VerticalAlignment="Center" HorizontalAlignment="Center" Text="150"/>
                         </WrapPanel>
                         <CheckBox x:Name="IsFreeCheckBox" Content="Akce je zdarma" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0,0,0"/>
                     </StackPanel>

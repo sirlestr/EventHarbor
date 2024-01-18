@@ -14,6 +14,15 @@ namespace EventHarbor
     {
         UserManager userManager;
         CultureActionManager cultureActionManager = new CultureActionManager();
+        private ObservableCollection<CultureAction> localCollection = new ObservableCollection<CultureAction>();
+        internal ObservableCollection<CultureAction> LocalCollection
+        {
+            get { return localCollection; }
+            set { localCollection = value; }
+        }
+
+        
+
         
         private int UserId;
         private string UserName;
@@ -22,30 +31,27 @@ namespace EventHarbor
         public MainWindow(UserManager manager)
 
         {
-            InitializeComponent();
+            
             // for user ID and name of logged user
             userManager = manager;
 
             //assing user data to variables for display in view
             UserId = userManager.LoggedUserId;
             UserName = userManager.LoggedUserName;
+
+            InitializeComponent();
+
+            CultureActionDataGrid.ItemsSource = LocalCollection;
             LoggedUserNameTextBlock.Text = userManager.LoggedUserName;
-            CultureActionDataGrid.ItemsSource = cultureActionManager.CultureActions;
-            //load all culture actions from db to DataGrid
-
-            if (cultureActionManager.GetAllCultureActionsFromDb(cultureActionManager, UserId))
-            {
-                MessageBox.Show("Načteno");
-                CultureActionDataGrid.Items.Refresh();
-            }
-
 
         }
 
         private void CloseBtn_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
-            
+            //this.Close();
+            Application.Current.Shutdown();
+
+
         }
 
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -60,9 +66,21 @@ namespace EventHarbor
             // cultureActionManager.AddCultureActionToDb(UserId);
             //cultureActionManager.GetAllCultureActionsFromDb(cultureActionManager, UserId);
             
-            CultureActionDetail AddActionWindow = new CultureActionDetail(userManager);
+            CultureActionDetail AddActionWindow = new CultureActionDetail(userManager, LocalCollection);
             AddActionWindow.ShowDialog();
             
+
+        }
+
+
+        //opravit nčítání a přiřazení do DB
+        private void button2_Click(object sender, RoutedEventArgs e)
+        {
+            if (cultureActionManager.GetCultureActionsFromDb(LocalCollection, UserId))
+            {
+                MessageBox.Show("Načteno");
+                CultureActionDataGrid.Items.Refresh();
+            }
 
         }
     }
