@@ -25,8 +25,7 @@ namespace EventHarbor.Screen
     public partial class CultureActionDetail : Window
     {
         UserManager userManager;
-        private CultureActionManager cultureActionManager = new CultureActionManager();
-        // CultureActionManager cultureActionManager = MainWindow.cultureActionManager;
+        private CultureActionManager cultureActionManager;// = new CultureActionManager();
         internal ObservableCollection<CultureAction> LocalAction;
         int UserId;
         int LastId;
@@ -46,8 +45,10 @@ namespace EventHarbor.Screen
              UserId = userManager.LoggedUserId;
             OwnerIDTextBlock.Text = UserId.ToString();
             LoggedUserNameTextBlock.Text =   userManager.LoggedUserName;
-            
-            
+            cultureActionManager = new CultureActionManager(LocalAction);
+
+
+
         }
 
         private void CloseBtn_Click(object sender, RoutedEventArgs e)

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace EventHarbor.Class
 {
@@ -13,13 +15,19 @@ namespace EventHarbor.Class
         
        // internal ObservableCollection<CultureAction> CultureActions = new ObservableCollection<CultureAction>();
         private ObservableCollection<CultureAction> cultureActionsDbCollection;
-       
-        
+        internal ObservableCollection<CultureAction> LocalCollection;
 
-        public CultureActionManager() 
+        public CultureActionManager(ObservableCollection<CultureAction> localCollection)
         {
-           
+            LocalCollection = localCollection;
+            LocalCollection.CollectionChanged += LocalCollectionCollectionChanged;
         }
+        public CultureActionManager()
+        {
+            
+        }
+
+
 
 
         /// <summary>
@@ -28,7 +36,7 @@ namespace EventHarbor.Class
         /// <param name="localCultureAction">local instance of CultureAction Manager</param>
         /// <param name="ownerId">Id Logged user for Db select </param>
         /// <returns></returns>
-        
+
         public bool GetCultureActionsFromDb(ObservableCollection<CultureAction> localCollection, int ownerId)
         {
             using (DatabaseContextManager context = new DatabaseContextManager())
@@ -85,6 +93,14 @@ namespace EventHarbor.Class
         public void AddAction(CultureAction cultureAction, ObservableCollection<CultureAction> localAction)
         {
             localAction.Add(cultureAction);
+        }
+
+        private void LocalCollectionCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if(e.Action == NotifyCollectionChangedAction.Add)
+            {
+                MessageBox.Show("Add");
+            }
         }
     }
 }

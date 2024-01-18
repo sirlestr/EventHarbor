@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Collections.Specialized;
 
 namespace EventHarbor
 {
@@ -13,7 +14,7 @@ namespace EventHarbor
     public partial class MainWindow : Window
     {
         UserManager userManager;
-        CultureActionManager cultureActionManager = new CultureActionManager();
+        
         private ObservableCollection<CultureAction> localCollection = new ObservableCollection<CultureAction>();
         internal ObservableCollection<CultureAction> LocalCollection
         {
@@ -21,9 +22,9 @@ namespace EventHarbor
             set { localCollection = value; }
         }
 
-        
+        internal CultureActionManager cultureActionManager = new CultureActionManager();
 
-        
+
         private int UserId;
         private string UserName;
         
@@ -43,8 +44,15 @@ namespace EventHarbor
 
             CultureActionDataGrid.ItemsSource = LocalCollection;
             LoggedUserNameTextBlock.Text = userManager.LoggedUserName;
+           
+
+            
+
+            
 
         }
+
+       
 
         private void CloseBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -63,12 +71,12 @@ namespace EventHarbor
 
         private void AddBtn_Click(object sender, RoutedEventArgs e)
         {
-            // cultureActionManager.AddCultureActionToDb(UserId);
-            //cultureActionManager.GetAllCultureActionsFromDb(cultureActionManager, UserId);
+            
             
             CultureActionDetail AddActionWindow = new CultureActionDetail(userManager, LocalCollection);
             AddActionWindow.ShowDialog();
             
+
 
         }
 
@@ -83,5 +91,8 @@ namespace EventHarbor
             }
 
         }
+
+        
     }
+
 }
