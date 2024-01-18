@@ -35,8 +35,8 @@ namespace EventHarbor.Class
         [Key]
         public int CultureActionId { get; set; }
         public string CultureActionName { get; set; }
-        public DateOnly ActionStartDate { get; set; }
-        public DateOnly ActionEndDate { get; set; }
+        public DateOnly? ActionStartDate { get; set; }
+        public DateOnly? ActionEndDate { get; set; }
         public int NumberOfChildren { get; set; } = 0;
         public int NumberOfAdults { get; set; } = 0;
         public int NumberOfSeniors { get; set; } = 0;
@@ -79,7 +79,7 @@ namespace EventHarbor.Class
         /// <param name="oraganiser">Who organise this event</param>
         /// <param name="notes">notes</param>
         /// <param name="owner">Id logged user who create this record</param>
-        public CultureAction(string actionName, DateOnly startDate, DateOnly endDate,
+        public CultureAction(string actionName, DateOnly? startDate, DateOnly? endDate,
                              int numberOfChildern, int numberOfAdult, int numberOfSenior,
                              CultureActionType cultureActionType, ExhibitionType exhibitionType,
                              float ticketPrice, Organiser oraganiser, string notes,bool isFree, int owner)

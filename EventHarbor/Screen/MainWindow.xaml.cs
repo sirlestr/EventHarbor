@@ -1,5 +1,6 @@
 ﻿using EventHarbor.Class;
 using EventHarbor.Screen;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -12,9 +13,11 @@ namespace EventHarbor
     public partial class MainWindow : Window
     {
         UserManager userManager;
-        private CultureActionManager cultureActionManager = new CultureActionManager();
+        CultureActionManager cultureActionManager = new CultureActionManager();
+        
         private int UserId;
         private string UserName;
+        
 
         public MainWindow(UserManager manager)
 
@@ -23,15 +26,13 @@ namespace EventHarbor
             // for user ID and name of logged user
             userManager = manager;
 
-
-
-
             //assing user data to variables for display in view
             UserId = userManager.LoggedUserId;
             UserName = userManager.LoggedUserName;
             LoggedUserNameTextBlock.Text = userManager.LoggedUserName;
             CultureActionDataGrid.ItemsSource = cultureActionManager.CultureActions;
             //load all culture actions from db to DataGrid
+
             if (cultureActionManager.GetAllCultureActionsFromDb(cultureActionManager, UserId))
             {
                 MessageBox.Show("Načteno");
@@ -39,18 +40,12 @@ namespace EventHarbor
             }
 
 
-            
-           
-
-            //binding collection to datagrid
-
-
-
         }
 
         private void CloseBtn_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+            
         }
 
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -64,9 +59,10 @@ namespace EventHarbor
         {
             // cultureActionManager.AddCultureActionToDb(UserId);
             //cultureActionManager.GetAllCultureActionsFromDb(cultureActionManager, UserId);
-
+            
             CultureActionDetail AddActionWindow = new CultureActionDetail(userManager);
             AddActionWindow.ShowDialog();
+            
 
         }
     }
