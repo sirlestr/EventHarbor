@@ -45,7 +45,7 @@ namespace EventHarbor.Screen
              UserId = userManager.LoggedUserId;
             OwnerIDTextBlock.Text = UserId.ToString();
             LoggedUserNameTextBlock.Text =   userManager.LoggedUserName;
-            cultureActionManager = new CultureActionManager(LocalAction);
+            cultureActionManager = new CultureActionManager(LocalAction, manager.LoggedUserId);
 
 
 
@@ -70,6 +70,7 @@ namespace EventHarbor.Screen
 
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
+           
             string actionName = CultureActionNameTextBox.Text;
             DateOnly? start = StartDatePicker.SelectedDate.HasValue ? DateOnly.FromDateTime(StartDatePicker.SelectedDate.Value) : null;
             DateOnly? end = EndDatePicker.SelectedDate.HasValue ? DateOnly.FromDateTime(EndDatePicker.SelectedDate.Value): null;
@@ -86,7 +87,8 @@ namespace EventHarbor.Screen
 
             CultureAction action = new CultureAction(actionName, start, end, childern, adult, senior, actionType, exhibitionType, ticketPrice, organiser, notes, isFree, UserId);
 
-            cultureActionManager.AddAction(action, LocalAction);
+           // cultureActionManager.AddAction(action, LocalAction);
+            cultureActionManager.AddCultureAction(actionName, start, end, childern, adult, senior, actionType, exhibitionType, ticketPrice, organiser, notes, isFree, UserId);
             this.Close();
 
 
@@ -96,6 +98,24 @@ namespace EventHarbor.Screen
         {
             TextRange textRange = new TextRange(richText.Document.ContentStart, richText.Document.ContentEnd);
             return textRange.Text;
+        }
+
+        internal void FillFormData(CultureAction action)
+        {
+            CultureActionNameTextBox.Text = action.CultureActionName;
+            StartDatePicker.SelectedDate =action.ActionStartDate.Value.ToDateTime(TimeOnly.MinValue);
+            EndDatePicker.SelectedDate = action.ActionEndDate.Value.ToDateTime(TimeOnly.MinValue);
+            NumberOfChildrenTextBox.Text = action.NumberOfChildren.ToString();
+            NumberOfAdultsTextBox.Text = action.NumberOfAdults.ToString();
+            NumberOfSeniorsTextBox.Text = action.NumberOfSeniors.ToString();
+            CultureActionTypeComboBox.SelectedIndex = (int)action.CultureActionType;
+            CultureExhibitionType.SelectedIndex = (int)action.ExhibitionType;
+            OrganiseComboBox.SelectedIndex = (int)action.Organiser;
+            TicketPriceTextBox.Text = action.TicketPrice.ToString();
+            NotesRichTextBox.Document.Blocks.Clear();
+            NotesRichTextBox.Document.Blocks.Add(new Paragraph(new Run(action.CultureActionNotes)));
+            IsFreeCheckBox.IsChecked = action.IsFree;
+
         }
 
        

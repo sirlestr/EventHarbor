@@ -18,7 +18,7 @@ namespace EventHarbor.Class
     public enum ExhibitionType
     {
         [Description("Všeobecné")] Default,
-        [Description("Hystorická")] Hystorical,
+        [Description("Historická")] Historical,
         [Description("Technická")] Technical,
         [Description("Interaktivní")] Interactive,       
         [Description("Umělecká")] Artistic,
@@ -33,6 +33,7 @@ namespace EventHarbor.Class
     internal class CultureAction
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)] // Tímto zakážeme automatickou generaci hodnoty pro ID
         public int CultureActionId { get; set; }
         public string CultureActionName { get; set; }
         public DateOnly? ActionStartDate { get; set; }

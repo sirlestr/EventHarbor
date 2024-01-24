@@ -14,7 +14,7 @@ namespace EventHarbor.Class
     /// Helper class for convert enum description tag to string to show readable format in wpf form
     /// </summary>
 
-    //this class was borrowed from this article : https://www.c-sharpcorner.com/article/show-user-friendly-enum-value-into-the-combobox/
+    //this class was based on this article : https://www.c-sharpcorner.com/article/show-user-friendly-enum-value-into-the-combobox/
     public class EnumDescriptionConverter : IValueConverter
     {
         private string GetEnumDescription(Enum enumObj)

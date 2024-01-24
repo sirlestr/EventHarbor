@@ -44,11 +44,15 @@ namespace EventHarbor
 
             CultureActionDataGrid.ItemsSource = LocalCollection;
             LoggedUserNameTextBlock.Text = userManager.LoggedUserName;
-           
 
-            
+            cultureActionManager.GetCultureActionsFromDb(LocalCollection, UserId);
+            CultureActionDataGrid.Items.Refresh();
 
-            
+
+
+
+
+
 
         }
 
@@ -92,7 +96,20 @@ namespace EventHarbor
 
         }
 
-        
+        private void ChangeBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (CultureActionDataGrid.SelectedItem != null)
+            {
+               CultureActionDetail EditWindow = new CultureActionDetail(userManager, LocalCollection);
+                CultureAction action = (CultureAction)CultureActionDataGrid.SelectedItem;
+                if (action != null)
+                {
+                    
+                    EditWindow.FillFormData(action);
+                }
+                EditWindow.ShowDialog();
+            }
+        }
     }
 
 }

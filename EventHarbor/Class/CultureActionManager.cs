@@ -6,6 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace EventHarbor.Class
 {
@@ -13,14 +16,16 @@ namespace EventHarbor.Class
     {
 
         
-       // internal ObservableCollection<CultureAction> CultureActions = new ObservableCollection<CultureAction>();
+       
         private ObservableCollection<CultureAction> cultureActionsDbCollection;
         internal ObservableCollection<CultureAction> LocalCollection;
+        private int OwnerId { get; set; }
 
-        public CultureActionManager(ObservableCollection<CultureAction> localCollection)
+        public CultureActionManager(ObservableCollection<CultureAction> localCollection, int owner)
         {
             LocalCollection = localCollection;
             LocalCollection.CollectionChanged += LocalCollectionCollectionChanged;
+            OwnerId = owner;
         }
         public CultureActionManager()
         {
@@ -39,6 +44,7 @@ namespace EventHarbor.Class
 
         public bool GetCultureActionsFromDb(ObservableCollection<CultureAction> localCollection, int ownerId)
         {
+           
             using (DatabaseContextManager context = new DatabaseContextManager())
             {
                 cultureActionsDbCollection = new ObservableCollection<CultureAction>(context.CultureActionsDatabase.Where(x => x.OwnerId == ownerId).ToList());
@@ -67,25 +73,18 @@ namespace EventHarbor.Class
                              CultureActionType cultureActionType, ExhibitionType exhibitionType,
                              float ticketPrice, Organiser oraganiser, string notes, bool isFree, int owner)
         {
-            /*
-            using (DatabaseContextManager context = new DatabaseContextManager())
-            {
-                CultureAction cultureActionTest = new CultureAction(actionName, startDate, endDate,
-                                                            numberOfChildern, numberOfAdult, numberOfSenior,
-                                                            cultureActionType, exhibitionType, ticketPrice,
-                                                            oraganiser, notes, isFree, owner);
-                context.CultureActionsDatabase.Add(cultureActionTest);
-                context.SaveChanges();
-                return true;
-            }
-            */
+           
             
             CultureAction cultureAction = new CultureAction(actionName,startDate,endDate,
                                                             numberOfChildern,numberOfAdult,numberOfSenior,
                                                             cultureActionType,exhibitionType, ticketPrice,
                                                             oraganiser,notes,isFree,owner);
 
-            
+           LocalCollection.Add(cultureAction);
+
+
+
+
             return true;
 
         }
@@ -95,11 +94,46 @@ namespace EventHarbor.Class
             localAction.Add(cultureAction);
         }
 
+        private bool MergeDataToDb()
+        {
+
+            using(DatabaseContextManager context = new())
+            {
+                
+                cultureActionsDbCollection = new ObservableCollection<CultureAction>(context.CultureActionsDatabase.Where(x => x.OwnerId == OwnerId).ToList());
+                if (cultureActionsDbCollection.Count < LocalCollection.Count)
+                {
+                    foreach (CultureAction item in LocalCollection)
+                    {
+                        if (!cultureActionsDbCollection.Contains(item))
+                        {
+                            
+                            context.CultureActionsDatabase.Add(item);
+                            //cultureActionsDbCollection.Add(item);
+                            
+                        }
+
+                    }
+                    
+                    //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT  CultureActionsDatabase ON");
+                    context.SaveChanges();
+                    
+                    return true;
+                }
+
+
+            }
+                return false;
+        }
+
         private void LocalCollectionCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             if(e.Action == NotifyCollectionChangedAction.Add)
             {
-                MessageBox.Show("Add");
+                if (MergeDataToDb())
+                {
+                    MessageBox.Show("Added");
+                }
             }
         }
     }

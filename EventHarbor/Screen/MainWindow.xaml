@@ -35,7 +35,7 @@
                         <TextBlock x:Name="textBlock2" TextWrapping="NoWrap" Text="Zakladni akce" Foreground="Black" HorizontalAlignment="Center"/>
 
                         <Button x:Name="AddBtn" Content="Přidat událost" Style="{StaticResource MenuButton}" Click="AddBtn_Click"/>
-                        <Button x:Name="ChangeBtn" Content="Upravit událost" Style="{StaticResource MenuButton}"/>
+                        <Button x:Name="ChangeBtn" Content="Upravit událost" Style="{StaticResource MenuButton}" Click="ChangeBtn_Click"/>
                         <Button x:Name="RemoveBtn" Content="Smazat událost" Style="{StaticResource MenuButton}"/>
 
                     </StackPanel>
