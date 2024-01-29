@@ -1,5 +1,6 @@
 ﻿using EventHarbor.Class;
 using EventHarbor.Screen;
+using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -25,10 +26,11 @@ namespace EventHarbor.Screen
     public partial class CultureActionDetail : Window
     {
         UserManager userManager;
-        private CultureActionManager cultureActionManager;// = new CultureActionManager();
+        private CultureActionManager cultureActionManager;
         internal ObservableCollection<CultureAction> LocalAction;
         int UserId;
         int LastId;
+        CultureAction SelectedAction;
 
 
         internal CultureActionDetail(UserManager manager, ObservableCollection<CultureAction> localAction)
@@ -68,12 +70,11 @@ namespace EventHarbor.Screen
             this.Close();
         }
 
-        private void SaveBtn_Click(object sender, RoutedEventArgs e)
+        private CultureAction CreateActionObj()
         {
-           
             string actionName = CultureActionNameTextBox.Text;
             DateOnly? start = StartDatePicker.SelectedDate.HasValue ? DateOnly.FromDateTime(StartDatePicker.SelectedDate.Value) : null;
-            DateOnly? end = EndDatePicker.SelectedDate.HasValue ? DateOnly.FromDateTime(EndDatePicker.SelectedDate.Value): null;
+            DateOnly? end = EndDatePicker.SelectedDate.HasValue ? DateOnly.FromDateTime(EndDatePicker.SelectedDate.Value) : null;
             int childern = NumberOfChildrenTextBox.Text != null ? int.Parse(NumberOfChildrenTextBox.Text.Trim()) : 0;
             int adult = NumberOfAdultsTextBox.Text != null ? int.Parse(NumberOfAdultsTextBox.Text.Trim()) : 0;
             int senior = NumberOfSeniorsTextBox.Text != null ? int.Parse(NumberOfSeniorsTextBox.Text.Trim()) : 0;
@@ -86,11 +87,15 @@ namespace EventHarbor.Screen
 
 
             CultureAction action = new CultureAction(actionName, start, end, childern, adult, senior, actionType, exhibitionType, ticketPrice, organiser, notes, isFree, UserId);
+            return action;
+        }
+        
+        private void SaveBtn_Click(object sender, RoutedEventArgs e)
+        {
 
-           // cultureActionManager.AddAction(action, LocalAction);
-            cultureActionManager.AddCultureAction(actionName, start, end, childern, adult, senior, actionType, exhibitionType, ticketPrice, organiser, notes, isFree, UserId);
+            CultureAction action = CreateActionObj();
+            cultureActionManager.AddAction(action, LocalAction );
             this.Close();
-
 
         }
 
@@ -102,6 +107,7 @@ namespace EventHarbor.Screen
 
         internal void FillFormData(CultureAction action)
         {
+            SelectedAction = action;
             CultureActionNameTextBox.Text = action.CultureActionName;
             StartDatePicker.SelectedDate =action.ActionStartDate.Value.ToDateTime(TimeOnly.MinValue);
             EndDatePicker.SelectedDate = action.ActionEndDate.Value.ToDateTime(TimeOnly.MinValue);
@@ -118,6 +124,13 @@ namespace EventHarbor.Screen
 
         }
 
-       
+        private void ChangeBtn_Click(object sender, RoutedEventArgs e)
+        {
+            
+            CultureAction editedAction = CreateActionObj();
+            cultureActionManager.EditAction(SelectedAction,editedAction,LocalAction ) ;
+            this.Close();
+
+        }
     }
 }

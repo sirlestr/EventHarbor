@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 
 
 namespace EventHarbor.Class
@@ -15,8 +8,8 @@ namespace EventHarbor.Class
     internal class CultureActionManager
     {
 
-        
-       
+
+
         private ObservableCollection<CultureAction> cultureActionsDbCollection;
         internal ObservableCollection<CultureAction> LocalCollection;
         private int OwnerId { get; set; }
@@ -29,10 +22,8 @@ namespace EventHarbor.Class
         }
         public CultureActionManager()
         {
-            
+
         }
-
-
 
 
         /// <summary>
@@ -44,7 +35,7 @@ namespace EventHarbor.Class
 
         public bool GetCultureActionsFromDb(ObservableCollection<CultureAction> localCollection, int ownerId)
         {
-           
+
             using (DatabaseContextManager context = new DatabaseContextManager())
             {
                 cultureActionsDbCollection = new ObservableCollection<CultureAction>(context.CultureActionsDatabase.Where(x => x.OwnerId == ownerId).ToList());
@@ -55,17 +46,13 @@ namespace EventHarbor.Class
                     {
                         localCollection.Add(item);
                     }
-                        
+
                 }
-  
+
                 return true;
             }
 
         }
-
-      // public bool InsertDataToDb(ObservableCollection<CultureAction> item) { }
-
-       
 
         //testing function for inster to collection, in future probably will be removed
         public bool AddCultureAction(string actionName, DateOnly? startDate, DateOnly? endDate,
@@ -73,33 +60,66 @@ namespace EventHarbor.Class
                              CultureActionType cultureActionType, ExhibitionType exhibitionType,
                              float ticketPrice, Organiser oraganiser, string notes, bool isFree, int owner)
         {
-           
-            
-            CultureAction cultureAction = new CultureAction(actionName,startDate,endDate,
-                                                            numberOfChildern,numberOfAdult,numberOfSenior,
-                                                            cultureActionType,exhibitionType, ticketPrice,
-                                                            oraganiser,notes,isFree,owner);
 
-           LocalCollection.Add(cultureAction);
+            CultureAction cultureAction = new CultureAction(actionName, startDate, endDate,
+                                                            numberOfChildern, numberOfAdult, numberOfSenior,
+                                                            cultureActionType, exhibitionType, ticketPrice,
+                                                            oraganiser, notes, isFree, owner);
 
-
-
+            LocalCollection.Add(cultureAction);
 
             return true;
 
         }
-
+       
         public void AddAction(CultureAction cultureAction, ObservableCollection<CultureAction> localAction)
         {
             localAction.Add(cultureAction);
         }
 
+        public void EditAction(CultureAction selectedAction, CultureAction editedAction, ObservableCollection<CultureAction> localColection )
+        {
+            CultureAction actionToModify = localColection.FirstOrDefault(x => x.CultureActionId == selectedAction.CultureActionId);
+            if (actionToModify != null)
+            {
+                actionToModify.CultureActionName = editedAction.CultureActionName;
+                actionToModify.ActionStartDate = editedAction.ActionStartDate;
+                actionToModify.ActionEndDate = editedAction.ActionEndDate;
+                actionToModify.NumberOfChildren = editedAction.NumberOfChildren;
+                actionToModify.NumberOfAdults = editedAction.NumberOfAdults;
+                actionToModify.NumberOfSeniors = editedAction.NumberOfSeniors;
+                actionToModify.CultureActionType = editedAction.CultureActionType;
+                actionToModify.ExhibitionType = editedAction.ExhibitionType;
+                actionToModify.TicketPrice = editedAction.TicketPrice;
+                actionToModify.Organiser = editedAction.Organiser;
+                actionToModify.CultureActionNotes = editedAction.CultureActionNotes;
+                actionToModify.IsFree = editedAction.IsFree;
+                MessageBox.Show("Edited");
+            }
+
+        }
+
+        public void RemoveItemFromCollection(ObservableCollection<CultureAction> localAction, CultureAction cultureAction)
+        {
+            CultureAction actionToModify = localAction.FirstOrDefault(x => x.CultureActionId == cultureAction.CultureActionId);
+            if (actionToModify != null)
+            {
+                localAction.Remove(actionToModify);
+                MessageBox.Show("Removed");
+            }
+        }
+
+        public void ForceMergeData()
+        {
+            MergeDataToDb();
+        }
+
         private bool MergeDataToDb()
         {
 
-            using(DatabaseContextManager context = new())
+            using (DatabaseContextManager context = new())
             {
-                
+
                 cultureActionsDbCollection = new ObservableCollection<CultureAction>(context.CultureActionsDatabase.Where(x => x.OwnerId == OwnerId).ToList());
                 if (cultureActionsDbCollection.Count < LocalCollection.Count)
                 {
@@ -107,32 +127,40 @@ namespace EventHarbor.Class
                     {
                         if (!cultureActionsDbCollection.Contains(item))
                         {
-                            
                             context.CultureActionsDatabase.Add(item);
-                            //cultureActionsDbCollection.Add(item);
-                            
                         }
 
                     }
-                    
-                    //context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT  CultureActionsDatabase ON");
+
                     context.SaveChanges();
-                    
                     return true;
                 }
-
+                /*
+                else if (cultureActionsDbCollection.Count > LocalCollection.Count)
+                {
+                    foreach (CultureAction item in cultureActionsDbCollection)
+                    {
+                        if (!LocalCollection.Contains(item))
+                        {
+                            cultureActionsDbCollection.Remove(item);
+                        }
+                    }
+                    context.SaveChanges();
+                    return true;
+                }
+                */
 
             }
-                return false;
+            return false;
         }
 
         private void LocalCollectionCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
-            if(e.Action == NotifyCollectionChangedAction.Add)
+            if (e.Action == NotifyCollectionChangedAction.Add)
             {
                 if (MergeDataToDb())
                 {
-                    MessageBox.Show("Added");
+                    MessageBox.Show("Added to Db");
                 }
             }
         }

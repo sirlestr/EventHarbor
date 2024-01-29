@@ -61,6 +61,7 @@ namespace EventHarbor
         private void CloseBtn_Click(object sender, RoutedEventArgs e)
         {
             //this.Close();
+            //cultureActionManager.ForceMergeData();
             Application.Current.Shutdown();
 
 
@@ -85,7 +86,7 @@ namespace EventHarbor
         }
 
 
-        //opravit nčítání a přiřazení do DB
+        
         private void button2_Click(object sender, RoutedEventArgs e)
         {
             if (cultureActionManager.GetCultureActionsFromDb(LocalCollection, UserId))
@@ -108,7 +109,13 @@ namespace EventHarbor
                     EditWindow.FillFormData(action);
                 }
                 EditWindow.ShowDialog();
+                CultureActionDataGrid.Items.Refresh();
             }
+        }
+
+        private void RemoveBtn_Click(object sender, RoutedEventArgs e)
+        {
+            cultureActionManager.RemoveItemFromCollection(LocalCollection, (CultureAction)CultureActionDataGrid.SelectedItem);
         }
     }
 

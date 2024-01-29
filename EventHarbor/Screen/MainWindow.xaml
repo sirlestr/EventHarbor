@@ -36,7 +36,7 @@
 
                         <Button x:Name="AddBtn" Content="Přidat událost" Style="{StaticResource MenuButton}" Click="AddBtn_Click"/>
                         <Button x:Name="ChangeBtn" Content="Upravit událost" Style="{StaticResource MenuButton}" Click="ChangeBtn_Click"/>
-                        <Button x:Name="RemoveBtn" Content="Smazat událost" Style="{StaticResource MenuButton}"/>
+                        <Button x:Name="RemoveBtn" Content="Smazat událost" Style="{StaticResource MenuButton}" Click="RemoveBtn_Click"/>
 
                     </StackPanel>
                     <StackPanel Orientation="Vertical" Margin="0,20,0,0">
