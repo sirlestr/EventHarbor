@@ -1,28 +1,17 @@
 ﻿using EventHarbor.Class;
-using EventHarbor.Screen;
-using Microsoft.Identity.Client;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace EventHarbor.Screen
 {
     /// <summary>
     /// Interaction logic for CultureActionDetail.xaml
     /// </summary>
-   
-    
+
+
     public partial class CultureActionDetail : Window
     {
         UserManager userManager;
@@ -32,44 +21,55 @@ namespace EventHarbor.Screen
         int LastId;
         CultureAction SelectedAction;
 
-
+        /// <summary>
+        /// Base constructor for detail view
+        /// </summary>
+        /// <param name="manager"> instance of UserMananger for logged user</param>
+        /// <param name="localAction">instance of local colection for data manipulation</param>
         internal CultureActionDetail(UserManager manager, ObservableCollection<CultureAction> localAction)
         {
             //Initialize
             InitializeComponent();
             // for user ID and name of logged user
             userManager = manager;
-         
+
             LastIdTextBlock.Text = LastId.ToString();
             LocalAction = localAction;
 
             //assing user data to variables for display in view
-             UserId = userManager.LoggedUserId;
+            UserId = userManager.LoggedUserId;
             OwnerIDTextBlock.Text = UserId.ToString();
-            LoggedUserNameTextBlock.Text =   userManager.LoggedUserName;
+            LoggedUserNameTextBlock.Text = userManager.LoggedUserName;
             cultureActionManager = new CultureActionManager(LocalAction, manager.LoggedUserId);
 
 
 
         }
 
+        //close button
         private void CloseBtn_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
 
+        //window move function
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var move = sender as Border;
             var win = Window.GetWindow(move);
             win.DragMove();
         }
-
+        //exit button
         private void ExitBtn_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
 
+        /// <summary>
+        /// Create action object for manipulation in other function
+        /// </summary>
+        /// <returns>CultureAction Object</returns>
+        //need improvement for data validation
         private CultureAction CreateActionObj()
         {
             string actionName = CultureActionNameTextBox.Text;
@@ -89,27 +89,33 @@ namespace EventHarbor.Screen
             CultureAction action = new CultureAction(actionName, start, end, childern, adult, senior, actionType, exhibitionType, ticketPrice, organiser, notes, isFree, UserId);
             return action;
         }
-        
+
+        //save button
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
 
             CultureAction action = CreateActionObj();
-            cultureActionManager.AddAction(action, LocalAction );
+            cultureActionManager.AddAction(action, LocalAction);
             this.Close();
 
         }
 
+        //function for conver text from RichTextBox to string
         private string StringRichTextBox(RichTextBox richText)
         {
             TextRange textRange = new TextRange(richText.Document.ContentStart, richText.Document.ContentEnd);
             return textRange.Text;
         }
 
+        /// <summary>
+        /// Fill form with data
+        /// </summary>
+        /// <param name="action">Selected action</param>
         internal void FillFormData(CultureAction action)
         {
             SelectedAction = action;
             CultureActionNameTextBox.Text = action.CultureActionName;
-            StartDatePicker.SelectedDate =action.ActionStartDate.Value.ToDateTime(TimeOnly.MinValue);
+            StartDatePicker.SelectedDate = action.ActionStartDate.Value.ToDateTime(TimeOnly.MinValue);
             EndDatePicker.SelectedDate = action.ActionEndDate.Value.ToDateTime(TimeOnly.MinValue);
             NumberOfChildrenTextBox.Text = action.NumberOfChildren.ToString();
             NumberOfAdultsTextBox.Text = action.NumberOfAdults.ToString();
@@ -123,12 +129,12 @@ namespace EventHarbor.Screen
             IsFreeCheckBox.IsChecked = action.IsFree;
 
         }
-
+        //change button
         private void ChangeBtn_Click(object sender, RoutedEventArgs e)
         {
-            
+
             CultureAction editedAction = CreateActionObj();
-            cultureActionManager.EditAction(SelectedAction,editedAction,LocalAction ) ;
+            cultureActionManager.EditAction(SelectedAction, editedAction, LocalAction);
             this.Close();
 
         }
