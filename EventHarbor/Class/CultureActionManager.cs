@@ -94,6 +94,8 @@ namespace EventHarbor.Class
                 actionToModify.Organiser = editedAction.Organiser;
                 actionToModify.CultureActionNotes = editedAction.CultureActionNotes;
                 actionToModify.IsFree = editedAction.IsFree;
+                
+                //for development purpose only; will be removed in future
                 MessageBox.Show("Edited");
             }
 
@@ -105,6 +107,7 @@ namespace EventHarbor.Class
             if (actionToModify != null)
             {
                 localAction.Remove(actionToModify);
+                //for development purpose only; will be removed in future
                 MessageBox.Show("Removed");
             }
         }
