@@ -13,6 +13,7 @@ namespace EventHarbor.Class
         private ObservableCollection<CultureAction> cultureActionsDbCollection;
         internal ObservableCollection<CultureAction> LocalCollection;
         private int OwnerId { get; set; }
+        private DatabaseContextManager DbManager = new DatabaseContextManager();
 
         public CultureActionManager(ObservableCollection<CultureAction> localCollection, int owner)
         {
@@ -71,7 +72,11 @@ namespace EventHarbor.Class
             return true;
 
         }
-       
+        /// <summary>
+        /// Add item to collection
+        /// </summary>
+        /// <param name="cultureAction">Item for adding to the collection</param>
+        /// <param name="localAction">Local collection</param>
         public void AddAction(CultureAction cultureAction, ObservableCollection<CultureAction> localAction)
         {
             localAction.Add(cultureAction);
@@ -112,11 +117,8 @@ namespace EventHarbor.Class
             }
         }
 
-        public void ForceMergeData()
-        {
-            MergeDataToDb();
-        }
 
+        /*
         private bool MergeDataToDb()
         {
 
@@ -151,21 +153,48 @@ namespace EventHarbor.Class
                     context.SaveChanges();
                     return true;
                 }
-                */
+                
 
             }
             return false;
+        }
+        */
+        public void ForceMerge(ObservableCollection<CultureAction> localCollection)
+        {
+            DbManager.MergeDataWithDb(localCollection, OwnerId);
         }
 
         private void LocalCollectionCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
-                if (MergeDataToDb())
+                if (DbManager.MergeDataWithDb(LocalCollection,OwnerId))
                 {
                     MessageBox.Show("Added to Db");
                 }
             }
+            if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                if (DbManager.MergeDataWithDb(LocalCollection, OwnerId))
+                {
+                    MessageBox.Show("Removed from Db");
+                }
+            }
+            if (e.Action == NotifyCollectionChangedAction.Replace)
+            {
+                if (DbManager.MergeDataWithDb(LocalCollection, OwnerId))
+                {
+                    MessageBox.Show("Replaced in Db");
+                }
+            }
+            if (e.Action == NotifyCollectionChangedAction.Move)
+            {
+                if (DbManager.MergeDataWithDb(LocalCollection, OwnerId))
+                {
+                    MessageBox.Show("Moved in Db");
+                }
+            }
+
         }
     }
 }

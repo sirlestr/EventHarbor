@@ -61,7 +61,7 @@ namespace EventHarbor
         private void CloseBtn_Click(object sender, RoutedEventArgs e)
         {
             //this.Close();
-            //cultureActionManager.ForceMergeData();
+            //cultureActionManager.ForceMerge(LocalCollection);
             Application.Current.Shutdown();
 
 
