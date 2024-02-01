@@ -34,7 +34,7 @@ namespace EventHarbor.Class
     internal class CultureAction
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)] // Tímto zakážeme automatickou generaci hodnoty pro ID
+        [DatabaseGenerated(DatabaseGeneratedOption.None)] 
         public int CultureActionId { get; set; }
         public string CultureActionName { get; set; }
         public DateOnly? ActionStartDate { get; set; }
