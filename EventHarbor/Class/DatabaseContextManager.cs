@@ -34,13 +34,39 @@ namespace EventHarbor.Class
 
             using (DatabaseContextManager context = new())
             {
-                ObservableCollection<CultureAction>  DbCollection = new ObservableCollection<CultureAction>(context.CultureActionsDatabase.Where(x => x.OwnerId == ownerId).ToList());
-
-                if (DbCollection != localCollection && localCollection.Count > DbCollection.Count)
+                ObservableCollection<CultureAction>  dbCollection = new ObservableCollection<CultureAction>(context.CultureActionsDatabase.Where(x => x.OwnerId == ownerId).ToList());
+                if(!dbCollection.SequenceEqual(localCollection) && (dbCollection.Count == localCollection.Count))
                 {
                     foreach (CultureAction localItem in localCollection)
                     {
-                        CultureAction dbItem = DbCollection.FirstOrDefault(x => x.CultureActionId == localItem.CultureActionId);
+                        CultureAction dbItem = dbCollection.FirstOrDefault(x => x.CultureActionId == localItem.CultureActionId);
+                        if (dbItem != null)
+                        {
+                            if (localItem != dbItem)
+                            {
+                                dbItem.CultureActionName = localItem.CultureActionName;
+                                dbItem.ActionStartDate = localItem.ActionStartDate;
+                                dbItem.ActionEndDate = localItem.ActionEndDate;
+                                dbItem.NumberOfChildren = localItem.NumberOfChildren;
+                                dbItem.NumberOfAdults = localItem.NumberOfAdults;
+                                dbItem.NumberOfSeniors = localItem.NumberOfSeniors;
+                                dbItem.CultureActionType = localItem.CultureActionType;
+                                dbItem.ExhibitionType = localItem.ExhibitionType;
+                                dbItem.TicketPrice = localItem.TicketPrice;
+                                dbItem.Organiser = localItem.Organiser;
+                                dbItem.CultureActionNotes = localItem.CultureActionNotes;
+                                dbItem.IsFree = localItem.IsFree;
+
+                            }
+                        }
+                        
+                    }
+                }
+                if (!dbCollection.SequenceEqual(localCollection) && (dbCollection.Count< localCollection.Count) )
+                {
+                    foreach (CultureAction localItem in localCollection)
+                    {
+                        CultureAction dbItem = dbCollection.FirstOrDefault(x => x.CultureActionId == localItem.CultureActionId);
                         if (dbItem != null)
                         {
                             if(localItem != dbItem)
@@ -69,9 +95,10 @@ namespace EventHarbor.Class
                     context.SaveChanges();
                     MessageBox.Show("Data merged");
                 }
-                else if (DbCollection != localCollection && DbCollection.Count > localCollection.Count)
+                
+                else if (!dbCollection.SequenceEqual(localCollection) && dbCollection.Count > localCollection.Count)
                 {
-                    foreach (CultureAction item in DbCollection)
+                    foreach (CultureAction item in dbCollection)
                     {
                         if (!localCollection.Contains(item))
                         {
@@ -82,45 +109,12 @@ namespace EventHarbor.Class
                     MessageBox.Show("Data removed");
 
                 }
-               
-
-
-
-
-                /*
-                if (DbCollection.Count < localCollection.Count)
-                {
-                    foreach (CultureAction item in localCollection)
-                    {
-                        if (!DbCollection.Contains(item))
-                        {
-                            context.CultureActionsDatabase.Add(item);
-                        }
-
-                    }
-
-                    context.SaveChanges();
-                    return true;
-                }
-                /*
-                else if (cultureActionsDbCollection.Count > LocalCollection.Count)
-                {
-                    foreach (CultureAction item in cultureActionsDbCollection)
-                    {
-                        if (!LocalCollection.Contains(item))
-                        {
-                            cultureActionsDbCollection.Remove(item);
-                        }
-                    }
-                    context.SaveChanges();
-                    return true;
-                }
-                */
-
+                
             }
             return false;
         }
 
+       
         
 
 

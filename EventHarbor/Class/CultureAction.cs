@@ -121,8 +121,7 @@ namespace EventHarbor.Class
                 return false;
             }
 
-            CultureAction other = (CultureAction)obj;
-            return this.CultureActionId == other.CultureActionId;
+            return CultureActionId == ((CultureAction)obj).CultureActionId;
         }
 
         public override int GetHashCode()

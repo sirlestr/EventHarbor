@@ -61,7 +61,7 @@ namespace EventHarbor
         private void CloseBtn_Click(object sender, RoutedEventArgs e)
         {
             //this.Close();
-            //cultureActionManager.ForceMerge(LocalCollection);
+            cultureActionManager.ForceMerge(LocalCollection, UserId);
             Application.Current.Shutdown();
 
 
@@ -116,6 +116,7 @@ namespace EventHarbor
         private void RemoveBtn_Click(object sender, RoutedEventArgs e)
         {
             cultureActionManager.RemoveItemFromCollection(LocalCollection, (CultureAction)CultureActionDataGrid.SelectedItem);
+            
         }
     }
 

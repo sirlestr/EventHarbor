@@ -118,50 +118,11 @@ namespace EventHarbor.Class
         }
 
 
-        /*
-        private bool MergeDataToDb()
+        
+
+        public void ForceMerge(ObservableCollection<CultureAction> localCollection, int userId)
         {
-
-            using (DatabaseContextManager context = new())
-            {
-
-                cultureActionsDbCollection = new ObservableCollection<CultureAction>(context.CultureActionsDatabase.Where(x => x.OwnerId == OwnerId).ToList());
-                if (cultureActionsDbCollection.Count < LocalCollection.Count)
-                {
-                    foreach (CultureAction item in LocalCollection)
-                    {
-                        if (!cultureActionsDbCollection.Contains(item))
-                        {
-                            context.CultureActionsDatabase.Add(item);
-                        }
-
-                    }
-
-                    context.SaveChanges();
-                    return true;
-                }
-                /*
-                else if (cultureActionsDbCollection.Count > LocalCollection.Count)
-                {
-                    foreach (CultureAction item in cultureActionsDbCollection)
-                    {
-                        if (!LocalCollection.Contains(item))
-                        {
-                            cultureActionsDbCollection.Remove(item);
-                        }
-                    }
-                    context.SaveChanges();
-                    return true;
-                }
-                
-
-            }
-            return false;
-        }
-        */
-        public void ForceMerge(ObservableCollection<CultureAction> localCollection)
-        {
-            DbManager.MergeDataWithDb(localCollection, OwnerId);
+            DbManager.MergeDataWithDb(localCollection, userId);
         }
 
         private void LocalCollectionCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
