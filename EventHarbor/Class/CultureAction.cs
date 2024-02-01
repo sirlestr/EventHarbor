@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Windows.Controls;
 
 namespace EventHarbor.Class
 {
@@ -129,7 +130,39 @@ namespace EventHarbor.Class
             return CultureActionId.GetHashCode();
         }
 
+        public static bool operator ==(CultureAction left, CultureAction right)
+        {
+            if (ReferenceEquals(left, right))
+            {
+                return true;
+            }
+            if (ReferenceEquals(left, null) || ReferenceEquals(right, null))
+            {
+                return false;
+            }
 
+            // Porovnání všech parametrů třídy
+            return left.CultureActionId == right.CultureActionId
+                && left.CultureActionName == right.CultureActionName
+                && left.ActionStartDate == right.ActionStartDate
+                && left.ActionEndDate == right.ActionEndDate
+                && left.NumberOfChildren == right.NumberOfChildren
+                && left.NumberOfAdults == right.NumberOfAdults
+                &&left.NumberOfSeniors == right.NumberOfSeniors
+                &&left.CultureActionType == right.CultureActionType
+                &&left.ExhibitionType == right.ExhibitionType
+                &&left.TicketPrice == right.TicketPrice
+                &&left.Organiser == right.Organiser
+                &&left.CultureActionNotes == right.CultureActionNotes
+                &&left.IsFree == right.IsFree
+                ;
+        }
+
+
+        public static bool operator !=(CultureAction left, CultureAction right)
+        {
+            return !(left == right);
+        }
 
 
 

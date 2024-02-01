@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
@@ -35,7 +36,7 @@ namespace EventHarbor.Class
             using (DatabaseContextManager context = new())
             {
                 ObservableCollection<CultureAction>  dbCollection = new ObservableCollection<CultureAction>(context.CultureActionsDatabase.Where(x => x.OwnerId == ownerId).ToList());
-                if(!dbCollection.SequenceEqual(localCollection) && (dbCollection.Count == localCollection.Count))
+                if(!dbCollection.Equals(localCollection) && (dbCollection.Count == localCollection.Count))
                 {
                     foreach (CultureAction localItem in localCollection)
                     {
@@ -58,45 +59,28 @@ namespace EventHarbor.Class
                                 dbItem.IsFree = localItem.IsFree;
 
                             }
-                        }
-                        
+                        }                        
                     }
+                    context.SaveChanges();
+                    Debug.WriteLine("Data updated");
                 }
-                if (!dbCollection.SequenceEqual(localCollection) && (dbCollection.Count< localCollection.Count) )
+                if (!dbCollection.Equals(localCollection) && (dbCollection.Count< localCollection.Count) )
                 {
                     foreach (CultureAction localItem in localCollection)
                     {
                         CultureAction dbItem = dbCollection.FirstOrDefault(x => x.CultureActionId == localItem.CultureActionId);
                         if (dbItem != null)
                         {
-                            if(localItem != dbItem)
-                            {
-                                dbItem.CultureActionName = localItem.CultureActionName;
-                                dbItem.ActionStartDate = localItem.ActionStartDate;
-                                dbItem.ActionEndDate = localItem.ActionEndDate;
-                                dbItem.NumberOfChildren = localItem.NumberOfChildren;
-                                dbItem.NumberOfAdults = localItem.NumberOfAdults;
-                                dbItem.NumberOfSeniors = localItem.NumberOfSeniors;
-                                dbItem.CultureActionType = localItem.CultureActionType;
-                                dbItem.ExhibitionType = localItem.ExhibitionType;
-                                dbItem.TicketPrice = localItem.TicketPrice;
-                                dbItem.Organiser = localItem.Organiser;
-                                dbItem.CultureActionNotes = localItem.CultureActionNotes;
-                                dbItem.IsFree = localItem.IsFree;
-
-                            }
-                        }
-                        else
-                        {
                             context.CultureActionsDatabase.Add(localItem);
                         }
+                       
                     }
 
                     context.SaveChanges();
-                    MessageBox.Show("Data merged");
+                    Debug.WriteLine("Data Added");
                 }
                 
-                else if (!dbCollection.SequenceEqual(localCollection) && dbCollection.Count > localCollection.Count)
+                else if (!dbCollection.Equals(localCollection) && dbCollection.Count > localCollection.Count)
                 {
                     foreach (CultureAction item in dbCollection)
                     {
@@ -106,7 +90,7 @@ namespace EventHarbor.Class
                         }
                     }
                     context.SaveChanges();
-                    MessageBox.Show("Data removed");
+                    Debug.WriteLine("Data removed");
 
                 }
                 
