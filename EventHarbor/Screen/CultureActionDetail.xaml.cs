@@ -20,19 +20,20 @@ namespace EventHarbor.Screen
         int UserId;
         int LastId;
         CultureAction SelectedAction;
+        private readonly bool IsNew;
 
         /// <summary>
         /// Base constructor for detail view
         /// </summary>
         /// <param name="manager"> instance of UserMananger for logged user</param>
         /// <param name="localAction">instance of local colection for data manipulation</param>
-        internal CultureActionDetail(UserManager manager, ObservableCollection<CultureAction> localAction)
+        internal CultureActionDetail(UserManager manager, ObservableCollection<CultureAction> localAction, bool isNew)
         {
             //Initialize
             InitializeComponent();
             // for user ID and name of logged user
             userManager = manager;
-
+            IsNew = isNew;
             LastIdTextBlock.Text = LastId.ToString();
             LocalAction = localAction;
 
@@ -41,10 +42,12 @@ namespace EventHarbor.Screen
             OwnerIDTextBlock.Text = UserId.ToString();
             LoggedUserNameTextBlock.Text = userManager.LoggedUserName;
             cultureActionManager = new CultureActionManager(LocalAction, manager.LoggedUserId);
-
+            SetButtonContent();
 
 
         }
+
+
 
         //close button
         private void CloseBtn_Click(object sender, RoutedEventArgs e)
@@ -66,11 +69,11 @@ namespace EventHarbor.Screen
         }
 
         /// <summary>
-        /// Create action object for manipulation in other function
+        /// Create action object for manipulation
         /// </summary>
         /// <returns>CultureAction Object</returns>
         //need improvement for data validation
-        private CultureAction CreateActionObj()
+        private CultureAction CreateActionObject()
         {
             string actionName = CultureActionNameTextBox.Text;
             DateOnly? start = StartDatePicker.SelectedDate.HasValue ? DateOnly.FromDateTime(StartDatePicker.SelectedDate.Value) : null;
@@ -90,21 +93,37 @@ namespace EventHarbor.Screen
             return action;
         }
 
+        private void SetButtonContent()
+        {
+            SaveBtn.Content = IsNew ? "Vytvořit" : "Upravit";
+        }
+
         //save button
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
-
-            CultureAction action = CreateActionObj();
-            cultureActionManager.AddAction(action, LocalAction);
-            this.Close();
+            if (IsNew)
+            {
+                //add new action
+                CultureAction action = CreateActionObject();
+                cultureActionManager.AddAction(action, LocalAction);
+                this.Close();
+            }
+            else
+            {
+                //edit action
+                CultureAction editedAction = CreateActionObject();
+                cultureActionManager.EditAction(SelectedAction, editedAction, LocalAction);
+                this.Close();
+            }
 
         }
 
         //function for conver text from RichTextBox to string
         private string StringRichTextBox(RichTextBox richText)
         {
-            TextRange textRange = new TextRange(richText.Document.ContentStart, richText.Document.ContentEnd);
-            return textRange.Text;
+            //TextRange textRange = new TextRange(richText.Document.ContentStart, richText.Document.ContentEnd);
+            //return textRange.Text; 
+            return new TextRange(richText.Document.ContentStart, richText.Document.ContentEnd).Text;
         }
 
         /// <summary>
@@ -129,14 +148,6 @@ namespace EventHarbor.Screen
             IsFreeCheckBox.IsChecked = action.IsFree;
 
         }
-        //change button
-        private void ChangeBtn_Click(object sender, RoutedEventArgs e)
-        {
 
-            CultureAction editedAction = CreateActionObj();
-            cultureActionManager.EditAction(SelectedAction, editedAction, LocalAction);
-            this.Close();
-
-        }
     }
 }

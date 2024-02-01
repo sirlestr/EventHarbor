@@ -39,7 +39,6 @@
 
                         <Button x:Name="SaveBtn" Content="Uložit" Style="{StaticResource MenuButton}" Click="SaveBtn_Click" />
                         <Button x:Name="ExitBtn" Content="Zavřít" Style="{StaticResource MenuButton}" Click="ExitBtn_Click"/>
-                        <Button x:Name="ChangeBtn" Content="změna" Style="{StaticResource MenuButton}" Click="ChangeBtn_Click" />
 
                     </StackPanel>
                     <StackPanel Orientation="Vertical" Margin="0,20,0,0"/>
