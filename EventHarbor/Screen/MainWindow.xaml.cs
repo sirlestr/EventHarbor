@@ -78,7 +78,7 @@ namespace EventHarbor
         {
             
             
-            CultureActionDetail AddActionWindow = new CultureActionDetail(userManager, LocalCollection);
+            CultureActionDetail AddActionWindow = new CultureActionDetail(userManager, LocalCollection, true);
             AddActionWindow.ShowDialog();
             
 
@@ -101,14 +101,15 @@ namespace EventHarbor
         {
             if (CultureActionDataGrid.SelectedItem != null)
             {
-               CultureActionDetail EditWindow = new CultureActionDetail(userManager, LocalCollection);
+               
                 CultureAction action = (CultureAction)CultureActionDataGrid.SelectedItem;
                 if (action != null)
                 {
-                    
+                    CultureActionDetail EditWindow = new CultureActionDetail(userManager, LocalCollection, false);
                     EditWindow.FillFormData(action);
+                    EditWindow.ShowDialog();
                 }
-                EditWindow.ShowDialog();
+                //EditWindow.ShowDialog();
                 CultureActionDataGrid.Items.Refresh();
             }
         }
