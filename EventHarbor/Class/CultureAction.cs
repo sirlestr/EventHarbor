@@ -141,7 +141,7 @@ namespace EventHarbor.Class
                 return false;
             }
 
-            // Porovnání všech parametrů třídy
+            // Comparison of all class parameters
             return left.CultureActionId == right.CultureActionId
                 && left.CultureActionName == right.CultureActionName
                 && left.ActionStartDate == right.ActionStartDate
