@@ -1,6 +1,8 @@
 # EventHarbour
 
-**This application is created and based on one person's request and targets their specific requirements. **
+> [!IMPORTANT]
+> This application is created and based on one person's request and targets their specific requirements.
+
 
 
 There is two main goal in this project.
@@ -13,9 +15,12 @@ Technology used in this project :
 - SQL Server LocalDB
 
 Project tracking is in [TODO Page](TODO.md).  
- \
- \
-***Right now, this project is in rapid development,so it contains unnecessary comment,function and so on.. ***
+\
+\
+Fell free to add comments,critics,advice and anything else. Anything helps me to improve my skill ;)  <br><br>
+ 
 
+> [!CAUTION]
+> Right now, this project is in rapid development,so it contains unnecessary comment,features and its functionality may change significantly
 
   
