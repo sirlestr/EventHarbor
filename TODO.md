@@ -1,5 +1,10 @@
 # TODO.md
 
+
+### In Progress
+
+- [ ] Data input validation
+
 ### Todo
 
 - [ ] Statistic output from all or selected action
@@ -14,9 +19,7 @@
 - [ ] Welocme message
 - [ ] Code rafactoring
 
-### In Progress
 
-- [ ] Data input validation
 
 ### Done ✓
 
