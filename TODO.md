@@ -17,7 +17,7 @@
 - [ ] UI improvement  
 - [ ] Export to pdf
 - [ ] Welocme message
-- [ ] Code rafactoring
+- [ ] Code rafactoring and cleanup
 
 
 
