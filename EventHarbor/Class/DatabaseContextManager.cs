@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using Microsoft.Extensions.Logging;
 
 namespace EventHarbor.Class
 {
@@ -30,6 +31,7 @@ namespace EventHarbor.Class
         {
             base.OnConfiguring(optionsBuilder);
             optionsBuilder.UseSqlServer(@"Server=(LocalDB)\MSSQLLocalDB;Database=EventHarbor;Trusted_Connection=True;");
+            optionsBuilder.LogTo(text => Debug.WriteLine(text), LogLevel.Information);
 
         }
 
