@@ -37,7 +37,7 @@ namespace EventHarbor.Class
 
 
         /// <summary>
-        /// Merges data with the database
+        /// Merge data with the database
         /// </summary>
         /// <param name="localCollection">The local culture action collection</param>
         /// <param name="ownerId">The owner ID</param>
