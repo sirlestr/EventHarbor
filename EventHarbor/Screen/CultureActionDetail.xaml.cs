@@ -76,22 +76,29 @@ namespace EventHarbor.Screen
         //need improvement for data validation
         private CultureAction CreateActionObject()
         {
-            
-            string actionName = inputValidation.ValidateText(CultureActionNameTextBox.Text);
-            DateOnly starDate = inputValidation.ValidateDateOnly(StartDatePicker.SelectedDate);
-            DateOnly endDate = inputValidation.ValidateDateOnly(EndDatePicker.SelectedDate);
-            int childern = inputValidation.ValidateNumber(NumberOfChildrenTextBox.Text);
-            int adult = inputValidation.ValidateNumber(NumberOfAdultsTextBox.Text);
-            int senior = inputValidation.ValidateNumber(NumberOfSeniorsTextBox.Text);
-            // int disabled = inputValidation.ValidateNumber(NumberOfDisabledTextBox.Text);
-            CultureActionType actionType = (CultureActionType)CultureActionTypeComboBox.SelectedIndex;
-            ExhibitionType exhibitionType = (ExhibitionType)CultureExhibitionType.SelectedIndex;
-            Organiser organiser = (Organiser)OrganiseComboBox.SelectedIndex;
-            int actionPrice = inputValidation.ValidateNumber(TicketPriceTextBox.Text);
-            
-            string notes = inputValidation.ValidateText(StringRichTextBox(NotesRichTextBox));
-            
-            bool isFree = IsFreeCheckBox.IsChecked.HasValue ? IsFreeCheckBox.IsChecked.Value : false;
+            try
+            {
+                string actionName = inputValidation.ValidateText(CultureActionNameTextBox.Text);
+                DateOnly startDate = inputValidation.ValidateDateOnly(StartDatePicker.SelectedDate);
+                DateOnly endDate = inputValidation.ValidateDateOnly(EndDatePicker.SelectedDate);
+                int childern = inputValidation.ValidateNumber(NumberOfChildrenTextBox.Text);
+                int adult = inputValidation.ValidateNumber(NumberOfAdultsTextBox.Text);
+                int senior = inputValidation.ValidateNumber(NumberOfSeniorsTextBox.Text);
+                // int disabled = inputValidation.ValidateNumber(NumberOfDisabledTextBox.Text);
+                CultureActionType actionType = (CultureActionType)CultureActionTypeComboBox.SelectedIndex;
+                ExhibitionType exhibitionType = (ExhibitionType)CultureExhibitionType.SelectedIndex;
+                Organiser organiser = (Organiser)OrganiseComboBox.SelectedIndex;
+                int actionPrice = inputValidation.ValidateNumber(TicketPriceTextBox.Text);
+
+                string notes = inputValidation.ValidateText(StringRichTextBox(NotesRichTextBox));
+
+                bool isFree = IsFreeCheckBox.IsChecked.HasValue ? IsFreeCheckBox.IsChecked.Value : false;
+            } 
+            catch (Exception e) 
+            {
+                MessageBox.Show(e.Message);
+
+            }
 
 
             //string actionName = CultureActionNameTextBox.Text;
@@ -108,7 +115,7 @@ namespace EventHarbor.Screen
             //bool isFree = IsFreeCheckBox.IsChecked.HasValue ? IsFreeCheckBox.IsChecked.Value : false;
 
 
-            CultureAction action = new CultureAction(actionName, start, end, childern, adult, senior, actionType, exhibitionType, ticketPrice, organiser, notes, isFree, UserId);
+            CultureAction action = new CultureAction(actionName, startDate, endDate, childern, adult, senior, actionType, exhibitionType, actionPrice, organiser, notes, isFree, UserId);
             return action;
         }
 
