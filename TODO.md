@@ -7,6 +7,7 @@
 
 ### Todo
 
+- [ ] Add try-catch statemen
 - [ ] Statistic output from all or selected action
   - [ ] total of all people at the event
   - [ ] Summary of total cost of the event
