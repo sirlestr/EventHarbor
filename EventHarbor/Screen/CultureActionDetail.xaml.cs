@@ -1,4 +1,5 @@
 ﻿using EventHarbor.Class;
+using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -93,30 +94,36 @@ namespace EventHarbor.Screen
                 string notes = inputValidation.ValidateText(StringRichTextBox(NotesRichTextBox));
 
                 bool isFree = IsFreeCheckBox.IsChecked.HasValue ? IsFreeCheckBox.IsChecked.Value : false;
+                
+                
+                CultureAction action = new CultureAction(actionName, startDate, endDate, childern, adult, senior, actionType, exhibitionType, actionPrice, organiser, notes, isFree, UserId);
+                return action;
             } 
             catch (Exception e) 
             {
                 MessageBox.Show(e.Message);
+                return null;
 
             }
 
+            /*
+            string actionName = CultureActionNameTextBox.Text;
+            DateOnly? start = StartDatePicker.SelectedDate.HasValue ? DateOnly.FromDateTime(StartDatePicker.SelectedDate.Value) : null;
+            DateOnly? end = EndDatePicker.SelectedDate.HasValue ? DateOnly.FromDateTime(EndDatePicker.SelectedDate.Value) : null;
+            int childern = NumberOfChildrenTextBox.Text != null ? int.Parse(NumberOfChildrenTextBox.Text.Trim()) : 0;
+            int adult = NumberOfAdultsTextBox.Text != null ? int.Parse(NumberOfAdultsTextBox.Text.Trim()) : 0;
+            int senior = NumberOfSeniorsTextBox.Text != null ? int.Parse(NumberOfSeniorsTextBox.Text.Trim()) : 0;
+            CultureActionType actionType = (CultureActionType)CultureActionTypeComboBox.SelectedIndex;
+            ExhibitionType exhibitionType = (ExhibitionType)CultureExhibitionType.SelectedIndex;
+            Organiser organiser = (Organiser)OrganiseComboBox.SelectedIndex;
+            int ticketPrice = int.Parse(TicketPriceTextBox.Text.Trim());
+            string notes = StringRichTextBox(NotesRichTextBox);
+            bool isFree = IsFreeCheckBox.IsChecked.HasValue ? IsFreeCheckBox.IsChecked.Value : false;
 
-            //string actionName = CultureActionNameTextBox.Text;
-            //DateOnly? start = StartDatePicker.SelectedDate.HasValue ? DateOnly.FromDateTime(StartDatePicker.SelectedDate.Value) : null;
-            // DateOnly? end = EndDatePicker.SelectedDate.HasValue ? DateOnly.FromDateTime(EndDatePicker.SelectedDate.Value) : null;
-            // int childern = NumberOfChildrenTextBox.Text != null ? int.Parse(NumberOfChildrenTextBox.Text.Trim()) : 0;
-            // int adult = NumberOfAdultsTextBox.Text != null ? int.Parse(NumberOfAdultsTextBox.Text.Trim()) : 0;
-            // int senior = NumberOfSeniorsTextBox.Text != null ? int.Parse(NumberOfSeniorsTextBox.Text.Trim()) : 0;
-            //CultureActionType actionType = (CultureActionType)CultureActionTypeComboBox.SelectedIndex;
-            //ExhibitionType exhibitionType = (ExhibitionType)CultureExhibitionType.SelectedIndex;
-            //Organiser organiser = (Organiser)OrganiseComboBox.SelectedIndex;
-            //int ticketPrice = int.Parse(TicketPriceTextBox.Text.Trim());
-            //string notes = StringRichTextBox(NotesRichTextBox);
-            //bool isFree = IsFreeCheckBox.IsChecked.HasValue ? IsFreeCheckBox.IsChecked.Value : false;
 
-
-            CultureAction action = new CultureAction(actionName, startDate, endDate, childern, adult, senior, actionType, exhibitionType, actionPrice, organiser, notes, isFree, UserId);
-            return action;
+            CultureAction action = new CultureAction(actionName, startDate, endDate, childern, adult, senior, actionType, exhibitionType, actionPrice, organiser,notes, isFree, UserId);
+             return action;
+            */
         }
 
         private void SetButtonContent()
@@ -131,15 +138,21 @@ namespace EventHarbor.Screen
             {
                 //add new action
                 CultureAction action = CreateActionObject();
-                cultureActionManager.AddAction(action, LocalAction);
-                this.Close();
+                if (action != null)
+                {
+                    cultureActionManager.AddAction(action, LocalAction);
+                    this.Close();
+                }
             }
             else
             {
                 //edit action
                 CultureAction editedAction = CreateActionObject();
-                cultureActionManager.EditAction(SelectedAction, editedAction, LocalAction);
-                this.Close();
+                if (editedAction != null)
+                {
+                    cultureActionManager.EditAction(SelectedAction, editedAction, LocalAction);
+                    this.Close();
+                }
             }
 
         }
