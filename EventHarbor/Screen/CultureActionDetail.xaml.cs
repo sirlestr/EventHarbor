@@ -79,24 +79,24 @@ namespace EventHarbor.Screen
         {
             try
             {
-                string actionName = inputValidation.ValidateText(CultureActionNameTextBox.Text);
-                DateOnly startDate = inputValidation.ValidateDateOnly(StartDatePicker.SelectedDate);
-                DateOnly endDate = inputValidation.ValidateDateOnly(EndDatePicker.SelectedDate);
-                int childern = inputValidation.ValidateNumber(NumberOfChildrenTextBox.Text);
-                int adult = inputValidation.ValidateNumber(NumberOfAdultsTextBox.Text);
-                int senior = inputValidation.ValidateNumber(NumberOfSeniorsTextBox.Text);
-                // int disabled = inputValidation.ValidateNumber(NumberOfDisabledTextBox.Text);
+                string actionName = inputValidation.ValidateText(CultureActionNameTextBox.Text, "Název akce");
+                DateOnly startDate = inputValidation.ValidateDateOnly(StartDatePicker.SelectedDate,"Začátek akce");
+                DateOnly endDate = inputValidation.ValidateDateOnly(EndDatePicker.SelectedDate, "Konec akce");
+                int childern = inputValidation.ValidateNumber(NumberOfChildrenTextBox.Text,"Počet dětí");
+                int adult = inputValidation.ValidateNumber(NumberOfAdultsTextBox.Text, "Počet dospělých");
+                int senior = inputValidation.ValidateNumber(NumberOfSeniorsTextBox.Text, "Počet seniorů");
+                int disabled = inputValidation.ValidateNumber(NumberOfDisabledTextBox.Text,"Počet postižených");
                 CultureActionType actionType = (CultureActionType)CultureActionTypeComboBox.SelectedIndex;
                 ExhibitionType exhibitionType = (ExhibitionType)CultureExhibitionType.SelectedIndex;
                 Organiser organiser = (Organiser)OrganiseComboBox.SelectedIndex;
-                int actionPrice = inputValidation.ValidateNumber(TicketPriceTextBox.Text);
+                int actionPrice = inputValidation.ValidateNumber(ActionPriceTextBox.Text, "Náklady na akci");
 
-                string notes = inputValidation.ValidateText(StringRichTextBox(NotesRichTextBox));
+                string notes = inputValidation.ValidateText(StringRichTextBox(NotesRichTextBox),"poznámka");
 
                 bool isFree = IsFreeCheckBox.IsChecked.HasValue ? IsFreeCheckBox.IsChecked.Value : false;
                 
                 
-                CultureAction action = new CultureAction(actionName, startDate, endDate, childern, adult, senior, actionType, exhibitionType, actionPrice, organiser, notes, isFree, UserId);
+                CultureAction action = new CultureAction(actionName, startDate, endDate, childern, adult, senior, disabled, actionType, exhibitionType, actionPrice, organiser, notes, isFree,  UserId);
                 return action;
             } 
             catch (Exception e) 
@@ -116,7 +116,7 @@ namespace EventHarbor.Screen
             CultureActionType actionType = (CultureActionType)CultureActionTypeComboBox.SelectedIndex;
             ExhibitionType exhibitionType = (ExhibitionType)CultureExhibitionType.SelectedIndex;
             Organiser organiser = (Organiser)OrganiseComboBox.SelectedIndex;
-            int ticketPrice = int.Parse(TicketPriceTextBox.Text.Trim());
+            int actionPrice = int.Parse(ActionPriceTextBox.Text.Trim());
             string notes = StringRichTextBox(NotesRichTextBox);
             bool isFree = IsFreeCheckBox.IsChecked.HasValue ? IsFreeCheckBox.IsChecked.Value : false;
 
@@ -178,10 +178,11 @@ namespace EventHarbor.Screen
             NumberOfChildrenTextBox.Text = action.NumberOfChildren.ToString();
             NumberOfAdultsTextBox.Text = action.NumberOfAdults.ToString();
             NumberOfSeniorsTextBox.Text = action.NumberOfSeniors.ToString();
+            NumberOfDisabledTextBox.Text = action.NumberOfDisabled.ToString();
             CultureActionTypeComboBox.SelectedIndex = (int)action.CultureActionType;
             CultureExhibitionType.SelectedIndex = (int)action.ExhibitionType;
             OrganiseComboBox.SelectedIndex = (int)action.Organiser;
-            TicketPriceTextBox.Text = action.TicketPrice.ToString();
+            ActionPriceTextBox.Text = action.ActionPrice.ToString();
             NotesRichTextBox.Document.Blocks.Clear();
             NotesRichTextBox.Document.Blocks.Add(new Paragraph(new Run(action.CultureActionNotes)));
             IsFreeCheckBox.IsChecked = action.IsFree;

@@ -57,13 +57,13 @@ namespace EventHarbor.Class
 
         //testing function for inster to collection, in future probably will be removed
         public bool AddCultureAction(string actionName, DateOnly? startDate, DateOnly? endDate,
-                             int numberOfChildern, int numberOfAdult, int numberOfSenior,
+                             int numberOfChildern, int numberOfAdult, int numberOfSenior,int numberOfDisabled,
                              CultureActionType cultureActionType, ExhibitionType exhibitionType,
                              float ticketPrice, Organiser oraganiser, string notes, bool isFree, int owner)
         {
 
             CultureAction cultureAction = new CultureAction(actionName, startDate, endDate,
-                                                            numberOfChildern, numberOfAdult, numberOfSenior,
+                                                            numberOfChildern, numberOfAdult, numberOfSenior,numberOfDisabled,
                                                             cultureActionType, exhibitionType, ticketPrice,
                                                             oraganiser, notes, isFree, owner);
 
@@ -93,9 +93,10 @@ namespace EventHarbor.Class
                 actionToModify.NumberOfChildren = editedAction.NumberOfChildren;
                 actionToModify.NumberOfAdults = editedAction.NumberOfAdults;
                 actionToModify.NumberOfSeniors = editedAction.NumberOfSeniors;
+                actionToModify.NumberOfDisabled = editedAction.NumberOfDisabled;
                 actionToModify.CultureActionType = editedAction.CultureActionType;
                 actionToModify.ExhibitionType = editedAction.ExhibitionType;
-                actionToModify.TicketPrice = editedAction.TicketPrice;
+                actionToModify.ActionPrice = editedAction.ActionPrice;
                 actionToModify.Organiser = editedAction.Organiser;
                 actionToModify.CultureActionNotes = editedAction.CultureActionNotes;
                 actionToModify.IsFree = editedAction.IsFree;

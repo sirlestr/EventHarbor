@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.IO.Packaging;
 
 namespace EventHarbor.Class
 {
@@ -18,12 +19,12 @@ namespace EventHarbor.Class
 
 
         //todo
-        public int ValidateNumber(string input)
+        public int ValidateNumber(string input, string itemToValidate )
         {
             
             if (string.IsNullOrEmpty(input))
             {
-                throw new Exception("Input cannot be empty");
+                throw new ArgumentException($"{itemToValidate} není číslo, zkontroluj hodnoty");
                 
             }
 
@@ -33,14 +34,14 @@ namespace EventHarbor.Class
             }
             else
             {
-                throw new ArgumentException("Input is not a valid number");
+                throw new ArgumentException($"{itemToValidate} není platné číslo, zkontroluj hodnoty");
             }
 
 
         }
 
 
-        public string  ValidateText(string input)
+        public string  ValidateText(string input, string itemToValidate)
         {
             if (!string.IsNullOrEmpty(input))
             {
@@ -48,18 +49,18 @@ namespace EventHarbor.Class
             }
             else
             {
-                throw new ArgumentException("Input cannot be empty");
+                throw new ArgumentException($"{itemToValidate}  nemůže být prázdný, zadej prosím hodnotu");
             }
         }
 
 
 
-        public DateOnly ValidateDateOnly(DateTime? input)
+        public DateOnly ValidateDateOnly(DateTime? input, string itemToValidate)
         {
-            return ConvertFromDateTime(input);
+            return ConvertFromDateTime(input, itemToValidate);
         }
 
-        private DateOnly ConvertFromDateTime(DateTime? input)
+        private DateOnly ConvertFromDateTime(DateTime? input,string itemToValidate)
         {
             if (input.HasValue)
             {
@@ -67,7 +68,7 @@ namespace EventHarbor.Class
             }
             else
             {
-                throw new Exception("Input cannot be empty");
+                throw new Exception($"{itemToValidate} nemůže být prázdný, zadej prosím hodnotu");
             }
         }
     }
