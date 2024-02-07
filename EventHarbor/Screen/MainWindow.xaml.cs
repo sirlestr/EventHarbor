@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Collections.Specialized;
 
 namespace EventHarbor
 {
@@ -13,8 +14,17 @@ namespace EventHarbor
     public partial class MainWindow : Window
     {
         UserManager userManager;
-        CultureActionManager cultureActionManager = new CultureActionManager();
         
+        private ObservableCollection<CultureAction> localCollection = new ObservableCollection<CultureAction>();
+        internal ObservableCollection<CultureAction> LocalCollection
+        {
+            get { return localCollection; }
+            set { localCollection = value; }
+        }
+
+        internal CultureActionManager cultureActionManager = new CultureActionManager();
+
+
         private int UserId;
         private string UserName;
         
@@ -22,30 +32,39 @@ namespace EventHarbor
         public MainWindow(UserManager manager)
 
         {
-            InitializeComponent();
+            
             // for user ID and name of logged user
             userManager = manager;
 
             //assing user data to variables for display in view
             UserId = userManager.LoggedUserId;
             UserName = userManager.LoggedUserName;
-            LoggedUserNameTextBlock.Text = userManager.LoggedUserName;
-            CultureActionDataGrid.ItemsSource = cultureActionManager.CultureActions;
-            //load all culture actions from db to DataGrid
 
-            if (cultureActionManager.GetAllCultureActionsFromDb(cultureActionManager, UserId))
-            {
-                MessageBox.Show("Načteno");
-                CultureActionDataGrid.Items.Refresh();
-            }
+            InitializeComponent();
+
+            CultureActionDataGrid.ItemsSource = LocalCollection;
+            LoggedUserNameTextBlock.Text = userManager.LoggedUserName;
+
+            cultureActionManager.GetCultureActionsFromDb(LocalCollection, UserId);
+            CultureActionDataGrid.Items.Refresh();
+
+
+
+
+
 
 
         }
 
+       
+
         private void CloseBtn_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
-            
+            //this.Close();
+            cultureActionManager.ForceMerge(LocalCollection, UserId);
+            Application.Current.Shutdown();
+
+
         }
 
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -57,13 +76,49 @@ namespace EventHarbor
 
         private void AddBtn_Click(object sender, RoutedEventArgs e)
         {
-            // cultureActionManager.AddCultureActionToDb(UserId);
-            //cultureActionManager.GetAllCultureActionsFromDb(cultureActionManager, UserId);
             
-            CultureActionDetail AddActionWindow = new CultureActionDetail(userManager);
+            
+            CultureActionDetail AddActionWindow = new CultureActionDetail(userManager, LocalCollection, true);
             AddActionWindow.ShowDialog();
             
 
+
+        }
+
+
+        
+        private void button2_Click(object sender, RoutedEventArgs e)
+        {
+            if (cultureActionManager.GetCultureActionsFromDb(LocalCollection, UserId))
+            {
+                MessageBox.Show("Načteno");
+                CultureActionDataGrid.Items.Refresh();
+            }
+
+        }
+
+        private void ChangeBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (CultureActionDataGrid.SelectedItem != null)
+            {
+               
+                CultureAction action = (CultureAction)CultureActionDataGrid.SelectedItem;
+                if (action != null)
+                {
+                    CultureActionDetail EditWindow = new CultureActionDetail(userManager, LocalCollection, false);
+                    EditWindow.FillFormData(action);
+                    EditWindow.ShowDialog();
+                }
+                //EditWindow.ShowDialog();
+                CultureActionDataGrid.Items.Refresh();
+            }
+        }
+
+        private void RemoveBtn_Click(object sender, RoutedEventArgs e)
+        {
+            cultureActionManager.RemoveItemFromCollection(LocalCollection, (CultureAction)CultureActionDataGrid.SelectedItem);
+            
         }
     }
+
 }

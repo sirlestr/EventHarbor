@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Windows.Controls;
 
 namespace EventHarbor.Class
 {
@@ -18,7 +19,7 @@ namespace EventHarbor.Class
     public enum ExhibitionType
     {
         [Description("Všeobecné")] Default,
-        [Description("Hystorická")] Hystorical,
+        [Description("Historická")] Historical,
         [Description("Technická")] Technical,
         [Description("Interaktivní")] Interactive,       
         [Description("Umělecká")] Artistic,
@@ -30,9 +31,10 @@ namespace EventHarbor.Class
         [Description("Muzeum")] Museum,
         [Description("Ostatní")] Other,
         [Description("Město")] City }
-    class CultureAction
+    internal class CultureAction
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)] 
         public int CultureActionId { get; set; }
         public string CultureActionName { get; set; }
         public DateOnly? ActionStartDate { get; set; }
@@ -49,19 +51,12 @@ namespace EventHarbor.Class
         public bool IsFree { get; set; }
 
         [NotMapped]
-        private int LastId
-        {
-            get
-            {
-                int lastId = 0;
-                return lastId;
-            }
-            set { GetLastIdFromDb(); }
-
-        }
+        private int LastId { get; set; }
+    
+        
 
         //empty constructor for DataContext
-        public CultureAction() { }
+        internal CultureAction() { }
 
 
         /// <summary>
@@ -79,12 +74,13 @@ namespace EventHarbor.Class
         /// <param name="oraganiser">Who organise this event</param>
         /// <param name="notes">notes</param>
         /// <param name="owner">Id logged user who create this record</param>
-        public CultureAction(string actionName, DateOnly? startDate, DateOnly? endDate,
+        internal CultureAction( string actionName, DateOnly? startDate, DateOnly? endDate,
                              int numberOfChildern, int numberOfAdult, int numberOfSenior,
                              CultureActionType cultureActionType, ExhibitionType exhibitionType,
                              float ticketPrice, Organiser oraganiser, string notes,bool isFree, int owner)
         {
-            
+            LastId = GetLastIdFromDb();
+            CultureActionId = LastId;
             CultureActionType = cultureActionType;
             CultureActionName = actionName;
             ActionStartDate = startDate;
@@ -104,25 +100,69 @@ namespace EventHarbor.Class
 
 
 
-
-
-
-
         //WIP - Get last id from database , probably will be removed
-        private void GetLastIdFromDb()
+        public int GetLastIdFromDb()
         {
-            using (var context = new DatabaseContextManager())
+            using (DatabaseContextManager context = new DatabaseContextManager())
             {
-                var lastRecord = context.CultureActionsDatabase.OrderByDescending(x => x.CultureActionId).LastOrDefault();
-                if (lastRecord != null)
+                if (context.CultureActionsDatabase.Count() > 0)
                 {
-                    LastId = lastRecord.CultureActionId;
+                    LastId = context.CultureActionsDatabase.Max(x => x.CultureActionId);
+                    return LastId + 1;
                 }
-                else { LastId = 0; }
+                return LastId = 0;
             }
         }
 
 
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            return CultureActionId == ((CultureAction)obj).CultureActionId;
+        }
+
+        public override int GetHashCode()
+        {
+            return CultureActionId.GetHashCode();
+        }
+
+        public static bool operator ==(CultureAction left, CultureAction right)
+        {
+            if (ReferenceEquals(left, right))
+            {
+                return true;
+            }
+            if (ReferenceEquals(left, null) || ReferenceEquals(right, null))
+            {
+                return false;
+            }
+
+            // Comparison of all class parameters
+            return left.CultureActionId == right.CultureActionId
+                && left.CultureActionName == right.CultureActionName
+                && left.ActionStartDate == right.ActionStartDate
+                && left.ActionEndDate == right.ActionEndDate
+                && left.NumberOfChildren == right.NumberOfChildren
+                && left.NumberOfAdults == right.NumberOfAdults
+                &&left.NumberOfSeniors == right.NumberOfSeniors
+                &&left.CultureActionType == right.CultureActionType
+                &&left.ExhibitionType == right.ExhibitionType
+                &&left.TicketPrice == right.TicketPrice
+                &&left.Organiser == right.Organiser
+                &&left.CultureActionNotes == right.CultureActionNotes
+                &&left.IsFree == right.IsFree
+                ;
+        }
+
+
+        public static bool operator !=(CultureAction left, CultureAction right)
+        {
+            return !(left == right);
+        }
 
 
 
