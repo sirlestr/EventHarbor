@@ -20,6 +20,7 @@ namespace EventHarbor.Screen
         int UserId;
         int LastId;
         CultureAction SelectedAction;
+        InputValidation inputValidation = new InputValidation();
         private readonly bool IsNew;
 
         /// <summary>
@@ -75,18 +76,36 @@ namespace EventHarbor.Screen
         //need improvement for data validation
         private CultureAction CreateActionObject()
         {
-            string actionName = CultureActionNameTextBox.Text;
-            DateOnly? start = StartDatePicker.SelectedDate.HasValue ? DateOnly.FromDateTime(StartDatePicker.SelectedDate.Value) : null;
-            DateOnly? end = EndDatePicker.SelectedDate.HasValue ? DateOnly.FromDateTime(EndDatePicker.SelectedDate.Value) : null;
-            int childern = NumberOfChildrenTextBox.Text != null ? int.Parse(NumberOfChildrenTextBox.Text.Trim()) : 0;
-            int adult = NumberOfAdultsTextBox.Text != null ? int.Parse(NumberOfAdultsTextBox.Text.Trim()) : 0;
-            int senior = NumberOfSeniorsTextBox.Text != null ? int.Parse(NumberOfSeniorsTextBox.Text.Trim()) : 0;
+            
+            string actionName = inputValidation.ValidateText(CultureActionNameTextBox.Text);
+            DateOnly starDate = inputValidation.ValidateDateOnly(StartDatePicker.SelectedDate);
+            DateOnly endDate = inputValidation.ValidateDateOnly(EndDatePicker.SelectedDate);
+            int childern = inputValidation.ValidateNumber(NumberOfChildrenTextBox.Text);
+            int adult = inputValidation.ValidateNumber(NumberOfAdultsTextBox.Text);
+            int senior = inputValidation.ValidateNumber(NumberOfSeniorsTextBox.Text);
+            // int disabled = inputValidation.ValidateNumber(NumberOfDisabledTextBox.Text);
             CultureActionType actionType = (CultureActionType)CultureActionTypeComboBox.SelectedIndex;
             ExhibitionType exhibitionType = (ExhibitionType)CultureExhibitionType.SelectedIndex;
             Organiser organiser = (Organiser)OrganiseComboBox.SelectedIndex;
-            int ticketPrice = int.Parse(TicketPriceTextBox.Text.Trim());
-            string notes = StringRichTextBox(NotesRichTextBox);
+            int actionPrice = inputValidation.ValidateNumber(TicketPriceTextBox.Text);
+            
+            string notes = inputValidation.ValidateText(StringRichTextBox(NotesRichTextBox));
+            
             bool isFree = IsFreeCheckBox.IsChecked.HasValue ? IsFreeCheckBox.IsChecked.Value : false;
+
+
+            //string actionName = CultureActionNameTextBox.Text;
+            //DateOnly? start = StartDatePicker.SelectedDate.HasValue ? DateOnly.FromDateTime(StartDatePicker.SelectedDate.Value) : null;
+            // DateOnly? end = EndDatePicker.SelectedDate.HasValue ? DateOnly.FromDateTime(EndDatePicker.SelectedDate.Value) : null;
+            // int childern = NumberOfChildrenTextBox.Text != null ? int.Parse(NumberOfChildrenTextBox.Text.Trim()) : 0;
+            // int adult = NumberOfAdultsTextBox.Text != null ? int.Parse(NumberOfAdultsTextBox.Text.Trim()) : 0;
+            // int senior = NumberOfSeniorsTextBox.Text != null ? int.Parse(NumberOfSeniorsTextBox.Text.Trim()) : 0;
+            //CultureActionType actionType = (CultureActionType)CultureActionTypeComboBox.SelectedIndex;
+            //ExhibitionType exhibitionType = (ExhibitionType)CultureExhibitionType.SelectedIndex;
+            //Organiser organiser = (Organiser)OrganiseComboBox.SelectedIndex;
+            //int ticketPrice = int.Parse(TicketPriceTextBox.Text.Trim());
+            //string notes = StringRichTextBox(NotesRichTextBox);
+            //bool isFree = IsFreeCheckBox.IsChecked.HasValue ? IsFreeCheckBox.IsChecked.Value : false;
 
 
             CultureAction action = new CultureAction(actionName, start, end, childern, adult, senior, actionType, exhibitionType, ticketPrice, organiser, notes, isFree, UserId);
