@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:EventHarbor.Class"
         mc:Ignorable="d"
         Title="CultureActionDetail"
-                Height="450" Width="800"
+                Height="500" Width="800"
         AllowsTransparency="True" 
         Background="Transparent"
         WindowStyle="None" 
@@ -54,8 +54,8 @@
                         <RowDefinition Height="15"/>
                         <RowDefinition Height="30"/>
                         <RowDefinition Height="90"/>
-                        <RowDefinition Height="90"/>
-                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="122"/>
+                        <RowDefinition Height="46"/>
 
                         <RowDefinition/>
                     </Grid.RowDefinitions>
@@ -88,8 +88,12 @@
                             <TextBlock x:Name="textBlock6_Copy1" Style="{StaticResource FormBlockStyle}" Text="Počet seniorů: " Width="125"/>
                             <TextBox x:Name="NumberOfSeniorsTextBox" Style="{StaticResource FormBoxStyle}" Width="50" Margin="1,0,0,0" Text="55"/>
                         </WrapPanel>
+                        <WrapPanel>
+                            <TextBlock x:Name="textBlock9" Style="{StaticResource FormBlockStyle}" Text="Počet ZTP: " Width="125"/>
+                            <TextBox x:Name="NumberOfDisabledTextBox" Style="{StaticResource FormBoxStyle}" Width="50" Margin="1,0,0,0" Text="55"/>
+                        </WrapPanel>
                     </StackPanel>
-                    <StackPanel Grid.Row="3" Grid.Column="1">
+                    <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Margin="328,0,0,0">
                         <WrapPanel Orientation="Horizontal" Margin="0,0,0,3">
                             <TextBlock x:Name="textBlock7" Style="{StaticResource FormBlockStyle}" Text="Typ akce: " Width="90" Margin="0,0,0,0"/>
                             <ComboBox x:Name="CultureActionTypeComboBox" Width="140" Height="25" FontSize="16"
@@ -127,7 +131,7 @@
                     </StackPanel>
                     <StackPanel Grid.Row="5" Grid.ColumnSpan="2">
                         <TextBlock x:Name="textBlock8" Style="{StaticResource FormBlockStyle}" Text="Poznámky k akci" HorizontalAlignment="Center"/>
-                        <RichTextBox x:Name="NotesRichTextBox" Height="100" FontSize="14">
+                        <RichTextBox x:Name="NotesRichTextBox" Height="119" FontSize="14">
                             <FlowDocument>
                                 <Paragraph>
                                     <Run Text="RichTextBox"/>
@@ -135,10 +139,10 @@
                             </FlowDocument>
                         </RichTextBox>
                     </StackPanel>
-                    <StackPanel Grid.Column="1" Orientation="Horizontal" Grid.Row="1">
+                    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="2" Margin="328,0,0,0">
                         <WrapPanel HorizontalAlignment="Left" VerticalAlignment="Center">
-                            <TextBlock x:Name="textBlock3_Copy" Text="Cena Lístku" Style="{StaticResource FormBlockStyle}" VerticalAlignment="Center" HorizontalAlignment="Center"  />
-                            <TextBox x:Name="TicketPriceTextBox" Style="{StaticResource FormBoxStyle}" VerticalAlignment="Center" HorizontalAlignment="Center" Text="150"/>
+                            <TextBlock x:Name="textBlock3_Copy" Text="Náklady na akci: " Style="{StaticResource FormBlockStyle}" VerticalAlignment="Center" HorizontalAlignment="Center"  />
+                            <TextBox x:Name="ActionPriceTextBox" Style="{StaticResource FormBoxStyle}" VerticalAlignment="Center" HorizontalAlignment="Center" Text="150" Width="85"/>
                         </WrapPanel>
                         <CheckBox x:Name="IsFreeCheckBox" Content="Akce je zdarma" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0,0,0"/>
                     </StackPanel>

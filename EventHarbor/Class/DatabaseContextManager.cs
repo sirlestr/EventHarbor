@@ -62,9 +62,10 @@ namespace EventHarbor.Class
                             dbItem.NumberOfChildren = localItem.NumberOfChildren;
                             dbItem.NumberOfAdults = localItem.NumberOfAdults;
                             dbItem.NumberOfSeniors = localItem.NumberOfSeniors;
+                            dbItem.NumberOfDisabled = localItem.NumberOfDisabled;
                             dbItem.CultureActionType = localItem.CultureActionType;
                             dbItem.ExhibitionType = localItem.ExhibitionType;
-                            dbItem.TicketPrice = localItem.TicketPrice;
+                            dbItem.ActionPrice = localItem.ActionPrice;
                             dbItem.Organiser = localItem.Organiser;
                             dbItem.CultureActionNotes = localItem.CultureActionNotes;
                             dbItem.IsFree = localItem.IsFree;

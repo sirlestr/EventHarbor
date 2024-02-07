@@ -42,9 +42,10 @@ namespace EventHarbor.Class
         public int NumberOfChildren { get; set; } = 0;
         public int NumberOfAdults { get; set; } = 0;
         public int NumberOfSeniors { get; set; } = 0;
+        public int NumberOfDisabled { get; set; } = 0;
         public CultureActionType CultureActionType { get; set; } = CultureActionType.Default;
         public ExhibitionType ExhibitionType { get; set; } = ExhibitionType.Default;
-        public float TicketPrice { get; set; }
+        public float ActionPrice { get; set; }
         public Organiser Organiser { get; set; } = Organiser.Museum;
         public string CultureActionNotes { get; set; }
         public int OwnerId { get; set; }
@@ -68,16 +69,17 @@ namespace EventHarbor.Class
         /// <param name="numberOfChildern">Number of young participant</param>
         /// <param name="numberOfAdult">Number of adult participant</param>
         /// <param name="numberOfSenior">Number of seniors participant </param>
+        /// <param name="numberOfDisabled">Number of disabled participant </param>
         /// <param name="cultureActionType">Type of Action</param>
         /// <param name="exhibitionType">Type of exhibition</param>
-        /// <param name="ticketPrice">ticker price</param>
+        /// <param name="actionPrice">action price</param>
         /// <param name="oraganiser">Who organise this event</param>
         /// <param name="notes">notes</param>
         /// <param name="owner">Id logged user who create this record</param>
         internal CultureAction( string actionName, DateOnly? startDate, DateOnly? endDate,
-                             int numberOfChildern, int numberOfAdult, int numberOfSenior,
+                             int numberOfChildern, int numberOfAdult, int numberOfSenior,int numberOfDisabled,
                              CultureActionType cultureActionType, ExhibitionType exhibitionType,
-                             float ticketPrice, Organiser oraganiser, string notes,bool isFree, int owner)
+                             float actionPrice, Organiser oraganiser, string notes,bool isFree, int owner)
         {
             LastId = GetLastIdFromDb();
             CultureActionId = LastId;
@@ -88,8 +90,9 @@ namespace EventHarbor.Class
             NumberOfChildren = numberOfChildern;
             NumberOfAdults = numberOfAdult;
             NumberOfSeniors = numberOfSenior;
+            NumberOfDisabled = numberOfDisabled;
             ExhibitionType = exhibitionType;
-            TicketPrice = ticketPrice;
+            ActionPrice = actionPrice;
             Organiser = oraganiser;
             CultureActionNotes = notes;
             IsFree = isFree;
@@ -149,9 +152,10 @@ namespace EventHarbor.Class
                 && left.NumberOfChildren == right.NumberOfChildren
                 && left.NumberOfAdults == right.NumberOfAdults
                 &&left.NumberOfSeniors == right.NumberOfSeniors
-                &&left.CultureActionType == right.CultureActionType
+                && left.NumberOfDisabled == right.NumberOfDisabled
+                && left.CultureActionType == right.CultureActionType
                 &&left.ExhibitionType == right.ExhibitionType
-                &&left.TicketPrice == right.TicketPrice
+                &&left.ActionPrice == right.ActionPrice
                 &&left.Organiser == right.Organiser
                 &&left.CultureActionNotes == right.CultureActionNotes
                 &&left.IsFree == right.IsFree
