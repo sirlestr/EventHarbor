@@ -2,12 +2,12 @@
 
 
 ### In Progress
+- [ ] Add try-catch statement
 
-- [ ] Data input validation
 
 ### Todo
 
-- [ ] Add try-catch statement
+
 - [ ] Statistic output from all or selected action
   - [ ] total of all people at the event
   - [ ] Summary of total cost of the event
@@ -23,7 +23,7 @@
 
 
 ### Done ✓
-
+- [x] Data input validation
 - [x] Basic UI 
 - [x] User class
 - [x] Register, login and reset password
