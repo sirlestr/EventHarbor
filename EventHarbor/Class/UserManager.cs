@@ -2,7 +2,7 @@
 {
     public class UserManager
     {
-        
+
         public UserManager manager;
         public int LoggedUserId { get; private set; }
         public string LoggedUserName { get; private set; }
@@ -82,37 +82,5 @@
 
             }
         }
-
-
-        //to do classes
-        public void RemoveUser(User user)
-        {
-            using (var context = new DatabaseContextManager())
-            {
-                context.Users.Remove(user);
-                context.SaveChanges();
-            }
-        }
-
-        public void UpdateUser(User user)
-        {
-            using (var context = new DatabaseContextManager())
-            {
-                context.Users.Update(user);
-                context.SaveChanges();
-            }
-        }
-
-        public void FindUser(User user)
-        {
-            using (var context = new DatabaseContextManager())
-            {
-                context.Users.Find(user);
-            }
-        }
-
-
-
-
     }
 }
