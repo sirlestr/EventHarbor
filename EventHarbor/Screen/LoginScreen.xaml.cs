@@ -13,14 +13,9 @@ namespace EventHarbor
     {
         public LoginScreen()
         {
-           
-            
-            InitializeComponent();
 
-            
-            
-            
-            
+            InitializeComponent();
+ 
         }
 
 
@@ -72,7 +67,6 @@ namespace EventHarbor
                             MessageBox.Show("Uživatel nalezen ale heslo je zadané chybně, prosím opakuj.");
                             break;
                         case 1:
-                            MessageBox.Show("Přihlášeno");
                             MainWindow mainWindow = new MainWindow(userManager);
                             mainWindow.Show();
                             this.Close();
