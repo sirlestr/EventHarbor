@@ -130,38 +130,27 @@ namespace EventHarbor.Class
         {
             DbManager.MergeDataWithDb(localCollection, userId);
         }
-
+       
         private void LocalCollectionCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                if (DbManager.MergeDataWithDb(LocalCollection, OwnerId))
-                {
-                    MessageBox.Show("Added to Db");
-                }
-            }
-            if (e.Action == NotifyCollectionChangedAction.Remove)
-            {
-                if (DbManager.MergeDataWithDb(LocalCollection, OwnerId))
-                {
-                    MessageBox.Show("Removed from Db");
-                }
-            }
-            if (e.Action == NotifyCollectionChangedAction.Replace)
-            {
-                if (DbManager.MergeDataWithDb(LocalCollection, OwnerId))
-                {
-                    MessageBox.Show("Replaced in Db");
-                }
-            }
-            if (e.Action == NotifyCollectionChangedAction.Move)
-            {
-                if (DbManager.MergeDataWithDb(LocalCollection, OwnerId))
-                {
-                    MessageBox.Show("Moved in Db");
-                }
-            }
+            var action = e.Action;
+            var mergeSuccessful = DbManager.MergeDataWithDb(LocalCollection, OwnerId);
 
+            switch (action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    if (mergeSuccessful) MessageBox.Show("Added to Db");
+                    break;
+                case NotifyCollectionChangedAction.Remove:
+                    if (mergeSuccessful) MessageBox.Show("Removed from Db");
+                    break;
+                case NotifyCollectionChangedAction.Replace:
+                    if (mergeSuccessful) MessageBox.Show("Replaced in Db");
+                    break;
+                case NotifyCollectionChangedAction.Move:
+                    if (mergeSuccessful) MessageBox.Show("Moved in Db");
+                    break;
+            }
         }
     }
 }

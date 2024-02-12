@@ -82,7 +82,7 @@ namespace EventHarbor.Class
                     {
                         CultureAction? dbItem = dbCollection.FirstOrDefault(x => x.CultureActionId == localItem.CultureActionId);
 
-                        if ((dbItem == null) )
+                        if (dbItem == null)
                         {
                             context.CultureActionsDatabase.Add(localItem);
                         }
