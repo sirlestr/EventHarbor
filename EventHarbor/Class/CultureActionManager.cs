@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Windows;
 
 
@@ -57,13 +58,13 @@ namespace EventHarbor.Class
 
         //testing function for inster to collection, in future probably will be removed
         public bool AddCultureAction(string actionName, DateOnly? startDate, DateOnly? endDate,
-                             int numberOfChildern, int numberOfAdult, int numberOfSenior,int numberOfDisabled,
+                             int numberOfChildern, int numberOfAdult, int numberOfSenior, int numberOfDisabled,
                              CultureActionType cultureActionType, ExhibitionType exhibitionType,
                              float ticketPrice, Organiser oraganiser, string notes, bool isFree, int owner)
         {
 
             CultureAction cultureAction = new CultureAction(actionName, startDate, endDate,
-                                                            numberOfChildern, numberOfAdult, numberOfSenior,numberOfDisabled,
+                                                            numberOfChildern, numberOfAdult, numberOfSenior, numberOfDisabled,
                                                             cultureActionType, exhibitionType, ticketPrice,
                                                             oraganiser, notes, isFree, owner);
 
@@ -82,7 +83,7 @@ namespace EventHarbor.Class
             localAction.Add(cultureAction);
         }
 
-        public void EditAction(CultureAction selectedAction, CultureAction editedAction, ObservableCollection<CultureAction> localColection )
+        public void EditAction(CultureAction selectedAction, CultureAction editedAction, ObservableCollection<CultureAction> localColection)
         {
             CultureAction actionToModify = localColection.FirstOrDefault(x => x.CultureActionId == selectedAction.CultureActionId);
             if (actionToModify != null)
@@ -100,9 +101,9 @@ namespace EventHarbor.Class
                 actionToModify.Organiser = editedAction.Organiser;
                 actionToModify.CultureActionNotes = editedAction.CultureActionNotes;
                 actionToModify.IsFree = editedAction.IsFree;
-                
+
                 //for development purpose only; will be removed in future
-                MessageBox.Show("Edited");
+                Debug.WriteLine("Edited");
             }
 
         }
@@ -110,16 +111,20 @@ namespace EventHarbor.Class
         public void RemoveItemFromCollection(ObservableCollection<CultureAction> localAction, CultureAction cultureAction)
         {
             CultureAction actionToModify = localAction.FirstOrDefault(x => x.CultureActionId == cultureAction.CultureActionId);
+
             if (actionToModify != null)
             {
                 localAction.Remove(actionToModify);
-                //for development purpose only; will be removed in future
-                MessageBox.Show("Removed");
             }
+            else
+            {
+                Debug.WriteLine("no action to modify");
+            }
+
         }
 
 
-        
+
 
         public void ForceMerge(ObservableCollection<CultureAction> localCollection, int userId)
         {
@@ -130,7 +135,7 @@ namespace EventHarbor.Class
         {
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
-                if (DbManager.MergeDataWithDb(LocalCollection,OwnerId))
+                if (DbManager.MergeDataWithDb(LocalCollection, OwnerId))
                 {
                     MessageBox.Show("Added to Db");
                 }

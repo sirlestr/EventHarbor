@@ -1,10 +1,10 @@
 ﻿using EventHarbor.Class;
 using EventHarbor.Screen;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Collections.Specialized;
 
 namespace EventHarbor
 {
@@ -14,7 +14,7 @@ namespace EventHarbor
     public partial class MainWindow : Window
     {
         UserManager userManager;
-        
+
         private ObservableCollection<CultureAction> localCollection = new ObservableCollection<CultureAction>();
         internal ObservableCollection<CultureAction> LocalCollection
         {
@@ -27,12 +27,12 @@ namespace EventHarbor
 
         private int UserId;
         private string UserName;
-        
+
 
         public MainWindow(UserManager manager)
 
         {
-            
+
             // for user ID and name of logged user
             userManager = manager;
 
@@ -56,7 +56,7 @@ namespace EventHarbor
 
         }
 
-       
+
 
         private void CloseBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -76,17 +76,17 @@ namespace EventHarbor
 
         private void AddBtn_Click(object sender, RoutedEventArgs e)
         {
-            
-            
+
+
             CultureActionDetail AddActionWindow = new CultureActionDetail(userManager, LocalCollection, true);
             AddActionWindow.ShowDialog();
-            
+
 
 
         }
 
 
-        
+
         private void button2_Click(object sender, RoutedEventArgs e)
         {
             if (cultureActionManager.GetCultureActionsFromDb(LocalCollection, UserId))
@@ -101,23 +101,40 @@ namespace EventHarbor
         {
             if (CultureActionDataGrid.SelectedItem != null)
             {
-               
-                CultureAction action = (CultureAction)CultureActionDataGrid.SelectedItem;
-                if (action != null)
+                try
                 {
-                    CultureActionDetail EditWindow = new CultureActionDetail(userManager, LocalCollection, false);
-                    EditWindow.FillFormData(action);
-                    EditWindow.ShowDialog();
+                    CultureAction action = (CultureAction)CultureActionDataGrid.SelectedItem;
+                    if (action != null)
+                    {
+                        CultureActionDetail EditWindow = new CultureActionDetail(userManager, LocalCollection, false);
+                        EditWindow.FillFormData(action);
+                        EditWindow.ShowDialog();
+                    }
+
+                    CultureActionDataGrid.Items.Refresh();
                 }
-                //EditWindow.ShowDialog();
-                CultureActionDataGrid.Items.Refresh();
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
 
         private void RemoveBtn_Click(object sender, RoutedEventArgs e)
         {
-            cultureActionManager.RemoveItemFromCollection(LocalCollection, (CultureAction)CultureActionDataGrid.SelectedItem);
-            
+            if (CultureActionDataGrid.SelectedItem != null)
+            {
+                cultureActionManager.RemoveItemFromCollection(LocalCollection, (CultureAction)CultureActionDataGrid.SelectedItem);
+                // Removed successfully
+                Debug.WriteLine("Removed");
+            }
+            else
+            {
+                //no item is selected 
+                Debug.WriteLine("no item is selected");
+            }
+
+
         }
     }
 
