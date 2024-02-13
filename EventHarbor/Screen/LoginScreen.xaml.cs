@@ -1,5 +1,7 @@
 ﻿using EventHarbor.Class;
 using EventHarbor.Screen;
+using System.Data;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -15,7 +17,7 @@ namespace EventHarbor
         {
 
             InitializeComponent();
- 
+           
         }
 
 
@@ -90,15 +92,23 @@ namespace EventHarbor
         //For developmen only, will be delted later
         private void ResetDbButton_Click(object sender, RoutedEventArgs e)
         {
-            DatabaseContextManager dbManager = new DatabaseContextManager();
-           
-            if (dbManager.Database.EnsureDeleted())
+            try
             {
-                MessageBox.Show("smazano");
+                
+                DatabaseContextManager dbManager = new DatabaseContextManager();
+                
+                if (dbManager.Database.EnsureDeleted())
+                {
+                    MessageBox.Show("smazano");
+                }
+               if (dbManager.Database.EnsureCreated())
+                {
+                    MessageBox.Show("Vytvořeno");
+                }
             }
-            if (dbManager.Database.EnsureCreated())
+            catch (Exception ex)
             {
-                MessageBox.Show("Vytvořeno");
+                MessageBox.Show(ex.Message);
             }
         }
     }

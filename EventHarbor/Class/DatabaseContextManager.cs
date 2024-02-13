@@ -29,9 +29,17 @@ namespace EventHarbor.Class
         /// <param name="optionsBuilder">The options builder</param>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            //AppDomain.CurrentDomain.SetData("DataDirectory",Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
+            
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer(@"Server=(LocalDB)\MSSQLLocalDB;Database=EventHarbor;Trusted_Connection=True;");
+
+            //optionsBuilder.UseSqlServer(@"Server=(LocalDB)\MSSQLLocalDB;AttachDBFilename=|DataDirectory|\EventHarbour\EventHarbour.mdf;Database=EventHarbour;Trusted_Connection=True;");
+            
+            optionsBuilder.UseSqlServer(@"Server=(LocalDB)\MSSQLLocalDB;Database=EventHarbour;Trusted_Connection=True;");
+
+
             optionsBuilder.LogTo(text => Debug.WriteLine(text), LogLevel.Information);
+
 
         }
 
