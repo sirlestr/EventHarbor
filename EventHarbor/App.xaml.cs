@@ -1,5 +1,9 @@
-﻿using System.Configuration;
+﻿using EventHarbor.Class;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using System.Configuration;
 using System.Data;
+using System.Data.Common;
+using System.Diagnostics;
 using System.Windows;
 
 namespace EventHarbor
@@ -11,8 +15,20 @@ namespace EventHarbor
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            base.OnStartup(e);
-            AppDomain.CurrentDomain.SetData("DataDirectory", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
+           DatabaseContextManager manager = new DatabaseContextManager();
+            if (manager.Database.EnsureCreated())
+            {
+                Debug.WriteLine("****************************");
+                Debug.WriteLine("Created");
+                Debug.WriteLine("****************************");
+            }
+            else
+            {
+                Debug.WriteLine("****************************");
+                Debug.WriteLine("Db Exist");
+                Debug.WriteLine("****************************");
+            }
+
         }
     }
 
