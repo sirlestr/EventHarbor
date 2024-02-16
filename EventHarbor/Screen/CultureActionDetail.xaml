@@ -158,7 +158,7 @@
                 <TextBlock 
                     x:Name="textBlock"
                     TextWrapping="Wrap"
-                    Text="EventHarbour"
+                    Text="EventHarbor"
                     Width="115" 
                     FontSize="16"
                     FontWeight="Bold" 

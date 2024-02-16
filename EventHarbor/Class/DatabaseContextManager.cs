@@ -29,16 +29,10 @@ namespace EventHarbor.Class
         /// <param name="optionsBuilder">The options builder</param>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            /* old code, 
-            base.OnConfiguring(optionsBuilder); 
-            optionsBuilder.UseSqlServer(@"Server=(LocalDB)\MSSQLLocalDB;Database=EventHarbour;Trusted_Connection=True;");
-            optionsBuilder.LogTo(text => Debug.WriteLine(text), LogLevel.Information);
-            */
-
-
+       
             string folder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             optionsBuilder.UseSqlite($"Data Source={System.IO.Path.Join(folder, "EventHarbor", "Data.db")}");
-
+            
             /* for development purposes only; will be removed in future
             Debug.WriteLine($"***************************************************************************************************************");
             Debug.WriteLine($"folder: {folder}");
