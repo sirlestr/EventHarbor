@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
+using System.IO;
 using System.Windows;
 
 namespace EventHarbor
@@ -15,7 +16,15 @@ namespace EventHarbor
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-           DatabaseContextManager manager = new DatabaseContextManager();
+            string path = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "EventHarbor");
+
+            DatabaseContextManager manager = new DatabaseContextManager();
+            //chceck if folder exist on startup, if not, then  create
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            //chceck if db exist on startup, if not, then  create
             if (manager.Database.EnsureCreated())
             {
                 Debug.WriteLine("****************************");
