@@ -2,7 +2,7 @@
 
 
 ### In Progress
-- [ ] Add try-catch statement
+- [ ] Statistic section
 
 
 ### Todo
@@ -28,4 +28,6 @@
 - [x] User class
 - [x] Register, login and reset password
 - [x] Event class
-- [x] Add, edit and remove Event   
+- [x] Add, edit and remove Event
+- [x] Add try-catch statement
+- [x] Switch from MSSQL to SQLite 3 
