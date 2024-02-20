@@ -10,10 +10,10 @@ namespace EventHarbor.Class
     {
         [Description("Nezvoleno")] Default,
         [Description("Divadelní představení")] Theatre,
-        [Description("Zámeká akce")] CastleEvent,
+        [Description("Zámecká akce")] CastleEvent,
         [Description("Vernisáž")] OpeningCeremony,
         [Description("Trh")] Fair,
-        [Description("Porhlídka Zámku")] CastleTour
+        [Description("Prohlídka Zámku")] CastleTour
     }
 
     public enum ExhibitionType
@@ -73,7 +73,7 @@ namespace EventHarbor.Class
         /// <param name="cultureActionType">Type of Action</param>
         /// <param name="exhibitionType">Type of exhibition</param>
         /// <param name="actionPrice">action price</param>
-        /// <param name="oraganiser">Who organise this event</param>
+        /// <param name="oraganiser">Who organizes this event</param>
         /// <param name="notes">notes</param>
         /// <param name="owner">Id logged user who create this record</param>
         internal CultureAction( string actionName, DateOnly? startDate, DateOnly? endDate,

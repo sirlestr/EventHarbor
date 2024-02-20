@@ -36,7 +36,7 @@ namespace EventHarbor
             // for user ID and name of logged user
             userManager = manager;
 
-            //assing user data to variables for display in view
+            //assign user data to variables for display in view
             UserId = userManager.LoggedUserId;
             UserName = userManager.LoggedUserName;
 

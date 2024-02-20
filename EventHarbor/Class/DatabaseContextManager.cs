@@ -38,7 +38,7 @@ namespace EventHarbor.Class
             Debug.WriteLine($"***************************************************************************************************************");
             Debug.WriteLine($"folder: {folder}");
             Debug.WriteLine($"DataDirectory: {Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}");
-            Debug.WriteLine($"CustomDirecotry: {System.IO.Path.Join(folder, "EventHarbor", "Data.db")}");
+            Debug.WriteLine($"CustomDirectory: {System.IO.Path.Join(folder, "EventHarbor", "Data.db")}");
             Debug.WriteLine($"***************************************************************************************************************");
             */
         }
