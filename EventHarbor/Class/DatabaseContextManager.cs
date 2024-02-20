@@ -32,7 +32,8 @@ namespace EventHarbor.Class
        
             string folder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             optionsBuilder.UseSqlite($"Data Source={System.IO.Path.Join(folder, "EventHarbor", "Data.db")}");
-            
+            optionsBuilder.LogTo(text => Debug.WriteLine(text), LogLevel.Information);
+
             /* for development purposes only; will be removed in future
             Debug.WriteLine($"***************************************************************************************************************");
             Debug.WriteLine($"folder: {folder}");
