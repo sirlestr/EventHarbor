@@ -38,7 +38,7 @@ namespace EventHarbor.Screen
                 {
                     if (userManager.AddUser(UserNameTextBox.Text, PwdBox1.Password))
                     {
-                        MessageBox.Show("Registrace proběhla");
+                        MessageBox.Show("Registrace proběhla v pořádku");
                         this.Close();
                         return;
                     }

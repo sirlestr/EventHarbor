@@ -29,10 +29,17 @@ namespace EventHarbor.Class
         /// <param name="optionsBuilder">The options builder</param>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer(@"Server=(LocalDB)\MSSQLLocalDB;Database=EventHarbor;Trusted_Connection=True;");
-            optionsBuilder.LogTo(text => Debug.WriteLine(text), LogLevel.Information);
-
+       
+            string folder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            optionsBuilder.UseSqlite($"Data Source={System.IO.Path.Join(folder, "EventHarbor", "Data.db")}");
+            
+            /* for development purposes only; will be removed in future
+            Debug.WriteLine($"***************************************************************************************************************");
+            Debug.WriteLine($"folder: {folder}");
+            Debug.WriteLine($"DataDirectory: {Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}");
+            Debug.WriteLine($"CustomDirecotry: {System.IO.Path.Join(folder, "EventHarbor", "Data.db")}");
+            Debug.WriteLine($"***************************************************************************************************************");
+            */
         }
 
 
@@ -82,7 +89,7 @@ namespace EventHarbor.Class
                     {
                         CultureAction? dbItem = dbCollection.FirstOrDefault(x => x.CultureActionId == localItem.CultureActionId);
 
-                        if ((dbItem == null) )
+                        if (dbItem == null)
                         {
                             context.CultureActionsDatabase.Add(localItem);
                         }

@@ -82,21 +82,21 @@ namespace EventHarbor.Screen
                 string actionName = inputValidation.ValidateText(CultureActionNameTextBox.Text, "Název akce");
                 DateOnly startDate = inputValidation.ValidateDateOnly(StartDatePicker.SelectedDate,"Začátek akce");
                 DateOnly endDate = inputValidation.ValidateDateOnly(EndDatePicker.SelectedDate, "Konec akce");
-                int childern = inputValidation.ValidateNumber(NumberOfChildrenTextBox.Text,"Počet dětí");
-                int adult = inputValidation.ValidateNumber(NumberOfAdultsTextBox.Text, "Počet dospělých");
-                int senior = inputValidation.ValidateNumber(NumberOfSeniorsTextBox.Text, "Počet seniorů");
-                int disabled = inputValidation.ValidateNumber(NumberOfDisabledTextBox.Text,"Počet postižených");
+                int childernCount = inputValidation.ValidateNumber(NumberOfChildrenTextBox.Text,"Počet dětí");
+                int adultCount = inputValidation.ValidateNumber(NumberOfAdultsTextBox.Text, "Počet dospělých");
+                int seniorCount = inputValidation.ValidateNumber(NumberOfSeniorsTextBox.Text, "Počet seniorů");
+                int disabledCount = inputValidation.ValidateNumber(NumberOfDisabledTextBox.Text,"Počet postižených");
                 CultureActionType actionType = (CultureActionType)CultureActionTypeComboBox.SelectedIndex;
                 ExhibitionType exhibitionType = (ExhibitionType)CultureExhibitionType.SelectedIndex;
                 Organiser organiser = (Organiser)OrganiseComboBox.SelectedIndex;
                 int actionPrice = inputValidation.ValidateNumber(ActionPriceTextBox.Text, "Náklady na akci");
 
-                string notes = inputValidation.ValidateText(StringRichTextBox(NotesRichTextBox),"poznámka");
+                string notes = inputValidation.ValidateText(ConvertRichTextBoxToString(NotesRichTextBox),"poznámka");
 
                 bool isFree = IsFreeCheckBox.IsChecked.HasValue ? IsFreeCheckBox.IsChecked.Value : false;
                 
                 
-                CultureAction action = new CultureAction(actionName, startDate, endDate, childern, adult, senior, disabled, actionType, exhibitionType, actionPrice, organiser, notes, isFree,  UserId);
+                CultureAction action = new CultureAction(actionName, startDate, endDate, childernCount, adultCount, seniorCount, disabledCount, actionType, exhibitionType, actionPrice, organiser, notes, isFree,  UserId);
                 return action;
             } 
             catch (Exception e) 
@@ -105,25 +105,6 @@ namespace EventHarbor.Screen
                 return null;
 
             }
-
-            /*
-            string actionName = CultureActionNameTextBox.Text;
-            DateOnly? start = StartDatePicker.SelectedDate.HasValue ? DateOnly.FromDateTime(StartDatePicker.SelectedDate.Value) : null;
-            DateOnly? end = EndDatePicker.SelectedDate.HasValue ? DateOnly.FromDateTime(EndDatePicker.SelectedDate.Value) : null;
-            int childern = NumberOfChildrenTextBox.Text != null ? int.Parse(NumberOfChildrenTextBox.Text.Trim()) : 0;
-            int adult = NumberOfAdultsTextBox.Text != null ? int.Parse(NumberOfAdultsTextBox.Text.Trim()) : 0;
-            int senior = NumberOfSeniorsTextBox.Text != null ? int.Parse(NumberOfSeniorsTextBox.Text.Trim()) : 0;
-            CultureActionType actionType = (CultureActionType)CultureActionTypeComboBox.SelectedIndex;
-            ExhibitionType exhibitionType = (ExhibitionType)CultureExhibitionType.SelectedIndex;
-            Organiser organiser = (Organiser)OrganiseComboBox.SelectedIndex;
-            int actionPrice = int.Parse(ActionPriceTextBox.Text.Trim());
-            string notes = StringRichTextBox(NotesRichTextBox);
-            bool isFree = IsFreeCheckBox.IsChecked.HasValue ? IsFreeCheckBox.IsChecked.Value : false;
-
-
-            CultureAction action = new CultureAction(actionName, startDate, endDate, childern, adult, senior, actionType, exhibitionType, actionPrice, organiser,notes, isFree, UserId);
-             return action;
-            */
         }
 
         private void SetButtonContent()
@@ -157,11 +138,9 @@ namespace EventHarbor.Screen
 
         }
 
-        //function for conver text from RichTextBox to string
-        private string StringRichTextBox(RichTextBox richText)
+        //This function converts text from a RichTextBox to a string
+        private string ConvertRichTextBoxToString(RichTextBox richText)
         {
-            //TextRange textRange = new TextRange(richText.Document.ContentStart, richText.Document.ContentEnd);
-            //return textRange.Text; 
             return new TextRange(richText.Document.ContentStart, richText.Document.ContentEnd).Text;
         }
 
