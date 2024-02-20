@@ -12,7 +12,8 @@ There is two main goal in this project.
 Technology used in this project : 
 - Windows Presentation Foundation
 - Entity Frameword (Code First)
-- SQL Server LocalDB
+- ~~SQL Server LocalDB~~
+-  SQlite 3
 
 Project tracking is in [TODO Page](TODO.md).  
 \
