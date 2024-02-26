@@ -41,8 +41,8 @@
                     </StackPanel>
                     <StackPanel Orientation="Vertical" Margin="0,20,0,0">
                         <TextBlock x:Name="textBlock3" TextWrapping="NoWrap" Foreground="Black" Width="81"><Run Language="cs-cz" Text="Rozsirene akce"/></TextBlock>
-                        <Button x:Name="button" Content="Zobraz statistiku" Style="{StaticResource MenuButton}"/>
-                        <Button x:Name="button1" Content="Export do souboru" Style="{StaticResource MenuButton}"/>
+                        <Button x:Name="baseStatisticBtn" Content="Základní statistika" Style="{StaticResource MenuButton}" Click="baseStatisticBtn_Click"/>
+                        <Button x:Name="expertStatisticBtn" Content="Rozšířená statistika" Style="{StaticResource MenuButton}"/>
                         <Button x:Name="button2" Content="Testovací tlačítko" Style="{StaticResource MenuButton}" Click="button2_Click"/>
 
                     </StackPanel>

@@ -136,6 +136,36 @@ namespace EventHarbor
 
 
         }
+
+        private void baseStatisticBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ObservableCollection<CultureAction> statisticCollection = new ObservableCollection<CultureAction>();
+
+            if (CultureActionDataGrid.SelectedItems != null)
+            {
+                foreach (CultureAction item in CultureActionDataGrid.SelectedItems)
+                {
+                    statisticCollection.Add(item);
+                }
+
+                StatisticManager statisticManager = new StatisticManager(statisticCollection);
+                MessageBox.Show($"Celkový počet účastníků je: {statisticManager.TotalNumberOfParticipants().ToString()} \n" +
+                    $"Z toho : \n" +
+                    $"dětí: {statisticManager.TotalNumberOfChildren().ToString()} \n" +
+                    $"dospělých: {statisticManager.TotalNumberOfAdults().ToString()} \n" +
+                    $"seniorů: {statisticManager.TotalNumberOfSeniors().ToString()} \n" +
+                    $"invalidů: {statisticManager.TotalNumberOfDisabled().ToString()} \n" +
+                    $"\n\n" +
+                    $"Celkové náklady na akce: {statisticManager.TotalActionPrice().ToString()} Kč" +
+                    $"\n\n",
+
+
+                    "Statistika"
+
+
+                                 );
+            }
+        }
     }
 
 }
