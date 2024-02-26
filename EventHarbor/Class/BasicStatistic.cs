@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace EventHarbor.Class
 {
-    internal class StatisticManager
+    internal class BasicStatistic
     {
 
         private  ObservableCollection<CultureAction> StatisticCollection;
 
-        public StatisticManager(ObservableCollection<CultureAction> statisticCollection)
+        public BasicStatistic(ObservableCollection<CultureAction> statisticCollection)
         {
           StatisticCollection = statisticCollection;
         }

@@ -148,7 +148,7 @@ namespace EventHarbor
                     statisticCollection.Add(item);
                 }
 
-                StatisticManager statisticManager = new StatisticManager(statisticCollection);
+                BasicStatistic statisticManager = new BasicStatistic(statisticCollection);
                 MessageBox.Show($"Celkový počet účastníků je: {statisticManager.TotalNumberOfParticipants().ToString()} \n" +
                     $"Z toho : \n" +
                     $"dětí: {statisticManager.TotalNumberOfChildren().ToString()} \n" +
