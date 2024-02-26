@@ -11,7 +11,7 @@ namespace EventHarbor.Class
     internal class StatisticManager
     {
 
-        public  ObservableCollection<CultureAction> StatisticCollection;
+        private  ObservableCollection<CultureAction> StatisticCollection;
 
         public StatisticManager(ObservableCollection<CultureAction> statisticCollection)
         {
@@ -80,11 +80,38 @@ namespace EventHarbor.Class
             return total;
         }
 
-        public int TotalNumberOfParticipants1()
+       
+
+       public string MostProfitAction()
         {
+            float max = 0;
+            string name = "";
+            foreach (CultureAction item in StatisticCollection)
+            {
+                if (item.ActionPrice > max)
+                {
+                    max = item.ActionPrice;
+                    name = item.CultureActionName;
+                }
+            }
+            return name;
             
-            //StatisticCollection.Sum(x => x.NumberOfAdults + x.NumberOfChildren + x.NumberOfSeniors + x.NumberOfDisabled);
-            return StatisticCollection.Sum(x => x.NumberOfAdults + x.NumberOfChildren + x.NumberOfSeniors + x.NumberOfDisabled); ;
+        }
+
+
+        public string MostVisitedAction()
+        {
+            int max = 0;
+            string name = "";
+            foreach (CultureAction item in StatisticCollection)
+            {
+                if (item.NumberOfAdults + item.NumberOfChildren + item.NumberOfSeniors + item.NumberOfDisabled > max)
+                {
+                    max = item.NumberOfAdults + item.NumberOfChildren + item.NumberOfSeniors + item.NumberOfDisabled;
+                    name = item.CultureActionName;
+                }
+            }
+            return name;
         }
 
 

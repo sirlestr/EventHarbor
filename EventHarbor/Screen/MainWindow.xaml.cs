@@ -157,13 +157,16 @@ namespace EventHarbor
                     $"invalidů: {statisticManager.TotalNumberOfDisabled().ToString()} \n" +
                     $"\n\n" +
                     $"Celkové náklady na akce: {statisticManager.TotalActionPrice().ToString()} Kč" +
-                    $"\n\n",
+                    $"\n\n" + 
+                    $"Nejnákladnější  akce: {statisticManager.MostProfitAction()} \n"+
+                    $"Nejnavštěvovanější akce: {statisticManager.MostVisitedAction()}",
 
 
-                    "Statistika"
-
-
-                                 );
+                    "Statistika");
+            }
+            else
+            {
+                MessageBox.Show("Není vybrána žádná akce");
             }
         }
     }
