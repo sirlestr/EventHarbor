@@ -169,6 +169,12 @@ namespace EventHarbor
                 MessageBox.Show("Není vybrána žádná akce");
             }
         }
+
+        private void expertStatisticBtn_Click(object sender, RoutedEventArgs e)
+        {
+            AdvancedStatisticScreen advancedStatisticScreen = new AdvancedStatisticScreen(LocalCollection);
+            advancedStatisticScreen.Show();
+        }
     }
 
 }
