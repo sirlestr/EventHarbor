@@ -40,6 +40,15 @@ public partial class App : Application
                     sp.GetRequiredService<RegisterViewModel>,
                     sp.GetRequiredService<ForgotViewModel>));
 
+                services.AddTransient<ListViewModel>();
+                services.AddTransient<FormViewModel>();
+                services.AddTransient<StatsViewModel>();
+                services.AddSingleton<MainShellViewModel>(sp => new MainShellViewModel(
+                    sp.GetRequiredService<ListViewModel>,
+                    sp.GetRequiredService<FormViewModel>,
+                    sp.GetRequiredService<StatsViewModel>,
+                    sp.GetRequiredService<SessionState>()));
+
                 services.AddTransient<LoginWindow>();
                 services.AddTransient<MainWindow>();
             })

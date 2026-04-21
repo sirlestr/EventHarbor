@@ -18,6 +18,7 @@
             <cnv:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
             <cnv:BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
             <cnv:BooleanToVisibilityConverter x:Key="BoolToVisInvertedConverter" Invert="True"/>
+            <cnv:RouteToBoolConverter x:Key="RouteToBoolConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
