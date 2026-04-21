@@ -27,7 +27,7 @@ namespace EventHarbor
             Close();
 
         }
-        //switch sreen to forgot window
+        //switch screen to forgot window
         private void ForgotUri_Click(object sender, RoutedEventArgs e)
         {
             ForgotScreen screen = new ForgotScreen();

@@ -29,7 +29,7 @@ namespace EventHarbor.Class
 
 
         /// <summary>
-        /// Retrieves all culture actions from database to  ObesravableCollection
+        /// Retrieves all culture actions from database to  ObservableCollection
         /// </summary>
         /// <param name="localCultureAction">local instance of CultureAction Manager</param>
         /// <param name="ownerId">Id Logged user for Db select </param>
@@ -56,15 +56,15 @@ namespace EventHarbor.Class
 
         }
 
-        //testing function for inster to collection, in future probably will be removed
+        //testing function for insert to collection, in future probably will be removed
         public bool AddCultureAction(string actionName, DateOnly? startDate, DateOnly? endDate,
-                             int numberOfChildern, int numberOfAdult, int numberOfSenior, int numberOfDisabled,
+                             int numberOfChildren, int numberOfAdult, int numberOfSenior, int numberOfDisabled,
                              CultureActionType cultureActionType, ExhibitionType exhibitionType,
                              float ticketPrice, Organiser oraganiser, string notes, bool isFree, int owner)
         {
 
             CultureAction cultureAction = new CultureAction(actionName, startDate, endDate,
-                                                            numberOfChildern, numberOfAdult, numberOfSenior, numberOfDisabled,
+                                                            numberOfChildren, numberOfAdult, numberOfSenior, numberOfDisabled,
                                                             cultureActionType, exhibitionType, ticketPrice,
                                                             oraganiser, notes, isFree, owner);
 

@@ -36,7 +36,7 @@ namespace EventHarbor
             // for user ID and name of logged user
             userManager = manager;
 
-            //assing user data to variables for display in view
+            //assign user data to variables for display in view
             UserId = userManager.LoggedUserId;
             UserName = userManager.LoggedUserName;
 
@@ -135,6 +135,45 @@ namespace EventHarbor
             }
 
 
+        }
+
+        private void baseStatisticBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ObservableCollection<CultureAction> statisticCollection = new ObservableCollection<CultureAction>();
+
+            if (CultureActionDataGrid.SelectedItems != null)
+            {
+                foreach (CultureAction item in CultureActionDataGrid.SelectedItems)
+                {
+                    statisticCollection.Add(item);
+                }
+
+                BasicStatistic statisticManager = new BasicStatistic(statisticCollection);
+                MessageBox.Show($"Celkový počet účastníků je: {statisticManager.TotalNumberOfParticipants().ToString()} \n" +
+                    $"Z toho : \n" +
+                    $"dětí: {statisticManager.TotalNumberOfChildren().ToString()} \n" +
+                    $"dospělých: {statisticManager.TotalNumberOfAdults().ToString()} \n" +
+                    $"seniorů: {statisticManager.TotalNumberOfSeniors().ToString()} \n" +
+                    $"invalidů: {statisticManager.TotalNumberOfDisabled().ToString()} \n" +
+                    $"\n\n" +
+                    $"Celkové náklady na akce: {statisticManager.TotalActionPrice().ToString()} Kč" +
+                    $"\n\n" + 
+                    $"Nejnákladnější  akce: {statisticManager.MostProfitAction()} \n"+
+                    $"Nejnavštěvovanější akce: {statisticManager.MostVisitedAction()}",
+
+
+                    "Statistika");
+            }
+            else
+            {
+                MessageBox.Show("Není vybrána žádná akce");
+            }
+        }
+
+        private void expertStatisticBtn_Click(object sender, RoutedEventArgs e)
+        {
+            AdvancedStatisticScreen advancedStatisticScreen = new AdvancedStatisticScreen(LocalCollection);
+            advancedStatisticScreen.Show();
         }
     }
 

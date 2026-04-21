@@ -27,8 +27,8 @@ namespace EventHarbor.Screen
         /// <summary>
         /// Base constructor for detail view
         /// </summary>
-        /// <param name="manager"> instance of UserMananger for logged user</param>
-        /// <param name="localAction">instance of local colection for data manipulation</param>
+        /// <param name="manager"> instance of UserManager for logged user</param>
+        /// <param name="localAction">instance of local collection for data manipulation</param>
         internal CultureActionDetail(UserManager manager, ObservableCollection<CultureAction> localAction, bool isNew)
         {
             //Initialize
@@ -39,7 +39,7 @@ namespace EventHarbor.Screen
             LastIdTextBlock.Text = LastId.ToString();
             LocalAction = localAction;
 
-            //assing user data to variables for display in view
+            //assign user data to variables for display in view
             UserId = userManager.LoggedUserId;
             OwnerIDTextBlock.Text = UserId.ToString();
             LoggedUserNameTextBlock.Text = userManager.LoggedUserName;
@@ -82,7 +82,7 @@ namespace EventHarbor.Screen
                 string actionName = inputValidation.ValidateText(CultureActionNameTextBox.Text, "Název akce");
                 DateOnly startDate = inputValidation.ValidateDateOnly(StartDatePicker.SelectedDate,"Začátek akce");
                 DateOnly endDate = inputValidation.ValidateDateOnly(EndDatePicker.SelectedDate, "Konec akce");
-                int childernCount = inputValidation.ValidateNumber(NumberOfChildrenTextBox.Text,"Počet dětí");
+                int childrenCount = inputValidation.ValidateNumber(NumberOfChildrenTextBox.Text,"Počet dětí");
                 int adultCount = inputValidation.ValidateNumber(NumberOfAdultsTextBox.Text, "Počet dospělých");
                 int seniorCount = inputValidation.ValidateNumber(NumberOfSeniorsTextBox.Text, "Počet seniorů");
                 int disabledCount = inputValidation.ValidateNumber(NumberOfDisabledTextBox.Text,"Počet postižených");
@@ -96,7 +96,7 @@ namespace EventHarbor.Screen
                 bool isFree = IsFreeCheckBox.IsChecked.HasValue ? IsFreeCheckBox.IsChecked.Value : false;
                 
                 
-                CultureAction action = new CultureAction(actionName, startDate, endDate, childernCount, adultCount, seniorCount, disabledCount, actionType, exhibitionType, actionPrice, organiser, notes, isFree,  UserId);
+                CultureAction action = new CultureAction(actionName, startDate, endDate, childrenCount, adultCount, seniorCount, disabledCount, actionType, exhibitionType, actionPrice, organiser, notes, isFree,  UserId);
                 return action;
             } 
             catch (Exception e) 

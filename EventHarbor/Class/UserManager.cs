@@ -26,7 +26,7 @@
         }
 
         /// <summary>
-        /// Retunr if user exists, and if password is correct
+        /// Return if user exists, and if password is correct
         /// </summary>
         /// <param name="name">User name</param>
         /// <param name="passwd">User password</param>
