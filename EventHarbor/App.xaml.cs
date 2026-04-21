@@ -2,6 +2,7 @@ using System.IO;
 using System.Windows;
 using EventHarbor.Data;
 using EventHarbor.Services;
+using EventHarbor.ViewModels;
 using EventHarbor.Views;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +31,14 @@ public partial class App : Application
                 services.AddSingleton<SessionState>();
                 services.AddSingleton<IUserService, UserService>();
                 services.AddSingleton<ICultureActionService, CultureActionService>();
+
+                services.AddTransient<LoginViewModel>();
+                services.AddTransient<RegisterViewModel>();
+                services.AddTransient<ForgotViewModel>();
+                services.AddSingleton<AuthShellViewModel>(sp => new AuthShellViewModel(
+                    sp.GetRequiredService<LoginViewModel>,
+                    sp.GetRequiredService<RegisterViewModel>,
+                    sp.GetRequiredService<ForgotViewModel>));
 
                 services.AddTransient<LoginWindow>();
                 services.AddTransient<MainWindow>();
