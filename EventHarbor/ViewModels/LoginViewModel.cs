@@ -7,7 +7,10 @@ namespace EventHarbor.ViewModels;
 public partial class LoginViewModel : ObservableObject
 {
     private readonly IUserService _userService;
-    private readonly AuthShellViewModel _shell;
+
+    public event EventHandler? LoginSucceeded;
+    public event EventHandler? NavigateToRegister;
+    public event EventHandler? NavigateToForgot;
 
     [ObservableProperty]
     private string _userName = string.Empty;
@@ -24,10 +27,9 @@ public partial class LoginViewModel : ObservableObject
     [ObservableProperty]
     private bool _isBusy;
 
-    public LoginViewModel(IUserService userService, AuthShellViewModel shell)
+    public LoginViewModel(IUserService userService)
     {
         _userService = userService;
-        _shell = shell;
     }
 
     [RelayCommand]
@@ -53,7 +55,7 @@ public partial class LoginViewModel : ObservableObject
                     ErrorMessage = "Špatné heslo, zkuste to prosím znovu.";
                     break;
                 case LoginResult.Success:
-                    _shell.RaiseAuthSucceeded();
+                    LoginSucceeded?.Invoke(this, EventArgs.Empty);
                     break;
             }
         }
@@ -64,8 +66,8 @@ public partial class LoginViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void GoToRegister() => _shell.GoTo(AuthScreen.Register);
+    private void GoToRegister() => NavigateToRegister?.Invoke(this, EventArgs.Empty);
 
     [RelayCommand]
-    private void GoToForgot() => _shell.GoTo(AuthScreen.Forgot);
+    private void GoToForgot() => NavigateToForgot?.Invoke(this, EventArgs.Empty);
 }

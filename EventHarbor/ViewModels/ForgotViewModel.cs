@@ -9,8 +9,10 @@ public partial class ForgotViewModel : ObservableObject
     private const int VerificationValidityMinutes = 5;
 
     private readonly IUserService _userService;
-    private readonly AuthShellViewModel _shell;
     private DateTime? _verifiedAt;
+
+    public event EventHandler? NavigateToLogin;
+    public event EventHandler? ResetCompleted;
 
     [ObservableProperty]
     private string _userName = string.Empty;
@@ -38,10 +40,9 @@ public partial class ForgotViewModel : ObservableObject
 
     public IReadOnlyList<string> AvailableQuestions => Services.SecurityQuestions.All;
 
-    public ForgotViewModel(IUserService userService, AuthShellViewModel shell)
+    public ForgotViewModel(IUserService userService)
     {
         _userService = userService;
-        _shell = shell;
     }
 
     [RelayCommand]
@@ -107,7 +108,7 @@ public partial class ForgotViewModel : ObservableObject
                 ErrorMessage = "Reset se nepovedl.";
                 return;
             }
-            _shell.GoTo(AuthScreen.Login);
+            ResetCompleted?.Invoke(this, EventArgs.Empty);
         }
         finally
         {
@@ -116,5 +117,5 @@ public partial class ForgotViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void GoToLogin() => _shell.GoTo(AuthScreen.Login);
+    private void GoToLogin() => NavigateToLogin?.Invoke(this, EventArgs.Empty);
 }

@@ -7,7 +7,9 @@ namespace EventHarbor.ViewModels;
 public partial class RegisterViewModel : ObservableObject
 {
     private readonly IUserService _userService;
-    private readonly AuthShellViewModel _shell;
+
+    public event EventHandler? NavigateToLogin;
+    public event EventHandler? RegisterSucceeded;
 
     [ObservableProperty]
     private string _userName = string.Empty;
@@ -38,10 +40,9 @@ public partial class RegisterViewModel : ObservableObject
 
     public IReadOnlyList<string> AvailableQuestions => Services.SecurityQuestions.All;
 
-    public RegisterViewModel(IUserService userService, AuthShellViewModel shell)
+    public RegisterViewModel(IUserService userService)
     {
         _userService = userService;
-        _shell = shell;
     }
 
     public int PasswordStrength
@@ -107,7 +108,7 @@ public partial class RegisterViewModel : ObservableObject
                 ErrorMessage = "Uživatel s tímto jménem už existuje.";
                 return;
             }
-            _shell.GoTo(AuthScreen.Login);
+            RegisterSucceeded?.Invoke(this, EventArgs.Empty);
         }
         finally
         {
@@ -116,5 +117,5 @@ public partial class RegisterViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void GoToLogin() => _shell.GoTo(AuthScreen.Login);
+    private void GoToLogin() => NavigateToLogin?.Invoke(this, EventArgs.Empty);
 }

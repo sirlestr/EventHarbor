@@ -19,8 +19,24 @@ public partial class App : Application
     {
         base.OnStartup(e);
 
+        DispatcherUnhandledException += (_, args) =>
+        {
+            DumpCrash("Dispatcher", args.Exception);
+            args.Handled = true;
+        };
+        AppDomain.CurrentDomain.UnhandledException += (_, args) =>
+            DumpCrash("AppDomain", args.ExceptionObject as Exception);
+        TaskScheduler.UnobservedTaskException += (_, args) =>
+        {
+            DumpCrash("Task", args.Exception);
+            args.SetObserved();
+        };
+
         Directory.CreateDirectory(AppPaths.LocalAppFolder);
         Directory.CreateDirectory(AppPaths.LogFolder);
+
+        try
+        {
 
         AppHost = Host.CreateDefaultBuilder()
             .ConfigureServices((_, services) =>
@@ -35,10 +51,34 @@ public partial class App : Application
                 services.AddTransient<LoginViewModel>();
                 services.AddTransient<RegisterViewModel>();
                 services.AddTransient<ForgotViewModel>();
-                services.AddSingleton<AuthShellViewModel>(sp => new AuthShellViewModel(
-                    sp.GetRequiredService<LoginViewModel>,
-                    sp.GetRequiredService<RegisterViewModel>,
-                    sp.GetRequiredService<ForgotViewModel>));
+                services.AddSingleton<AuthShellViewModel>(sp =>
+                {
+                    AuthShellViewModel? shell = null;
+                    Func<LoginViewModel> loginFactory = () =>
+                    {
+                        var vm = sp.GetRequiredService<LoginViewModel>();
+                        vm.LoginSucceeded += (_, _) => shell!.RaiseAuthSucceeded();
+                        vm.NavigateToRegister += (_, _) => shell!.GoTo(AuthScreen.Register);
+                        vm.NavigateToForgot += (_, _) => shell!.GoTo(AuthScreen.Forgot);
+                        return vm;
+                    };
+                    Func<RegisterViewModel> registerFactory = () =>
+                    {
+                        var vm = sp.GetRequiredService<RegisterViewModel>();
+                        vm.NavigateToLogin += (_, _) => shell!.GoTo(AuthScreen.Login);
+                        vm.RegisterSucceeded += (_, _) => shell!.GoTo(AuthScreen.Login);
+                        return vm;
+                    };
+                    Func<ForgotViewModel> forgotFactory = () =>
+                    {
+                        var vm = sp.GetRequiredService<ForgotViewModel>();
+                        vm.NavigateToLogin += (_, _) => shell!.GoTo(AuthScreen.Login);
+                        vm.ResetCompleted += (_, _) => shell!.GoTo(AuthScreen.Login);
+                        return vm;
+                    };
+                    shell = new AuthShellViewModel(loginFactory, registerFactory, forgotFactory);
+                    return shell;
+                });
 
                 services.AddTransient<ListViewModel>();
                 services.AddTransient<FormViewModel>();
@@ -90,6 +130,34 @@ public partial class App : Application
 
         var login = AppHost.Services.GetRequiredService<LoginWindow>();
         login.Show();
+        }
+        catch (Exception ex)
+        {
+            DumpCrash("OnStartup", ex);
+            Shutdown(1);
+        }
+    }
+
+    private static void DumpCrash(string source, Exception? ex)
+    {
+        try
+        {
+            var path = Path.Combine(AppPaths.LogFolder, "crash.log");
+            Directory.CreateDirectory(AppPaths.LogFolder);
+            File.AppendAllText(path,
+                $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] {source}:{Environment.NewLine}{ex}{Environment.NewLine}{Environment.NewLine}");
+        }
+        catch { /* last-chance swallow */ }
+
+        try
+        {
+            MessageBox.Show(
+                $"{source} exception:{Environment.NewLine}{Environment.NewLine}{ex?.Message}{Environment.NewLine}{Environment.NewLine}Detail: %LOCALAPPDATA%\\EventHarbor\\logs\\crash.log",
+                "EventHarbor — Chyba",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+        }
+        catch { }
     }
 
     protected override async void OnExit(ExitEventArgs e)
