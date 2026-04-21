@@ -280,9 +280,9 @@
                                                    Foreground="{DynamicResource InkBrush}"/>
                                         <TextBlock FontSize="11" FontFamily="{StaticResource MonoFont}"
                                                    Foreground="{DynamicResource InkSubtleBrush}">
-                                            <Run Text="{Binding DisplayId}"/>
+                                            <Run Text="{Binding DisplayId, Mode=OneWay}"/>
                                             <Run Text=" · "/>
-                                            <Run Text="{Binding Type, Converter={StaticResource EnumDescriptionConverter}}"/>
+                                            <Run Text="{Binding Type, Converter={StaticResource EnumDescriptionConverter}, Mode=OneWay}"/>
                                         </TextBlock>
                                     </StackPanel>
                                 </DataTemplate>
@@ -313,7 +313,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="Návštěvnost" Binding="{Binding TotalAttendance}" Width="Auto">
+                        <DataGridTextColumn Header="Návštěvnost" Binding="{Binding TotalAttendance, Mode=OneWay}" Width="Auto">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Margin" Value="6,0"/>
@@ -499,7 +499,7 @@
                             </StackPanel>
                             <TextBlock Text="{Binding Name}" FontFamily="{StaticResource SerifFont}"
                                        FontSize="22" Foreground="{DynamicResource InkBrush}" TextWrapping="Wrap"/>
-                            <TextBlock Text="{Binding DisplayId}" FontFamily="{StaticResource MonoFont}"
+                            <TextBlock Text="{Binding DisplayId, Mode=OneWay}" FontFamily="{StaticResource MonoFont}"
                                        FontSize="11" Foreground="{DynamicResource InkSubtleBrush}" Margin="0,4,0,0"/>
                         </StackPanel>
 
