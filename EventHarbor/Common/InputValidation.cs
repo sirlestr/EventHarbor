@@ -30,7 +30,9 @@ public static class InputValidation
         if (string.IsNullOrWhiteSpace(input))
             throw new ArgumentException($"{fieldName} není zadané, zkontroluj hodnoty");
 
-        if (!decimal.TryParse(input, NumberStyles.Any, CultureInfo.CurrentCulture, out var value))
+        // Accept both user-current culture and invariant form (so "19,50" and "19.50" both work).
+        if (!decimal.TryParse(input, NumberStyles.Any, CultureInfo.CurrentCulture, out var value) &&
+            !decimal.TryParse(input, NumberStyles.Any, CultureInfo.InvariantCulture, out value))
             throw new ArgumentException($"{fieldName} není platné číslo");
 
         if (value < min || value > max)

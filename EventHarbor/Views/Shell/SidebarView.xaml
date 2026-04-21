@@ -97,6 +97,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Border Grid.Column="0" Width="32" Height="32" CornerRadius="16"
                         Background="{DynamicResource AccentTintBrush}">
@@ -110,6 +111,12 @@
                                Foreground="{DynamicResource InkBrush}"/>
                     <TextBlock Text="Správce" FontSize="11" Foreground="{DynamicResource InkSubtleBrush}"/>
                 </StackPanel>
+                <Button Grid.Column="2" Command="{Binding ToggleThemeCommand}"
+                        Background="Transparent" BorderThickness="0"
+                        Foreground="{DynamicResource InkMutedBrush}"
+                        FontSize="11.5" Padding="8,6"
+                        ToolTip="Přepnout motiv (světlý / tmavý)"
+                        Content="{Binding ThemeLabel}"/>
             </Grid>
         </Border>
     </Grid>

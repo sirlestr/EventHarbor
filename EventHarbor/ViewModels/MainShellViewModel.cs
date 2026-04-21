@@ -18,6 +18,7 @@ public partial class MainShellViewModel : ObservableObject
     private readonly Func<FormViewModel> _formFactory;
     private readonly Func<StatsViewModel> _statsFactory;
     private readonly SessionState _session;
+    private readonly ThemeManager _theme;
 
     [ObservableProperty]
     private MainRoute _currentRoute = MainRoute.List;
@@ -25,7 +26,13 @@ public partial class MainShellViewModel : ObservableObject
     [ObservableProperty]
     private ObservableObject? _currentViewModel;
 
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ThemeLabel))]
+    private AppTheme _currentTheme;
+
     public string LoggedUserName => _session.UserName;
+
+    public string ThemeLabel => CurrentTheme == AppTheme.Dark ? "Světlé" : "Tmavé";
 
     public string UserInitials
     {
@@ -44,13 +51,23 @@ public partial class MainShellViewModel : ObservableObject
         Func<ListViewModel> listFactory,
         Func<FormViewModel> formFactory,
         Func<StatsViewModel> statsFactory,
-        SessionState session)
+        SessionState session,
+        ThemeManager theme)
     {
         _listFactory = listFactory;
         _formFactory = formFactory;
         _statsFactory = statsFactory;
         _session = session;
+        _theme = theme;
+        CurrentTheme = theme.Current;
         GoToCommand.Execute(nameof(MainRoute.List));
+    }
+
+    [RelayCommand]
+    private void ToggleTheme()
+    {
+        _theme.Toggle();
+        CurrentTheme = _theme.Current;
     }
 
     [RelayCommand]

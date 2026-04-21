@@ -48,6 +48,8 @@ public partial class App : Application
                     options.UseSqlite($"Data Source={AppPaths.DatabasePath}"));
 
                 services.AddSingleton<SessionState>();
+                services.AddSingleton<SettingsStore>();
+                services.AddSingleton<ThemeManager>();
                 services.AddSingleton<IUserService, UserService>();
                 services.AddSingleton<ICultureActionService, CultureActionService>();
 
@@ -107,7 +109,8 @@ public partial class App : Application
                         listFactory,
                         formFactory,
                         sp.GetRequiredService<StatsViewModel>,
-                        sp.GetRequiredService<SessionState>());
+                        sp.GetRequiredService<SessionState>(),
+                        sp.GetRequiredService<ThemeManager>());
                     return shell;
                 });
 
@@ -130,6 +133,8 @@ public partial class App : Application
             await using var db = await factory.CreateDbContextAsync();
             await db.Database.MigrateAsync();
         }
+
+        AppHost.Services.GetRequiredService<ThemeManager>().ApplyCurrent();
 
         var login = AppHost.Services.GetRequiredService<LoginWindow>();
         login.Show();
