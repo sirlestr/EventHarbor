@@ -43,7 +43,6 @@
                         <TextBlock x:Name="textBlock3" TextWrapping="NoWrap" Foreground="Black" Width="81"><Run Language="cs-cz" Text="Rozsirene akce"/></TextBlock>
                         <Button x:Name="baseStatisticBtn" Content="Základní statistika" Style="{StaticResource MenuButton}" Click="baseStatisticBtn_Click"/>
                         <Button x:Name="expertStatisticBtn" Content="Rozšířená statistika" Style="{StaticResource MenuButton}" Click="expertStatisticBtn_Click"/>
-                        <Button x:Name="button2" Content="Testovací tlačítko" Style="{StaticResource MenuButton}" Click="button2_Click"/>
 
                     </StackPanel>
 
@@ -69,7 +68,7 @@
                     Margin="10,0,0,0"/>
                 <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="60,0,0,0">
                     <TextBlock x:Name="textBlock1" TextWrapping="Wrap" Text="Přihlášen uživatel : " Foreground="Black" VerticalAlignment="Center"/>
-                    <TextBlock x:Name="LoggedUserNameTextBlock" TextWrapping="Wrap" Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Center"><Run Language="cs-cz" Text="Jana"/></TextBlock>
+                    <TextBlock x:Name="LoggedUserNameTextBlock" TextWrapping="Wrap" Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </WrapPanel>
             </StackPanel>
         </Grid>

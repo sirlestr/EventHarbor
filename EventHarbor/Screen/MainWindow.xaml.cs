@@ -87,16 +87,6 @@ namespace EventHarbor
 
 
 
-        private void button2_Click(object sender, RoutedEventArgs e)
-        {
-            if (cultureActionManager.GetCultureActionsFromDb(LocalCollection, UserId))
-            {
-                MessageBox.Show("Načteno");
-                CultureActionDataGrid.Items.Refresh();
-            }
-
-        }
-
         private void ChangeBtn_Click(object sender, RoutedEventArgs e)
         {
             if (CultureActionDataGrid.SelectedItem != null)

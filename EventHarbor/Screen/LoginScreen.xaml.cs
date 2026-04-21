@@ -88,28 +88,5 @@ namespace EventHarbor
 
             }
         }
-
-        //For developmen only, will be delted later
-        private void ResetDbButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                
-                DatabaseContextManager dbManager = new DatabaseContextManager();
-                
-                if (dbManager.Database.EnsureDeleted())
-                {
-                    MessageBox.Show("smazano");
-                }
-               if (dbManager.Database.EnsureCreated())
-                {
-                    MessageBox.Show("Vytvořeno");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
     }
 }

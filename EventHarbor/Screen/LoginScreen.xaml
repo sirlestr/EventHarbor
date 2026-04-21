@@ -38,15 +38,13 @@
                   Padding="0,5"
                   Width="255"
                   BorderThickness="0,0,0,1"
-                  HorizontalAlignment="Left"
-                  Text="MP Codes"/>
+                  HorizontalAlignment="Left"/>
                 <TextBlock Text="Heslo" 
                    Grid.Row="2"
                    Margin="0,15"
                    HorizontalAlignment="Left"/>
                 <PasswordBox x:Name="PwdBox" Grid.Row="3"
-                      Password="mpcodes"
-                      Padding="0,5"                           
+                      Padding="0,5"
                       Width="255"
                       BorderThickness="0,0,0,1"
                       HorizontalAlignment="Left"/>
@@ -74,13 +72,6 @@
                          Margin="0,5"
                        VerticalAlignment="Bottom"
                        HorizontalAlignment="Center"/>
-            <Button x:Name="ResetDbButton" 
-                Content="Reset DB" 
-                Foreground="White"
-                Background="Black"
-                Click="ResetDbButton_Click"
-                Width="84"
-                Style="{StaticResource BackButton}" Margin="0,0,0,0"/>
             <TextBlock Text=""
                          Margin="0,5,0,10"
                        VerticalAlignment="Bottom"

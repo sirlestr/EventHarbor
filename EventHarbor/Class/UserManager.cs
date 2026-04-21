@@ -37,7 +37,7 @@
             int result;
             using (DatabaseContextManager context = new DatabaseContextManager())
             {
-                User user = context.Users.ToList().Find(u => u.UserName == name);
+                User user = context.Users.FirstOrDefault(u => u.UserName == name);
 
                 if (user == null)
                 { //not found
@@ -66,7 +66,7 @@
         {
             using (DatabaseContextManager context = new DatabaseContextManager())
             {
-                User user = context.Users.ToList().Find(u => u.UserName == name);
+                User user = context.Users.FirstOrDefault(u => u.UserName == name);
                 if (user == null)
                 {
                     //user not found
