@@ -1,0 +1,15 @@
+<Window x:Class="EventHarbor.Views.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        Title="EventHarbor — Přihlášení"
+        Height="620" Width="900"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource BgElevatedBrush}">
+    <Grid>
+        <TextBlock Text="Login skeleton (Fáze 5)"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource SerifTitle}"/>
+    </Grid>
+</Window>
