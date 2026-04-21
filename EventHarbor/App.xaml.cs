@@ -43,11 +43,23 @@ public partial class App : Application
                 services.AddTransient<ListViewModel>();
                 services.AddTransient<FormViewModel>();
                 services.AddTransient<StatsViewModel>();
-                services.AddSingleton<MainShellViewModel>(sp => new MainShellViewModel(
-                    sp.GetRequiredService<ListViewModel>,
-                    sp.GetRequiredService<FormViewModel>,
-                    sp.GetRequiredService<StatsViewModel>,
-                    sp.GetRequiredService<SessionState>()));
+                services.AddSingleton<MainShellViewModel>(sp =>
+                {
+                    MainShellViewModel? shell = null;
+                    Func<ListViewModel> listFactory = () =>
+                    {
+                        var vm = sp.GetRequiredService<ListViewModel>();
+                        vm.NewRequested += (_, _) => shell!.StartNewEvent();
+                        vm.EditRequested += (_, a) => shell!.StartEditEvent(a);
+                        return vm;
+                    };
+                    shell = new MainShellViewModel(
+                        listFactory,
+                        sp.GetRequiredService<FormViewModel>,
+                        sp.GetRequiredService<StatsViewModel>,
+                        sp.GetRequiredService<SessionState>());
+                    return shell;
+                });
 
                 services.AddTransient<LoginWindow>();
                 services.AddTransient<MainWindow>();

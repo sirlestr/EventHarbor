@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using EventHarbor.Domain;
 using EventHarbor.Services;
 
 namespace EventHarbor.ViewModels;
@@ -65,5 +66,27 @@ public partial class MainShellViewModel : ObservableObject
             MainRoute.Stats => _statsFactory(),
             _ => _listFactory(),
         };
+    }
+
+    public void StartNewEvent()
+    {
+        var vm = _formFactory();
+        vm.Initialize(null);
+        CurrentRoute = MainRoute.Form;
+        CurrentViewModel = vm;
+    }
+
+    public void StartEditEvent(CultureAction action)
+    {
+        var vm = _formFactory();
+        vm.Initialize(action);
+        CurrentRoute = MainRoute.Form;
+        CurrentViewModel = vm;
+    }
+
+    public void ReturnToList()
+    {
+        CurrentRoute = MainRoute.List;
+        CurrentViewModel = _listFactory();
     }
 }
