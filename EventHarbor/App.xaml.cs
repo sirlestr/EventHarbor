@@ -1,5 +1,6 @@
 using System.IO;
 using System.Windows;
+using EventHarbor.Common;
 using EventHarbor.Data;
 using EventHarbor.Services;
 using EventHarbor.ViewModels;
@@ -34,6 +35,8 @@ public partial class App : Application
 
         Directory.CreateDirectory(AppPaths.LocalAppFolder);
         Directory.CreateDirectory(AppPaths.LogFolder);
+
+        TextBoxSelectAllBehavior.Register();
 
         try
         {
