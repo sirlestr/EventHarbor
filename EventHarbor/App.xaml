@@ -19,6 +19,7 @@
             <cnv:BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
             <cnv:BooleanToVisibilityConverter x:Key="BoolToVisInvertedConverter" Invert="True"/>
             <cnv:RouteToBoolConverter x:Key="RouteToBoolConverter"/>
+            <cnv:BoolInvertConverter x:Key="BoolInvertConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

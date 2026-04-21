@@ -53,9 +53,16 @@ public partial class App : Application
                         vm.EditRequested += (_, a) => shell!.StartEditEvent(a);
                         return vm;
                     };
+                    Func<FormViewModel> formFactory = () =>
+                    {
+                        var vm = sp.GetRequiredService<FormViewModel>();
+                        vm.Saved += (_, _) => shell!.ReturnToList();
+                        vm.Cancelled += (_, _) => shell!.ReturnToList();
+                        return vm;
+                    };
                     shell = new MainShellViewModel(
                         listFactory,
-                        sp.GetRequiredService<FormViewModel>,
+                        formFactory,
                         sp.GetRequiredService<StatsViewModel>,
                         sp.GetRequiredService<SessionState>());
                     return shell;

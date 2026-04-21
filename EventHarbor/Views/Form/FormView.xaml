@@ -2,13 +2,462 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="clr-namespace:EventHarbor.ViewModels"
+             xmlns:ctrl="clr-namespace:EventHarbor.Common.Controls"
+             xmlns:domain="clr-namespace:EventHarbor.Domain"
              d:DataContext="{d:DesignInstance Type=vm:FormViewModel}"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              Background="{DynamicResource BgBrush}">
+
+    <UserControl.Resources>
+        <!-- Form card -->
+        <Style x:Key="FormCard" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource BgElevatedBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="24,20"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+        </Style>
+
+        <!-- Field label -->
+        <Style x:Key="FieldLabel" TargetType="TextBlock" BasedOn="{StaticResource EyebrowText}">
+            <Setter Property="Margin" Value="0,0,0,6"/>
+        </Style>
+
+        <!-- Input TextBox -->
+        <Style x:Key="FormInput" TargetType="TextBox">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="Background" Value="{DynamicResource BgBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="{DynamicResource InkBrush}"/>
+        </Style>
+
+        <!-- Card header number -->
+        <Style x:Key="CardNumber" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="{StaticResource MonoFont}"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Foreground" Value="{DynamicResource InkSubtleBrush}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,12,0"/>
+        </Style>
+
+        <Style x:Key="CardTitle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="{StaticResource SerifFont}"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Foreground" Value="{DynamicResource InkBrush}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <!-- Organiser segmented button -->
+        <Style x:Key="SegBtn" TargetType="Button">
+            <Setter Property="Padding" Value="14,8"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource InkMutedBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="B" Background="{TemplateBinding Background}"
+                                CornerRadius="5" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
     <Grid>
-        <TextBlock Text="Formulář akce (Fáze 8)" Style="{StaticResource SerifTitle}"
-                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Toolbar -->
+        <Border Grid.Row="0" Background="{DynamicResource BgElevatedBrush}"
+                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1"
+                Padding="20,14">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Content="← Zpět"
+                        Command="{Binding CancelCommand}"
+                        Background="Transparent" BorderThickness="0"
+                        Foreground="{DynamicResource InkMutedBrush}"
+                        Padding="10,6" FontSize="13"/>
+                <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                    <TextBlock FontFamily="{StaticResource SerifFont}" FontSize="20"
+                               Foreground="{DynamicResource InkBrush}">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Text" Value="Upravit akci"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsNew}" Value="True">
+                                        <Setter Property="Text" Value="Nová akce"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </StackPanel>
+                <Button Grid.Column="2" Content="Zrušit"
+                        Command="{Binding CancelCommand}"
+                        Background="{DynamicResource BgSubtleBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                        Padding="14,7" FontSize="13" Margin="0,0,8,0"/>
+                <Button Grid.Column="3"
+                        Command="{Binding SaveCommand}"
+                        Background="{DynamicResource AccentBrush}"
+                        Foreground="White" BorderThickness="0"
+                        Padding="14,7" FontSize="13" FontWeight="Medium">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Content" Value="Uložit změny"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsNew}" Value="True">
+                                    <Setter Property="Content" Value="Vytvořit akci"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
+        </Border>
+
+        <!-- Content -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <Grid HorizontalAlignment="Center" MaxWidth="780" Margin="20,20,20,24">
+                <StackPanel>
+                    <!-- Header -->
+                    <StackPanel Margin="0,0,0,14">
+                        <TextBlock FontFamily="{StaticResource SerifFont}" FontSize="26"
+                                   Foreground="{DynamicResource InkBrush}">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Text" Value="{Binding Name, FallbackValue='Upravit akci'}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsNew}" Value="True">
+                                            <Setter Property="Text" Value="Nová kulturní akce"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <TextBlock FontSize="13" Foreground="{DynamicResource InkSubtleBrush}" Margin="0,4,0,0">
+                            <Run Text="Vyplňte základní údaje. Pole označená "/>
+                            <Run Text="*" Foreground="{DynamicResource CopperBrush}"/>
+                            <Run Text=" jsou povinná."/>
+                        </TextBlock>
+                    </StackPanel>
+
+                    <!-- Card 01: Zakladni informace -->
+                    <Border Style="{StaticResource FormCard}">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                                <TextBlock Text="01" Style="{StaticResource CardNumber}"/>
+                                <TextBlock Text="Základní informace" Style="{StaticResource CardTitle}"/>
+                            </StackPanel>
+
+                            <TextBlock Style="{StaticResource FieldLabel}">
+                                <Run Text="NÁZEV AKCE "/>
+                                <Run Text="*" Foreground="{DynamicResource CopperBrush}"/>
+                            </TextBlock>
+                            <TextBox Style="{StaticResource FormInput}"
+                                     Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                     Margin="0,0,0,14"/>
+
+                            <Grid Margin="0,0,0,14">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="16"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="TYP AKCE" Style="{StaticResource FieldLabel}"/>
+                                    <ComboBox ItemsSource="{Binding AvailableTypes}"
+                                              SelectedItem="{Binding Type}"
+                                              FontSize="13" Padding="10,8">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding ., Converter={StaticResource EnumDescriptionConverter}}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="TYP VÝSTAVY" Style="{StaticResource FieldLabel}"/>
+                                    <ComboBox ItemsSource="{Binding AvailableExhibitions}"
+                                              SelectedItem="{Binding Exhibition}"
+                                              FontSize="13" Padding="10,8">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding ., Converter={StaticResource EnumDescriptionConverter}}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </StackPanel>
+                            </Grid>
+
+                            <TextBlock Text="POŘADATEL" Style="{StaticResource FieldLabel}"/>
+                            <Border Background="{DynamicResource BgSubtleBrush}"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                                    CornerRadius="6" Padding="3" HorizontalAlignment="Left">
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="Muzeum"
+                                            Command="{Binding SetOrganiserCommand}" CommandParameter="Museum">
+                                        <Button.Style>
+                                            <Style TargetType="Button" BasedOn="{StaticResource SegBtn}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Organiser}" Value="Museum">
+                                                        <Setter Property="Background" Value="{DynamicResource BgElevatedBrush}"/>
+                                                        <Setter Property="Foreground" Value="{DynamicResource InkBrush}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
+                                    <Button Content="Město"
+                                            Command="{Binding SetOrganiserCommand}" CommandParameter="City">
+                                        <Button.Style>
+                                            <Style TargetType="Button" BasedOn="{StaticResource SegBtn}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Organiser}" Value="City">
+                                                        <Setter Property="Background" Value="{DynamicResource BgElevatedBrush}"/>
+                                                        <Setter Property="Foreground" Value="{DynamicResource InkBrush}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
+                                    <Button Content="Ostatní"
+                                            Command="{Binding SetOrganiserCommand}" CommandParameter="Other">
+                                        <Button.Style>
+                                            <Style TargetType="Button" BasedOn="{StaticResource SegBtn}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Organiser}" Value="Other">
+                                                        <Setter Property="Background" Value="{DynamicResource BgElevatedBrush}"/>
+                                                        <Setter Property="Foreground" Value="{DynamicResource InkBrush}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Card 02: Termin konani -->
+                    <Border Style="{StaticResource FormCard}">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                                <TextBlock Text="02" Style="{StaticResource CardNumber}"/>
+                                <TextBlock Text="Termín konání" Style="{StaticResource CardTitle}"/>
+                            </StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="16"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Style="{StaticResource FieldLabel}">
+                                        <Run Text="ZAČÁTEK "/>
+                                        <Run Text="*" Foreground="{DynamicResource CopperBrush}"/>
+                                    </TextBlock>
+                                    <StackPanel Orientation="Horizontal">
+                                        <DatePicker SelectedDate="{Binding StartDate}"
+                                                    Width="180" FontSize="13" Padding="6,4"/>
+                                        <TextBox Style="{StaticResource FormInput}"
+                                                 Text="{Binding StartTime, UpdateSourceTrigger=PropertyChanged}"
+                                                 Width="80" Margin="8,0,0,0" HorizontalContentAlignment="Center"/>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Style="{StaticResource FieldLabel}">
+                                        <Run Text="KONEC "/>
+                                        <Run Text="*" Foreground="{DynamicResource CopperBrush}"/>
+                                    </TextBlock>
+                                    <StackPanel Orientation="Horizontal">
+                                        <DatePicker SelectedDate="{Binding EndDate}"
+                                                    Width="180" FontSize="13" Padding="6,4"/>
+                                        <TextBox Style="{StaticResource FormInput}"
+                                                 Text="{Binding EndTime, UpdateSourceTrigger=PropertyChanged}"
+                                                 Width="80" Margin="8,0,0,0" HorizontalContentAlignment="Center"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Card 03: Navstevnost -->
+                    <Border Style="{StaticResource FormCard}">
+                        <StackPanel>
+                            <Grid Margin="0,0,0,16">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="03" Style="{StaticResource CardNumber}"/>
+                                    <TextBlock Text="Návštěvnost" Style="{StaticResource CardTitle}"/>
+                                </StackPanel>
+                                <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center"
+                                           FontSize="13" Foreground="{DynamicResource InkSubtleBrush}">
+                                    <Run Text="Celkem "/>
+                                    <Run Text="{Binding TotalAttendance, Mode=OneWay}"
+                                         FontFamily="{StaticResource MonoFont}"
+                                         Foreground="{DynamicResource InkBrush}"
+                                         FontWeight="Medium"/>
+                                </TextBlock>
+                            </Grid>
+                            <UniformGrid Columns="4" Margin="0,0,0,14">
+                                <StackPanel Margin="0,0,8,0">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                        <Border Width="8" Height="8" Background="{DynamicResource AttendChildrenBrush}" CornerRadius="2" Margin="0,0,6,0"/>
+                                        <TextBlock Text="DĚTI" Style="{StaticResource FieldLabel}" Margin="0"/>
+                                    </StackPanel>
+                                    <TextBox Style="{StaticResource FormInput}"
+                                             Text="{Binding Children, UpdateSourceTrigger=PropertyChanged}"
+                                             HorizontalContentAlignment="Right" FontFamily="{StaticResource MonoFont}"/>
+                                </StackPanel>
+                                <StackPanel Margin="4,0,4,0">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                        <Border Width="8" Height="8" Background="{DynamicResource AttendAdultsBrush}" CornerRadius="2" Margin="0,0,6,0"/>
+                                        <TextBlock Text="DOSPĚLÍ" Style="{StaticResource FieldLabel}" Margin="0"/>
+                                    </StackPanel>
+                                    <TextBox Style="{StaticResource FormInput}"
+                                             Text="{Binding Adults, UpdateSourceTrigger=PropertyChanged}"
+                                             HorizontalContentAlignment="Right" FontFamily="{StaticResource MonoFont}"/>
+                                </StackPanel>
+                                <StackPanel Margin="4,0,4,0">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                        <Border Width="8" Height="8" Background="{DynamicResource AttendSeniorsBrush}" CornerRadius="2" Margin="0,0,6,0"/>
+                                        <TextBlock Text="SENIOŘI" Style="{StaticResource FieldLabel}" Margin="0"/>
+                                    </StackPanel>
+                                    <TextBox Style="{StaticResource FormInput}"
+                                             Text="{Binding Seniors, UpdateSourceTrigger=PropertyChanged}"
+                                             HorizontalContentAlignment="Right" FontFamily="{StaticResource MonoFont}"/>
+                                </StackPanel>
+                                <StackPanel Margin="8,0,0,0">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                        <Border Width="8" Height="8" Background="{DynamicResource AttendDisabledBrush}" CornerRadius="2" Margin="0,0,6,0"/>
+                                        <TextBlock Text="ZTP" Style="{StaticResource FieldLabel}" Margin="0"/>
+                                    </StackPanel>
+                                    <TextBox Style="{StaticResource FormInput}"
+                                             Text="{Binding Disabled, UpdateSourceTrigger=PropertyChanged}"
+                                             HorizontalContentAlignment="Right" FontFamily="{StaticResource MonoFont}"/>
+                                </StackPanel>
+                            </UniformGrid>
+                            <ctrl:AttendanceBar Event="{Binding PreviewEvent}" BarHeight="8"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Card 04: Finance -->
+                    <Border Style="{StaticResource FormCard}">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                                <TextBlock Text="04" Style="{StaticResource CardNumber}"/>
+                                <TextBlock Text="Finance" Style="{StaticResource CardTitle}"/>
+                            </StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="16"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="NÁKLADY NA AKCI" Style="{StaticResource FieldLabel}"/>
+                                    <Grid>
+                                        <TextBox Style="{StaticResource FormInput}"
+                                                 Text="{Binding Cost, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}"
+                                                 Padding="10,8,40,8"
+                                                 IsEnabled="{Binding IsFree, Converter={StaticResource BoolInvertConverter}}"
+                                                 HorizontalContentAlignment="Right"
+                                                 FontFamily="{StaticResource MonoFont}"/>
+                                        <TextBlock Text="Kč" VerticalAlignment="Center" HorizontalAlignment="Right"
+                                                   Margin="0,0,12,0" FontSize="12"
+                                                   Foreground="{DynamicResource InkSubtleBrush}"
+                                                   IsHitTestVisible="False"/>
+                                    </Grid>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="VSTUPNÉ" Style="{StaticResource FieldLabel}"/>
+                                    <Border Background="{DynamicResource BgBrush}"
+                                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                                            CornerRadius="6" Padding="10,8">
+                                        <CheckBox IsChecked="{Binding IsFree}" FontSize="13">
+                                            <TextBlock Text="Akce je zdarma pro návštěvníky"
+                                                       Foreground="{DynamicResource InkMutedBrush}"/>
+                                        </CheckBox>
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Card 05: Poznamky -->
+                    <Border Style="{StaticResource FormCard}">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                                <TextBlock Text="05" Style="{StaticResource CardNumber}"/>
+                                <TextBlock Text="Poznámky" Style="{StaticResource CardTitle}"/>
+                            </StackPanel>
+                            <TextBox Style="{StaticResource FormInput}"
+                                     Text="{Binding Notes, UpdateSourceTrigger=PropertyChanged}"
+                                     AcceptsReturn="True" TextWrapping="Wrap"
+                                     MinHeight="90" VerticalScrollBarVisibility="Auto"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Error -->
+                    <Border Background="{DynamicResource CopperTintBrush}"
+                            BorderBrush="{DynamicResource CopperBrush}" BorderThickness="1"
+                            CornerRadius="6" Padding="14,10" Margin="0,6,0,0"
+                            Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}">
+                        <TextBlock Text="{Binding ErrorMessage}"
+                                   Foreground="{DynamicResource CopperBrush}"
+                                   FontSize="13" TextWrapping="Wrap"/>
+                    </Border>
+
+                    <!-- Footer duplicated actions -->
+                    <Grid Margin="0,14,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="1" Content="Zrušit"
+                                Command="{Binding CancelCommand}"
+                                Background="{DynamicResource BgSubtleBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                                Padding="14,8" FontSize="13" Margin="0,0,8,0"/>
+                        <Button Grid.Column="2"
+                                Command="{Binding SaveCommand}"
+                                Background="{DynamicResource AccentBrush}"
+                                Foreground="White" BorderThickness="0"
+                                Padding="14,8" FontSize="13" FontWeight="Medium">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Content" Value="Uložit změny"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsNew}" Value="True">
+                                            <Setter Property="Content" Value="Vytvořit akci"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </UserControl>
