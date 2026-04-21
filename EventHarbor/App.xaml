@@ -11,6 +11,7 @@
                 <ui:ControlsDictionary/>
                 <ResourceDictionary Source="Themes/Colors.Light.xaml"/>
                 <ResourceDictionary Source="Themes/Typography.xaml"/>
+                <ResourceDictionary Source="Themes/Controls.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <cnv:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
@@ -20,6 +21,10 @@
             <cnv:BooleanToVisibilityConverter x:Key="BoolToVisInvertedConverter" Invert="True"/>
             <cnv:RouteToBoolConverter x:Key="RouteToBoolConverter"/>
             <cnv:BoolInvertConverter x:Key="BoolInvertConverter"/>
+            <cnv:HexToBrushConverter x:Key="HexToBrushConverter"/>
+            <cnv:PctToStarConverter x:Key="PctToStarConverter"/>
+            <cnv:PctToStarConverter x:Key="InversePctToStarConverter" Invert="True"/>
+            <cnv:ZeroToVisibilityConverter x:Key="ZeroToVisibilityConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
