@@ -417,13 +417,21 @@
                     <!-- Card 05: Poznamky -->
                     <Border Style="{StaticResource FormCard}">
                         <StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
-                                <TextBlock Text="05" Style="{StaticResource CardNumber}"/>
-                                <TextBlock Text="Poznámky" Style="{StaticResource CardTitle}"/>
-                            </StackPanel>
+                            <Grid Margin="0,0,0,16">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="05" Style="{StaticResource CardNumber}"/>
+                                    <TextBlock Text="Poznámky" Style="{StaticResource CardTitle}"/>
+                                </StackPanel>
+                                <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center"
+                                           FontSize="11" FontFamily="{StaticResource MonoFont}"
+                                           Foreground="{DynamicResource InkSubtleBrush}">
+                                    <Run Text="{Binding Notes.Length, Mode=OneWay, FallbackValue=0}"/><Run Text=" / 500"/>
+                                </TextBlock>
+                            </Grid>
                             <TextBox Style="{StaticResource FormInput}"
                                      Text="{Binding Notes, UpdateSourceTrigger=PropertyChanged}"
                                      AcceptsReturn="True" TextWrapping="Wrap"
+                                     MaxLength="500"
                                      MinHeight="90" VerticalScrollBarVisibility="Auto"/>
                         </StackPanel>
                     </Border>

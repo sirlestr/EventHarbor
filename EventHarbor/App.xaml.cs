@@ -50,6 +50,7 @@ public partial class App : Application
                 services.AddSingleton<SessionState>();
                 services.AddSingleton<SettingsStore>();
                 services.AddSingleton<ThemeManager>();
+                services.AddSingleton<RememberMeService>();
                 services.AddSingleton<IUserService, UserService>();
                 services.AddSingleton<ICultureActionService, CultureActionService>();
 
@@ -119,6 +120,8 @@ public partial class App : Application
             })
             .UseSerilog((_, cfg) => cfg
                 .MinimumLevel.Information()
+                .MinimumLevel.Override("Microsoft.EntityFrameworkCore", Serilog.Events.LogEventLevel.Warning)
+                .MinimumLevel.Override("Microsoft.Hosting", Serilog.Events.LogEventLevel.Warning)
                 .WriteTo.File(
                     Path.Combine(AppPaths.LogFolder, "eh-.log"),
                     rollingInterval: RollingInterval.Day,
@@ -135,6 +138,26 @@ public partial class App : Application
         }
 
         AppHost.Services.GetRequiredService<ThemeManager>().ApplyCurrent();
+
+        // Auto-login if a remembered session exists for this Windows user.
+        var rememberMe = AppHost.Services.GetRequiredService<RememberMeService>();
+        var rememberedId = rememberMe.TryLoad();
+        if (rememberedId is int id)
+        {
+            using var scope = AppHost.Services.CreateScope();
+            var factory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<EventHarborDbContext>>();
+            await using var db = await factory.CreateDbContextAsync();
+            var user = await db.Users.FindAsync(id);
+            if (user is not null)
+            {
+                AppHost.Services.GetRequiredService<SessionState>().SetLoggedUser(user);
+                var main = AppHost.Services.GetRequiredService<MainWindow>();
+                main.Show();
+                return;
+            }
+            // remembered id no longer exists in DB -> clear and fall through
+            rememberMe.Clear();
+        }
 
         var login = AppHost.Services.GetRequiredService<LoginWindow>();
         login.Show();

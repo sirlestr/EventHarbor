@@ -69,8 +69,22 @@
             </ItemsControl>
         </Border>
 
+        <!-- Empty state overlays grid when there are zero events at all -->
+        <StackPanel Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20"
+                    Visibility="{Binding HasAnyEvents, Converter={StaticResource BoolToVisInvertedConverter}}">
+            <ctrl:IconView Kind="calendar" Size="32"
+                           Foreground="{DynamicResource InkSubtleBrush}"
+                           HorizontalAlignment="Center" Margin="0,0,0,10"/>
+            <TextBlock Text="Žádné akce k zobrazení" Style="{StaticResource SerifHeading}" FontSize="20"
+                       HorizontalAlignment="Center"/>
+            <TextBlock Text="Zkuste upravit filtry, nebo vytvořte novou akci."
+                       Style="{StaticResource SubtleText}" HorizontalAlignment="Center"
+                       TextAlignment="Center" Margin="0,4,0,0"/>
+        </StackPanel>
+
         <!-- Days grid -->
-        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto"
+                      Visibility="{Binding HasAnyEvents, Converter={StaticResource BoolToVisConverter}}">
             <ItemsControl ItemsSource="{Binding Days}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>

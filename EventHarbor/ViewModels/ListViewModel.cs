@@ -1,11 +1,11 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Windows;
 using System.Windows.Data;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EventHarbor.Domain;
 using EventHarbor.Services;
+using EventHarbor.Views;
 
 namespace EventHarbor.ViewModels;
 
@@ -173,13 +173,15 @@ public partial class ListViewModel : ObservableObject
     {
         if (SelectedEvent is null) return;
 
-        var result = MessageBox.Show(
-            $"Opravdu chcete smazat akci \"{SelectedEvent.Name}\"?",
-            "Potvrzení smazání",
-            MessageBoxButton.YesNo,
-            MessageBoxImage.Warning);
+        var confirmed = ConfirmDialog.Ask(
+            "Smazat akci?",
+            $"Opravdu chcete smazat akci „{SelectedEvent.Name}\"? Tuto operaci nelze vzít zpět.",
+            confirmText: "Smazat",
+            cancelText: "Zrušit",
+            iconKind: "trash",
+            destructive: true);
 
-        if (result != MessageBoxResult.Yes) return;
+        if (!confirmed) return;
 
         var id = SelectedEvent.Id;
         await _service.DeleteAsync(id);

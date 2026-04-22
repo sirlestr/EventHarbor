@@ -6,6 +6,10 @@ public class UserServiceTests
 {
     private static (UserService svc, SessionState session, TestDbFactory factory) CreateService()
     {
+        // Purge any in-memory lockout state left over from previous tests
+        // (UserService.GetRemainingLockSeconds / _attempts is static).
+        UserService.ClearAllLoginAttempts();
+
         var factory = new TestDbFactory();
         var session = new SessionState();
         var svc = new UserService(factory, session);
@@ -119,5 +123,55 @@ public class UserServiceTests
         Assert.NotNull(user);
         Assert.NotEqual("plainSecret123", user!.PasswordHash);
         Assert.StartsWith("$2", user.PasswordHash);   // BCrypt prefix
+    }
+
+    [Fact]
+    public async Task Login_locks_account_after_three_wrong_attempts()
+    {
+        var (svc, _, factory) = CreateService();
+        using var _f = factory;
+
+        await svc.RegisterAsync("bob", "good", "Město narození", "Praha");
+
+        Assert.Equal(LoginResult.WrongPassword, await svc.LoginAsync("bob", "bad"));
+        Assert.Equal(LoginResult.WrongPassword, await svc.LoginAsync("bob", "bad"));
+        Assert.Equal(LoginResult.WrongPassword, await svc.LoginAsync("bob", "bad"));
+
+        // 4th attempt is locked out even with the right password.
+        Assert.Equal(LoginResult.Locked, await svc.LoginAsync("bob", "good"));
+        Assert.True(UserService.GetRemainingLockSeconds("bob") > 0);
+    }
+
+    [Fact]
+    public async Task Successful_login_resets_lockout_counter()
+    {
+        var (svc, _, factory) = CreateService();
+        using var _f = factory;
+
+        await svc.RegisterAsync("carol", "good", "Město narození", "Praha");
+
+        Assert.Equal(LoginResult.WrongPassword, await svc.LoginAsync("carol", "bad"));
+        Assert.Equal(LoginResult.WrongPassword, await svc.LoginAsync("carol", "bad"));
+        Assert.Equal(LoginResult.Success, await svc.LoginAsync("carol", "good"));
+
+        // Two more wrong attempts should still not lock - counter was cleared.
+        Assert.Equal(LoginResult.WrongPassword, await svc.LoginAsync("carol", "bad"));
+        Assert.Equal(LoginResult.WrongPassword, await svc.LoginAsync("carol", "bad"));
+        Assert.Equal(LoginResult.Success, await svc.LoginAsync("carol", "good"));
+    }
+
+    [Fact]
+    public async Task LoginAsync_response_takes_at_least_100_ms()
+    {
+        var (svc, _, factory) = CreateService();
+        using var _f = factory;
+
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+        await svc.LoginAsync("ghost_user", "anything");
+        sw.Stop();
+
+        // Floor of 100ms to obscure user-existence from response time.
+        Assert.True(sw.ElapsedMilliseconds >= 95,
+            $"Expected at least 100ms, observed {sw.ElapsedMilliseconds}ms");
     }
 }
