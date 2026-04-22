@@ -1,0 +1,103 @@
+<Window x:Class="EventHarbor.Views.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        xmlns:auth="clr-namespace:EventHarbor.Views.Auth"
+        xmlns:vm="clr-namespace:EventHarbor.ViewModels"
+        Title="EventHarbor — Přihlášení"
+        Height="640" Width="900"
+        MinHeight="560" MinWidth="820"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource BgBrush}">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:LoginViewModel}">
+            <auth:LoginView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:RegisterViewModel}">
+            <auth:RegisterView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ForgotViewModel}">
+            <auth:ForgotView/>
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="420"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Brand panel (left) -->
+        <Grid Grid.Column="0">
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#1E3A5F" Offset="0"/>
+                    <GradientStop Color="#13243C" Offset="1"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+
+            <!-- Decorative concentric circles -->
+            <Canvas HorizontalAlignment="Right" VerticalAlignment="Bottom" ClipToBounds="True"
+                    Opacity="0.08" IsHitTestVisible="False">
+                <Ellipse Width="480" Height="480" Canvas.Left="-80" Canvas.Top="-80"
+                         Stroke="#F4EEDF" StrokeThickness="1" Fill="Transparent"/>
+                <Ellipse Width="360" Height="360" Canvas.Left="-20" Canvas.Top="-20"
+                         Stroke="#F4EEDF" StrokeThickness="1" Fill="Transparent"/>
+                <Ellipse Width="240" Height="240" Canvas.Left="40" Canvas.Top="40"
+                         Stroke="#F4EEDF" StrokeThickness="1" Fill="Transparent"/>
+            </Canvas>
+
+            <Grid Margin="48,44,48,44">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Logo + name -->
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <Border Width="32" Height="32" CornerRadius="7" Background="#F4EEDF">
+                        <TextBlock Text="E" FontFamily="{StaticResource SerifFont}"
+                                   FontSize="21" FontStyle="Italic"
+                                   Foreground="#1E3A5F"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel Margin="12,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="EventHarbor" FontFamily="{StaticResource SerifFont}"
+                                   FontSize="22" Foreground="#F4EEDF"/>
+                        <TextBlock Text="KULTURNÍ AGENDA" FontSize="10.5"
+                                   Foreground="#F4EEDF" Opacity="0.7"
+                                   FontWeight="Medium"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Claim -->
+                <StackPanel Grid.Row="1" VerticalAlignment="Bottom">
+                    <TextBlock FontFamily="{StaticResource SerifFont}" FontSize="46"
+                               FontStyle="Italic" Foreground="#F4EEDF"
+                               LineHeight="50" TextWrapping="Wrap" Margin="0,0,0,18">
+                        <Run Text="Co se koná,"/><LineBreak/>
+                        <Run Text="kolik lidí přišlo,"/><LineBreak/>
+                        <Run Text="kolik to stálo."/>
+                    </TextBlock>
+                    <TextBlock FontSize="13.5" Foreground="#F4EEDF" Opacity="0.75"
+                               TextWrapping="Wrap" MaxWidth="340" HorizontalAlignment="Left"
+                               Text="Jednoduchá evidence kulturních akcí pro muzea, zámky a divadla. Přehledně, bez zbytečné byrokracie."/>
+                </StackPanel>
+
+                <!-- Version -->
+                <StackPanel Grid.Row="2" Orientation="Horizontal" Opacity="0.6" Margin="0,28,0,0">
+                    <TextBlock Text="V 2.0.0" FontSize="11.5" Foreground="#F4EEDF" FontWeight="Medium"/>
+                    <TextBlock Text="·" Margin="12,0" FontSize="11.5" Foreground="#F4EEDF"/>
+                    <TextBlock Text="SEZÓNA 2025 / 26" FontSize="11.5" Foreground="#F4EEDF" FontWeight="Medium"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+
+        <!-- Form panel (right) -->
+        <Border Grid.Column="1" Background="{DynamicResource BgElevatedBrush}"
+                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1,0,0,0">
+            <ContentControl Content="{Binding CurrentViewModel}"/>
+        </Border>
+    </Grid>
+</Window>

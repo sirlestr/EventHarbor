@@ -1,0 +1,51 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Warm museum palette (dark) -->
+    <Color x:Key="BgColor">#1A1713</Color>
+    <Color x:Key="BgSubtleColor">#211D18</Color>
+    <Color x:Key="BgElevatedColor">#24201A</Color>
+    <Color x:Key="BorderColor">#332D24</Color>
+    <Color x:Key="BorderStrongColor">#443C31</Color>
+    <Color x:Key="InkColor">#F4F0E8</Color>
+    <Color x:Key="InkMutedColor">#C0B7A7</Color>
+    <Color x:Key="InkSubtleColor">#8A8174</Color>
+
+    <Color x:Key="AccentColor">#4A7BA8</Color>
+    <Color x:Key="AccentHoverColor">#6593BF</Color>
+    <Color x:Key="AccentTintColor">#1E2D42</Color>
+    <Color x:Key="AccentDeepColor">#13243C</Color>
+
+    <Color x:Key="CopperColor">#D88049</Color>
+    <Color x:Key="CopperTintColor">#3A2414</Color>
+    <Color x:Key="MossColor">#7A9668</Color>
+    <Color x:Key="MossTintColor">#1F2A1A</Color>
+    <Color x:Key="WarnColor">#B87046</Color>
+
+    <Color x:Key="AttendChildrenColor">#4A7BA8</Color>
+    <Color x:Key="AttendAdultsColor">#6593BF</Color>
+    <Color x:Key="AttendSeniorsColor">#D88049</Color>
+    <Color x:Key="AttendDisabledColor">#A06040</Color>
+
+    <SolidColorBrush x:Key="BgBrush" Color="{StaticResource BgColor}"/>
+    <SolidColorBrush x:Key="BgSubtleBrush" Color="{StaticResource BgSubtleColor}"/>
+    <SolidColorBrush x:Key="BgElevatedBrush" Color="{StaticResource BgElevatedColor}"/>
+    <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource BorderColor}"/>
+    <SolidColorBrush x:Key="BorderStrongBrush" Color="{StaticResource BorderStrongColor}"/>
+    <SolidColorBrush x:Key="InkBrush" Color="{StaticResource InkColor}"/>
+    <SolidColorBrush x:Key="InkMutedBrush" Color="{StaticResource InkMutedColor}"/>
+    <SolidColorBrush x:Key="InkSubtleBrush" Color="{StaticResource InkSubtleColor}"/>
+    <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}"/>
+    <SolidColorBrush x:Key="AccentHoverBrush" Color="{StaticResource AccentHoverColor}"/>
+    <SolidColorBrush x:Key="AccentTintBrush" Color="{StaticResource AccentTintColor}"/>
+    <SolidColorBrush x:Key="AccentDeepBrush" Color="{StaticResource AccentDeepColor}"/>
+    <SolidColorBrush x:Key="CopperBrush" Color="{StaticResource CopperColor}"/>
+    <SolidColorBrush x:Key="CopperTintBrush" Color="{StaticResource CopperTintColor}"/>
+    <SolidColorBrush x:Key="MossBrush" Color="{StaticResource MossColor}"/>
+    <SolidColorBrush x:Key="MossTintBrush" Color="{StaticResource MossTintColor}"/>
+    <SolidColorBrush x:Key="AttendChildrenBrush" Color="{StaticResource AttendChildrenColor}"/>
+    <SolidColorBrush x:Key="AttendAdultsBrush" Color="{StaticResource AttendAdultsColor}"/>
+    <SolidColorBrush x:Key="AttendSeniorsBrush" Color="{StaticResource AttendSeniorsColor}"/>
+    <SolidColorBrush x:Key="AttendDisabledBrush" Color="{StaticResource AttendDisabledColor}"/>
+</ResourceDictionary>

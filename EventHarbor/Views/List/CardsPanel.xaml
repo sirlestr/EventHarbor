@@ -1,0 +1,169 @@
+<UserControl x:Class="EventHarbor.Views.List.CardsPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:EventHarbor.ViewModels"
+             xmlns:ctrl="clr-namespace:EventHarbor.Common.Controls"
+             d:DataContext="{d:DesignInstance Type=vm:ListViewModel}"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             Background="{DynamicResource BgBrush}">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="20,14">
+        <ItemsControl ItemsSource="{Binding EventsView}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border Width="300" Margin="0,0,14,14"
+                            Background="{DynamicResource BgElevatedBrush}"
+                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                            CornerRadius="10" Padding="20,18" Cursor="Hand">
+                        <Border.InputBindings>
+                            <MouseBinding Gesture="LeftClick"
+                                          Command="{Binding DataContext.SelectCardCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                          CommandParameter="{Binding}"/>
+                        </Border.InputBindings>
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="BorderBrush" Value="{DynamicResource BorderStrongBrush}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <StackPanel>
+                            <!-- Head: title + badges -->
+                            <Grid Margin="0,0,0,14">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="{Binding Name}"
+                                               FontFamily="{StaticResource SerifFont}" FontSize="20"
+                                               Foreground="{DynamicResource InkBrush}"
+                                               TextWrapping="Wrap" TextTrimming="CharacterEllipsis"
+                                               MaxHeight="52"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                        <TextBlock Text="{Binding StartAt, StringFormat='dd.MM.yyyy', Mode=OneWay}"
+                                                   FontSize="12" Foreground="{DynamicResource InkSubtleBrush}"/>
+                                        <TextBlock Text=" · " FontSize="12" Foreground="{DynamicResource InkSubtleBrush}"/>
+                                        <TextBlock Text="{Binding Organiser, Converter={StaticResource EnumDescriptionConverter}, Mode=OneWay}"
+                                                   FontSize="12" Foreground="{DynamicResource InkSubtleBrush}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" HorizontalAlignment="Right">
+                                    <Border CornerRadius="3" Padding="6,2" HorizontalAlignment="Right">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Background" Value="{DynamicResource BgSubtleBrush}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Status}" Value="Planned">
+                                                        <Setter Property="Background" Value="{DynamicResource AccentTintBrush}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Status}" Value="Running">
+                                                        <Setter Property="Background" Value="{DynamicResource MossTintBrush}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <TextBlock Text="{Binding Status, Converter={StaticResource EnumDescriptionConverter}, Mode=OneWay}"
+                                                   FontSize="10.5" FontWeight="Medium">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Foreground" Value="{DynamicResource InkMutedBrush}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Status}" Value="Planned">
+                                                            <Setter Property="Foreground" Value="{DynamicResource AccentBrush}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Status}" Value="Running">
+                                                            <Setter Property="Foreground" Value="{DynamicResource MossBrush}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </Border>
+                                    <Border Background="{DynamicResource CopperTintBrush}"
+                                            CornerRadius="3" Padding="6,2" Margin="0,4,0,0" HorizontalAlignment="Right">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsFree}" Value="True">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <TextBlock Text="Zdarma" FontSize="10.5" FontWeight="Medium"
+                                                   Foreground="{DynamicResource CopperBrush}"/>
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- Attendance grid -->
+                            <UniformGrid Columns="4" Margin="0,0,0,12">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Children}" FontFamily="{StaticResource SerifFont}"
+                                               FontSize="22" Foreground="{DynamicResource InkBrush}"/>
+                                    <TextBlock Text="Děti" FontSize="11" Foreground="{DynamicResource InkSubtleBrush}"/>
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Adults}" FontFamily="{StaticResource SerifFont}"
+                                               FontSize="22" Foreground="{DynamicResource InkBrush}"/>
+                                    <TextBlock Text="Dospělí" FontSize="11" Foreground="{DynamicResource InkSubtleBrush}"/>
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Seniors}" FontFamily="{StaticResource SerifFont}"
+                                               FontSize="22" Foreground="{DynamicResource InkBrush}"/>
+                                    <TextBlock Text="Senioři" FontSize="11" Foreground="{DynamicResource InkSubtleBrush}"/>
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Disabled}" FontFamily="{StaticResource SerifFont}"
+                                               FontSize="22" Foreground="{DynamicResource InkBrush}"/>
+                                    <TextBlock Text="ZTP" FontSize="11" Foreground="{DynamicResource InkSubtleBrush}"/>
+                                </StackPanel>
+                            </UniformGrid>
+
+                            <!-- Attendance bar -->
+                            <ctrl:AttendanceBar Event="{Binding}" BarHeight="6" Margin="0,0,0,14"/>
+
+                            <!-- Foot: type + cost -->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" FontSize="11.5"
+                                           Foreground="{DynamicResource InkSubtleBrush}"
+                                           VerticalAlignment="Center">
+                                    <Run Text="{Binding Type, Converter={StaticResource EnumDescriptionConverter}, Mode=OneWay}"/>
+                                </TextBlock>
+                                <TextBlock Grid.Column="1" FontWeight="Medium" FontSize="13"
+                                           FontFamily="{StaticResource MonoFont}"
+                                           Foreground="{DynamicResource InkBrush}">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Text" Value="{Binding Cost, StringFormat='{}{0:N0} Kč', Mode=OneWay}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsFree}" Value="True">
+                                                    <Setter Property="Text" Value="Zdarma"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource CopperBrush}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </ScrollViewer>
+</UserControl>
