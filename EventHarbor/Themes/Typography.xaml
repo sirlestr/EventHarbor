@@ -2,11 +2,10 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!-- Bundled fonts via pack URI. Geist is variable; Instrument Serif has Regular + Italic. -->
+    <!-- Bundled fonts via pack URI. Geist + Geist Mono are variable; Instrument Serif has Regular + Italic. -->
     <FontFamily x:Key="SansFont">pack://application:,,,/Resources/Fonts/#Geist</FontFamily>
     <FontFamily x:Key="SerifFont">pack://application:,,,/Resources/Fonts/#Instrument Serif</FontFamily>
-    <!-- No Geist Mono shipped yet; tabular numerics use Cascadia / Consolas fallback. -->
-    <FontFamily x:Key="MonoFont">Cascadia Mono, Consolas, Courier New, monospace</FontFamily>
+    <FontFamily x:Key="MonoFont">pack://application:,,,/Resources/Fonts/#Geist Mono</FontFamily>
 
     <Style x:Key="BodyText" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource SansFont}"/>
