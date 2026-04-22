@@ -5,6 +5,7 @@
              xmlns:domain="clr-namespace:EventHarbor.Domain"
              xmlns:ctrl="clr-namespace:EventHarbor.Common.Controls"
              xmlns:cmn="clr-namespace:EventHarbor.Common"
+             xmlns:local="clr-namespace:EventHarbor.Views.List"
              d:DataContext="{d:DesignInstance Type=vm:ListViewModel}"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -108,11 +109,21 @@
                 <!-- Search -->
                 <Border Grid.Column="2" Background="{DynamicResource BgSubtleBrush}"
                         BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
-                        CornerRadius="6" Margin="0,0,12,0" MinWidth="220" VerticalAlignment="Center">
-                    <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Delay=150}"
-                             Background="Transparent" BorderThickness="0"
-                             Padding="10,6" FontSize="13"
-                             VerticalAlignment="Center"/>
+                        CornerRadius="6" Margin="0,0,12,0" MinWidth="240" VerticalAlignment="Center">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <ctrl:IconView Grid.Column="0" Kind="search" Size="14" Margin="10,0,6,0"
+                                       Foreground="{DynamicResource InkSubtleBrush}"
+                                       VerticalAlignment="Center"/>
+                        <TextBox Grid.Column="1"
+                                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Delay=150}"
+                                 Background="Transparent" BorderThickness="0"
+                                 Padding="0,6,10,6" FontSize="13"
+                                 VerticalAlignment="Center"/>
+                    </Grid>
                 </Border>
 
                 <!-- View toggle -->
@@ -120,27 +131,60 @@
                         BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
                         CornerRadius="6" Padding="3" Margin="0,0,12,0" VerticalAlignment="Center">
                     <StackPanel Orientation="Horizontal">
-                        <RadioButton Style="{StaticResource ViewToggle}" Content="Tabulka"
+                        <RadioButton Style="{StaticResource ViewToggle}"
                                      IsChecked="{Binding ViewMode, Converter={StaticResource RouteToBoolConverter}, ConverterParameter=Table}"
-                                     Command="{Binding SetViewModeCommand}" CommandParameter="Table"/>
-                        <RadioButton Style="{StaticResource ViewToggle}" Content="Karty" IsEnabled="False"/>
-                        <RadioButton Style="{StaticResource ViewToggle}" Content="Kalendář" IsEnabled="False"/>
+                                     Command="{Binding SetViewModeCommand}" CommandParameter="Table">
+                            <StackPanel Orientation="Horizontal">
+                                <ctrl:IconView Kind="list" Size="13" Margin="0,0,5,0"
+                                               Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"/>
+                                <TextBlock Text="Tabulka" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource ViewToggle}"
+                                     IsChecked="{Binding ViewMode, Converter={StaticResource RouteToBoolConverter}, ConverterParameter=Cards}"
+                                     Command="{Binding SetViewModeCommand}" CommandParameter="Cards">
+                            <StackPanel Orientation="Horizontal">
+                                <ctrl:IconView Kind="grid" Size="13" Margin="0,0,5,0"
+                                               Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"/>
+                                <TextBlock Text="Karty" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource ViewToggle}"
+                                     IsChecked="{Binding ViewMode, Converter={StaticResource RouteToBoolConverter}, ConverterParameter=Calendar}"
+                                     Command="{Binding SetViewModeCommand}" CommandParameter="Calendar">
+                            <StackPanel Orientation="Horizontal">
+                                <ctrl:IconView Kind="calendar" Size="13" Margin="0,0,5,0"
+                                               Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"/>
+                                <TextBlock Text="Kalendář" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </RadioButton>
                     </StackPanel>
                 </Border>
 
                 <!-- Export -->
-                <Button Grid.Column="4" Content="Export"
+                <Button Grid.Column="4"
                         Background="{DynamicResource BgElevatedBrush}"
                         BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
                         Padding="12,7" FontSize="13" Margin="0,0,8,0"
-                        IsEnabled="False"/>
+                        IsEnabled="False">
+                    <StackPanel Orientation="Horizontal">
+                        <ctrl:IconView Kind="export" Size="14" Margin="0,0,6,0"
+                                       Foreground="{DynamicResource InkMutedBrush}"/>
+                        <TextBlock Text="Export" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
 
                 <!-- New action -->
-                <Button Grid.Column="5" Content="Nová akce"
+                <Button Grid.Column="5"
                         Command="{Binding NewCommand}"
                         Background="{DynamicResource AccentBrush}"
                         Foreground="White" BorderThickness="0"
-                        Padding="14,7" FontSize="13" FontWeight="Medium"/>
+                        Padding="14,7" FontSize="13" FontWeight="Medium">
+                    <StackPanel Orientation="Horizontal">
+                        <ctrl:IconView Kind="plus" Size="14" Margin="0,0,6,0" Foreground="White"/>
+                        <TextBlock Text="Nová akce" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
             </Grid>
         </Border>
 
@@ -148,7 +192,7 @@
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="380"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <!-- Content area -->
@@ -256,10 +300,11 @@
                     </WrapPanel>
                 </Border>
 
-                <!-- DataGrid -->
+                <!-- DataGrid (Table mode) -->
                 <DataGrid Grid.Row="1"
                           ItemsSource="{Binding EventsView}"
                           SelectedItem="{Binding SelectedEvent}"
+                          Visibility="{Binding ViewMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Table}"
                           AutoGenerateColumns="False"
                           HeadersVisibility="Column"
                           IsReadOnly="True"
@@ -400,6 +445,14 @@
                     </DataGrid.Columns>
                 </DataGrid>
 
+                <!-- Cards view -->
+                <local:CardsPanel Grid.Row="1" DataContext="{Binding}"
+                                  Visibility="{Binding ViewMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Cards}"/>
+
+                <!-- Calendar view -->
+                <local:CalendarPanel Grid.Row="1" DataContext="{Binding Calendar}"
+                                     Visibility="{Binding DataContext.ViewMode, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=Calendar}"/>
+
                 <!-- Empty state -->
                 <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <StackPanel.Style>
@@ -419,9 +472,20 @@
                 </StackPanel>
             </Grid>
 
-            <!-- Detail panel -->
-            <Border Grid.Column="1" Background="{DynamicResource BgElevatedBrush}"
+            <!-- Detail panel (hidden in Calendar view per design) -->
+            <Border Grid.Column="1" Width="380"
+                    Background="{DynamicResource BgElevatedBrush}"
                     BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1,0,0,0">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ViewMode}" Value="Calendar">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
                 <Grid DataContext="{Binding SelectedEvent}">
                     <!-- Empty state when no selection -->
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">
@@ -662,17 +726,28 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" Content="Smazat"
+                                <Button Grid.Column="0"
                                         Command="{Binding DeleteCommand}"
                                         Background="{DynamicResource BgSubtleBrush}"
                                         BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
                                         Foreground="{DynamicResource CopperBrush}"
-                                        Padding="12,6" FontSize="12"/>
-                                <Button Grid.Column="2" Content="Upravit"
+                                        Padding="12,6" FontSize="12">
+                                    <StackPanel Orientation="Horizontal">
+                                        <ctrl:IconView Kind="trash" Size="13" Margin="0,0,6,0"
+                                                       Foreground="{DynamicResource CopperBrush}"/>
+                                        <TextBlock Text="Smazat" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Grid.Column="2"
                                         Command="{Binding EditCommand}"
                                         Background="{DynamicResource AccentBrush}"
                                         Foreground="White" BorderThickness="0"
-                                        Padding="14,6" FontSize="12" FontWeight="Medium"/>
+                                        Padding="14,6" FontSize="12" FontWeight="Medium">
+                                    <StackPanel Orientation="Horizontal">
+                                        <ctrl:IconView Kind="edit" Size="13" Margin="0,0,6,0" Foreground="White"/>
+                                        <TextBlock Text="Upravit" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
                             </Grid>
                         </Border>
                     </Grid>

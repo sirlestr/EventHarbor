@@ -1,0 +1,181 @@
+<UserControl x:Class="EventHarbor.Views.List.CalendarPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:EventHarbor.ViewModels"
+             xmlns:ctrl="clr-namespace:EventHarbor.Common.Controls"
+             d:DataContext="{d:DesignInstance Type=vm:CalendarViewModel}"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             Background="{DynamicResource BgBrush}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header with nav -->
+        <Border Grid.Row="0" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1"
+                Padding="16,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="{Binding MonthLabel, Mode=OneWay}"
+                           FontFamily="{StaticResource SerifFont}" FontSize="20"
+                           Foreground="{DynamicResource InkBrush}" VerticalAlignment="Center"/>
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button Command="{Binding PreviousMonthCommand}"
+                            Background="{DynamicResource BgElevatedBrush}"
+                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                            Padding="8,6" Margin="0,0,4,0" ToolTip="Předchozí měsíc">
+                        <ctrl:IconView Kind="chevL" Size="14"
+                                       Foreground="{DynamicResource InkMutedBrush}"/>
+                    </Button>
+                    <Button Command="{Binding TodayCommand}" Content="Dnes"
+                            Background="{DynamicResource BgElevatedBrush}"
+                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                            Padding="12,6" Margin="0,0,4,0" FontSize="13"/>
+                    <Button Command="{Binding NextMonthCommand}"
+                            Background="{DynamicResource BgElevatedBrush}"
+                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                            Padding="8,6" ToolTip="Další měsíc">
+                        <ctrl:IconView Kind="chevR" Size="14"
+                                       Foreground="{DynamicResource InkMutedBrush}"/>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Day header row -->
+        <Border Grid.Row="1" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1"
+                Background="{DynamicResource BgSubtleBrush}">
+            <ItemsControl ItemsSource="{Binding DayHeaders}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="7"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" FontSize="11" FontWeight="Medium"
+                                   Foreground="{DynamicResource InkSubtleBrush}"
+                                   Padding="10,8"
+                                   TextAlignment="Left"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Border>
+
+        <!-- Days grid -->
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Days}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="7"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border MinHeight="92"
+                                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,1,1"
+                                Padding="6,6">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background" Value="{DynamicResource BgElevatedBrush}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsOutOfMonth}" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource BgSubtleBrush}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <StackPanel>
+                                <!-- Day number (today highlighted) -->
+                                <Border HorizontalAlignment="Left" CornerRadius="12" Width="22" Height="22">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsToday}" Value="True">
+                                                    <Setter Property="Background" Value="{DynamicResource AccentBrush}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <TextBlock Text="{Binding DayNumber}" FontSize="12" FontWeight="Medium"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Foreground" Value="{DynamicResource InkBrush}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsOutOfMonth}" Value="True">
+                                                        <Setter Property="Foreground" Value="{DynamicResource InkSubtleBrush}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding IsToday}" Value="True">
+                                                        <Setter Property="Foreground" Value="White"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Border>
+
+                                <!-- Events -->
+                                <ItemsControl ItemsSource="{Binding VisibleEvents}" Margin="0,4,0,0">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border CornerRadius="3" Padding="6,3" Margin="0,0,0,2" Cursor="Hand">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Background" Value="{DynamicResource AccentTintBrush}"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsFree}" Value="True">
+                                                                <Setter Property="Background" Value="{DynamicResource CopperTintBrush}"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Status}" Value="Ended">
+                                                                <Setter Property="Background" Value="{DynamicResource BgSubtleBrush}"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <Border.InputBindings>
+                                                    <MouseBinding Gesture="LeftClick"
+                                                                  Command="{Binding DataContext.PickCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                                  CommandParameter="{Binding}"/>
+                                                </Border.InputBindings>
+                                                <TextBlock Text="{Binding Name}" FontSize="11"
+                                                           TextTrimming="CharacterEllipsis" TextWrapping="NoWrap">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Foreground" Value="{DynamicResource AccentBrush}"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsFree}" Value="True">
+                                                                    <Setter Property="Foreground" Value="{DynamicResource CopperBrush}"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding Status}" Value="Ended">
+                                                                    <Setter Property="Foreground" Value="{DynamicResource InkSubtleBrush}"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <TextBlock FontSize="10.5" Foreground="{DynamicResource InkSubtleBrush}"
+                                           Padding="6,0,0,0" Margin="0,2,0,0"
+                                           Visibility="{Binding HasExtras, Converter={StaticResource BoolToVisConverter}}">
+                                    <Run Text="+"/><Run Text="{Binding ExtraEventsCount, Mode=OneWay}"/><Run Text=" další"/>
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

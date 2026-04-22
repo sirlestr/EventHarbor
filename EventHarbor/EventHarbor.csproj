@@ -18,14 +18,10 @@
 
   <ItemGroup>
     <Folder Include="Resources\Images\" />
-    <Folder Include="Resources\Fonts\" />
-    <Folder Include="Domain\" />
-    <Folder Include="Data\" />
-    <Folder Include="Services\" />
-    <Folder Include="ViewModels\" />
-    <Folder Include="Views\" />
-    <Folder Include="Common\" />
-    <Folder Include="Themes\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Fonts\*.ttf" />
   </ItemGroup>
 
   <ItemGroup>

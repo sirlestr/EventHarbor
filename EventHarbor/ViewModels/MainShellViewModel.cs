@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EventHarbor.Domain;
@@ -29,6 +30,20 @@ public partial class MainShellViewModel : ObservableObject
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ThemeLabel))]
     private AppTheme _currentTheme;
+
+    [ObservableProperty]
+    private int _plannedCount;
+
+    [ObservableProperty]
+    private int _runningCount;
+
+    [ObservableProperty]
+    private int _endedCount;
+
+    [ObservableProperty]
+    private int _totalCount;
+
+    private ListViewModel? _currentList;
 
     public string LoggedUserName => _session.UserName;
 
@@ -81,8 +96,88 @@ public partial class MainShellViewModel : ObservableObject
         {
             MainRoute.Form => _formFactory(),
             MainRoute.Stats => _statsFactory(),
-            _ => _listFactory(),
+            _ => GetOrCreateList(),
         };
+    }
+
+    private ListViewModel GetOrCreateList()
+    {
+        var vm = _listFactory();
+        if (_currentList is not null)
+            _currentList.PropertyChanged -= OnListPropertyChanged;
+        _currentList = vm;
+        _currentList.PropertyChanged += OnListPropertyChanged;
+        SyncFromList();
+        return vm;
+    }
+
+    private void OnListPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is nameof(ListViewModel.PlannedCount)
+            or nameof(ListViewModel.RunningCount)
+            or nameof(ListViewModel.EndedCount)
+            or nameof(ListViewModel.TotalCount))
+        {
+            SyncFromList();
+        }
+    }
+
+    private void SyncFromList()
+    {
+        if (_currentList is null) return;
+        PlannedCount = _currentList.PlannedCount;
+        RunningCount = _currentList.RunningCount;
+        EndedCount = _currentList.EndedCount;
+        TotalCount = _currentList.TotalCount;
+    }
+
+    [RelayCommand]
+    private void FilterByStatus(string status)
+    {
+        if (!Enum.TryParse<EventStatus>(status, out var parsed)) return;
+        EnsureListActive();
+        if (_currentList is not null)
+            _currentList.FilterStatus = _currentList.FilterStatus == parsed ? null : parsed;
+    }
+
+    [RelayCommand]
+    private void FilterByOrganiser(string org)
+    {
+        if (!Enum.TryParse<Organiser>(org, out var parsed)) return;
+        EnsureListActive();
+        if (_currentList is not null)
+            _currentList.FilterOrganiser = _currentList.FilterOrganiser == parsed ? null : parsed;
+    }
+
+    [RelayCommand]
+    private void FilterByType(string type)
+    {
+        if (!Enum.TryParse<CultureEventType>(type, out var parsed)) return;
+        EnsureListActive();
+        if (_currentList is not null)
+            _currentList.FilterType = _currentList.FilterType == parsed ? null : parsed;
+    }
+
+    [RelayCommand]
+    private void ClearAllFilters()
+    {
+        EnsureListActive();
+        if (_currentList is not null)
+        {
+            _currentList.FilterStatus = null;
+            _currentList.FilterOrganiser = null;
+            _currentList.FilterType = null;
+            _currentList.SearchText = string.Empty;
+        }
+    }
+
+    private void EnsureListActive()
+    {
+        if (CurrentRoute != MainRoute.List)
+        {
+            CurrentRoute = MainRoute.List;
+            CurrentViewModel = GetOrCreateList();
+        }
     }
 
     public void StartNewEvent()
@@ -92,6 +187,9 @@ public partial class MainShellViewModel : ObservableObject
         CurrentRoute = MainRoute.Form;
         CurrentViewModel = vm;
     }
+
+    [RelayCommand]
+    private void StartNewFromSidebar() => StartNewEvent();
 
     public void StartEditEvent(CultureAction action)
     {
@@ -104,6 +202,6 @@ public partial class MainShellViewModel : ObservableObject
     public void ReturnToList()
     {
         CurrentRoute = MainRoute.List;
-        CurrentViewModel = _listFactory();
+        CurrentViewModel = GetOrCreateList();
     }
 }

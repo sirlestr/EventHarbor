@@ -11,6 +11,7 @@
                 <ui:ControlsDictionary/>
                 <ResourceDictionary Source="Themes/Colors.Light.xaml"/>
                 <ResourceDictionary Source="Themes/Typography.xaml"/>
+                <ResourceDictionary Source="Themes/Icons.xaml"/>
                 <ResourceDictionary Source="Themes/Controls.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
@@ -25,6 +26,7 @@
             <cnv:PctToStarConverter x:Key="PctToStarConverter"/>
             <cnv:PctToStarConverter x:Key="InversePctToStarConverter" Invert="True"/>
             <cnv:ZeroToVisibilityConverter x:Key="ZeroToVisibilityConverter"/>
+            <cnv:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

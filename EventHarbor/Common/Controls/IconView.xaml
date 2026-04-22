@@ -1,0 +1,17 @@
+<UserControl x:Class="EventHarbor.Common.Controls.IconView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Name="Root"
+             Focusable="False">
+    <Viewbox Stretch="Uniform">
+        <Canvas Width="20" Height="20">
+            <Path x:Name="PART_Path"
+                  Stroke="{Binding Foreground, ElementName=Root}"
+                  StrokeThickness="1.5"
+                  StrokeStartLineCap="Round"
+                  StrokeEndLineCap="Round"
+                  StrokeLineJoin="Round"
+                  Fill="Transparent"/>
+        </Canvas>
+    </Viewbox>
+</UserControl>

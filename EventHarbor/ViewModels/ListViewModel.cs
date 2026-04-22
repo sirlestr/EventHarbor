@@ -27,6 +27,8 @@ public partial class ListViewModel : ObservableObject
     public ObservableCollection<CultureAction> Events { get; } = new();
     public ICollectionView EventsView { get; }
 
+    public CalendarViewModel Calendar { get; }
+
     [ObservableProperty]
     private CultureAction? _selectedEvent;
 
@@ -43,10 +45,22 @@ public partial class ListViewModel : ObservableObject
     private EventStatus? _filterStatus;
 
     [ObservableProperty]
+    private CultureEventType? _filterType;
+
+    [ObservableProperty]
     private int _totalCount;
 
     [ObservableProperty]
     private int _filteredCount;
+
+    [ObservableProperty]
+    private int _plannedCount;
+
+    [ObservableProperty]
+    private int _runningCount;
+
+    [ObservableProperty]
+    private int _endedCount;
 
     public ListViewModel(ICultureActionService service, SessionState session)
     {
@@ -55,6 +69,10 @@ public partial class ListViewModel : ObservableObject
 
         EventsView = CollectionViewSource.GetDefaultView(Events);
         EventsView.Filter = FilterEvent;
+
+        Calendar = new CalendarViewModel(
+            () => EventsView.Cast<CultureAction>(),
+            a => SelectedEvent = a);
 
         _ = LoadAsync();
     }
@@ -65,6 +83,9 @@ public partial class ListViewModel : ObservableObject
         var items = await _service.GetAllForOwnerAsync(_session.UserId);
         foreach (var e in items) Events.Add(e);
         TotalCount = Events.Count;
+        PlannedCount = Events.Count(e => e.Status == EventStatus.Planned);
+        RunningCount = Events.Count(e => e.Status == EventStatus.Running);
+        EndedCount = Events.Count(e => e.Status == EventStatus.Ended);
         RefreshFilter();
         if (SelectedEvent is null || !Events.Contains(SelectedEvent))
             SelectedEvent = Events.FirstOrDefault();
@@ -78,18 +99,21 @@ public partial class ListViewModel : ObservableObject
             return false;
         if (FilterOrganiser.HasValue && a.Organiser != FilterOrganiser.Value) return false;
         if (FilterStatus.HasValue && a.Status != FilterStatus.Value) return false;
+        if (FilterType.HasValue && a.Type != FilterType.Value) return false;
         return true;
     }
 
     partial void OnSearchTextChanged(string value) => RefreshFilter();
     partial void OnFilterOrganiserChanged(Organiser? value) => RefreshFilter();
     partial void OnFilterStatusChanged(EventStatus? value) => RefreshFilter();
+    partial void OnFilterTypeChanged(CultureEventType? value) => RefreshFilter();
     partial void OnViewModeChanged(ListViewMode value) { /* view switching hook */ }
 
     private void RefreshFilter()
     {
         EventsView.Refresh();
         FilteredCount = EventsView.Cast<object>().Count();
+        Calendar.Refresh();
     }
 
     [RelayCommand]
@@ -104,6 +128,28 @@ public partial class ListViewModel : ObservableObject
     {
         if (!Enum.TryParse<EventStatus>(status, out var parsed)) return;
         FilterStatus = FilterStatus == parsed ? null : parsed;
+    }
+
+    [RelayCommand]
+    private void ToggleType(string type)
+    {
+        if (!Enum.TryParse<CultureEventType>(type, out var parsed)) return;
+        FilterType = FilterType == parsed ? null : parsed;
+    }
+
+    [RelayCommand]
+    private void ClearFilters()
+    {
+        FilterOrganiser = null;
+        FilterStatus = null;
+        FilterType = null;
+        SearchText = string.Empty;
+    }
+
+    [RelayCommand]
+    private void SelectCard(CultureAction? action)
+    {
+        if (action is not null) SelectedEvent = action;
     }
 
     [RelayCommand]

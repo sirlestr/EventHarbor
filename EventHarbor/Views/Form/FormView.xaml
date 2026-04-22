@@ -91,11 +91,17 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Content="← Zpět"
+                <Button Grid.Column="0"
                         Command="{Binding CancelCommand}"
                         Background="Transparent" BorderThickness="0"
                         Foreground="{DynamicResource InkMutedBrush}"
-                        Padding="10,6" FontSize="13"/>
+                        Padding="10,6" FontSize="13">
+                    <StackPanel Orientation="Horizontal">
+                        <ctrl:IconView Kind="chevL" Size="13" Margin="0,0,6,0"
+                                       Foreground="{DynamicResource InkMutedBrush}"/>
+                        <TextBlock Text="Zpět" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
                 <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
                     <TextBlock FontFamily="{StaticResource SerifFont}" FontSize="20"
                                Foreground="{DynamicResource InkBrush}">
@@ -121,16 +127,21 @@
                         Background="{DynamicResource AccentBrush}"
                         Foreground="White" BorderThickness="0"
                         Padding="14,7" FontSize="13" FontWeight="Medium">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Content" Value="Uložit změny"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsNew}" Value="True">
-                                    <Setter Property="Content" Value="Vytvořit akci"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
+                    <StackPanel Orientation="Horizontal">
+                        <ctrl:IconView Kind="check" Size="13" Margin="0,0,6,0" Foreground="White"/>
+                        <TextBlock VerticalAlignment="Center">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Text" Value="Uložit změny"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsNew}" Value="True">
+                                            <Setter Property="Text" Value="Vytvořit akci"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </StackPanel>
                 </Button>
             </Grid>
         </Border>
@@ -444,16 +455,21 @@
                                 Background="{DynamicResource AccentBrush}"
                                 Foreground="White" BorderThickness="0"
                                 Padding="14,8" FontSize="13" FontWeight="Medium">
-                            <Button.Style>
-                                <Style TargetType="Button">
-                                    <Setter Property="Content" Value="Uložit změny"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsNew}" Value="True">
-                                            <Setter Property="Content" Value="Vytvořit akci"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
+                            <StackPanel Orientation="Horizontal">
+                                <ctrl:IconView Kind="check" Size="13" Margin="0,0,6,0" Foreground="White"/>
+                                <TextBlock VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Text" Value="Uložit změny"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsNew}" Value="True">
+                                                    <Setter Property="Text" Value="Vytvořit akci"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </StackPanel>
                         </Button>
                     </Grid>
                 </StackPanel>
