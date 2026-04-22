@@ -8,8 +8,31 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              Background="{DynamicResource BgBrush}">
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="20,14">
-        <ItemsControl ItemsSource="{Binding EventsView}">
+    <Grid>
+        <!-- Empty state -->
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20"
+                    Visibility="{Binding FilteredCount, Converter={StaticResource ZeroToVisibilityConverter}}">
+            <ctrl:IconView Kind="grid" Size="32"
+                           Foreground="{DynamicResource InkSubtleBrush}"
+                           HorizontalAlignment="Center" Margin="0,0,0,10"/>
+            <TextBlock Text="Žádné karty k zobrazení" Style="{StaticResource SerifHeading}" FontSize="20"
+                       HorizontalAlignment="Center"/>
+            <TextBlock Text="Zkuste upravit hledaný výraz nebo vypněte filtry."
+                       Style="{StaticResource SubtleText}" HorizontalAlignment="Center"
+                       TextAlignment="Center" Margin="0,4,0,0"/>
+        </StackPanel>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="20,14">
+            <ScrollViewer.Style>
+                <Style TargetType="ScrollViewer">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding FilteredCount}" Value="0">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ScrollViewer.Style>
+            <ItemsControl ItemsSource="{Binding EventsView}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel Orientation="Horizontal"/>
@@ -165,5 +188,6 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-    </ScrollViewer>
+        </ScrollViewer>
+    </Grid>
 </UserControl>

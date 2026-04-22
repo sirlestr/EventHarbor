@@ -7,6 +7,8 @@ namespace EventHarbor.ViewModels;
 public partial class LoginViewModel : ObservableObject
 {
     private readonly IUserService _userService;
+    private readonly RememberMeService _rememberMeStore;
+    private readonly SessionState _session;
 
     public event EventHandler? LoginSucceeded;
     public event EventHandler? NavigateToRegister;
@@ -27,9 +29,11 @@ public partial class LoginViewModel : ObservableObject
     [ObservableProperty]
     private bool _isBusy;
 
-    public LoginViewModel(IUserService userService)
+    public LoginViewModel(IUserService userService, RememberMeService rememberMeStore, SessionState session)
     {
         _userService = userService;
+        _rememberMeStore = rememberMeStore;
+        _session = session;
     }
 
     [RelayCommand]
@@ -54,7 +58,19 @@ public partial class LoginViewModel : ObservableObject
                 case LoginResult.WrongPassword:
                     ErrorMessage = "Špatné heslo, zkuste to prosím znovu.";
                     break;
+                case LoginResult.Locked:
+                    {
+                        var secs = UserService.GetRemainingLockSeconds(UserName.Trim());
+                        ErrorMessage = secs > 0
+                            ? $"Příliš mnoho pokusů. Zkuste znovu za {secs}s."
+                            : "Příliš mnoho pokusů. Zkuste znovu za okamžik.";
+                    }
+                    break;
                 case LoginResult.Success:
+                    if (RememberMe && _session.UserId > 0)
+                        _rememberMeStore.Save(_session.UserId);
+                    else
+                        _rememberMeStore.Clear();
                     LoginSucceeded?.Invoke(this, EventArgs.Empty);
                     break;
             }

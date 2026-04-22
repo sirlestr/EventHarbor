@@ -28,6 +28,9 @@ public partial class CalendarViewModel : ObservableObject
 
     public ObservableCollection<CalendarDay> Days { get; } = new();
 
+    [ObservableProperty]
+    private bool _hasAnyEvents;
+
     public string MonthLabel =>
         CultureInfo.GetCultureInfo("cs-CZ").TextInfo.ToTitleCase(
             ViewMonth.ToString("MMMM yyyy", CultureInfo.GetCultureInfo("cs-CZ")));
@@ -76,6 +79,7 @@ public partial class CalendarViewModel : ObservableObject
         var startDow = ((int)first.DayOfWeek + 6) % 7;
 
         var events = _sourceProvider().ToList();
+        HasAnyEvents = events.Any();
 
         // leading days from previous month
         for (int i = 0; i < startDow; i++)

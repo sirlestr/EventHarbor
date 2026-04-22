@@ -29,6 +29,7 @@ public class CultureAction
 
     public bool IsFree { get; set; }
 
+    [MaxLength(500)]
     public string? Notes { get; set; }
 
     public int OwnerId { get; set; }

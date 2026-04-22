@@ -7,6 +7,12 @@ namespace EventHarbor.ViewModels;
 
 public partial class FormViewModel : ObservableObject
 {
+    // Reasonable bounds to block accidental typos without blocking legitimate planning horizons.
+    private const decimal MaxCost = 100_000_000m;
+    private const int MaxNotesLength = 500;
+    private static readonly DateTime MinAllowedDate = new(2000, 1, 1);
+    private static readonly DateTime MaxAllowedDate = new(DateTime.Today.Year + 20, 12, 31);
+
     private readonly ICultureActionService _service;
     private readonly SessionState _session;
 
@@ -155,6 +161,12 @@ public partial class FormViewModel : ObservableObject
             return;
         }
 
+        if (start < MinAllowedDate || end > MaxAllowedDate)
+        {
+            ErrorMessage = $"Datum musí být mezi {MinAllowedDate:yyyy} a {MaxAllowedDate:yyyy}.";
+            return;
+        }
+
         if (end < start)
         {
             ErrorMessage = "Konec akce musí být stejný nebo pozdější než začátek.";
@@ -170,6 +182,18 @@ public partial class FormViewModel : ObservableObject
         if (Cost < 0)
         {
             ErrorMessage = "Náklady nemohou být záporné.";
+            return;
+        }
+
+        if (Cost > MaxCost)
+        {
+            ErrorMessage = $"Náklady nemohou přesáhnout {MaxCost:N0} Kč.";
+            return;
+        }
+
+        if (!string.IsNullOrEmpty(Notes) && Notes.Length > MaxNotesLength)
+        {
+            ErrorMessage = $"Poznámky mohou mít nejvýše {MaxNotesLength} znaků (nyní {Notes.Length}).";
             return;
         }
 

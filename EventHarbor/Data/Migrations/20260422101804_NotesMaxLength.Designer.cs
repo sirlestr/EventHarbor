@@ -3,6 +3,7 @@ using System;
 using EventHarbor.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EventHarbor.Data.Migrations
 {
     [DbContext(typeof(EventHarborDbContext))]
-    partial class EventHarborDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260422101804_NotesMaxLength")]
+    partial class NotesMaxLength
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.6");

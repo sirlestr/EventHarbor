@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using EventHarbor.Domain;
 using EventHarbor.Services;
 
@@ -190,6 +191,13 @@ public partial class MainShellViewModel : ObservableObject
 
     [RelayCommand]
     private void StartNewFromSidebar() => StartNewEvent();
+
+    [RelayCommand]
+    private void FocusSearch()
+    {
+        EnsureListActive();
+        WeakReferenceMessenger.Default.Send(new FocusSearchMessage());
+    }
 
     public void StartEditEvent(CultureAction action)
     {
