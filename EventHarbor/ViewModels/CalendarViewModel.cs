@@ -30,7 +30,7 @@ public partial class CalendarViewModel : ObservableObject
 
     public string MonthLabel =>
         CultureInfo.GetCultureInfo("cs-CZ").TextInfo.ToTitleCase(
-            ViewMonth.ToString("LLLL yyyy", CultureInfo.GetCultureInfo("cs-CZ")));
+            ViewMonth.ToString("MMMM yyyy", CultureInfo.GetCultureInfo("cs-CZ")));
 
     public IReadOnlyList<string> DayHeaders { get; } = new[] { "Po", "Út", "St", "Čt", "Pá", "So", "Ne" };
 

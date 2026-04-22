@@ -202,6 +202,16 @@ public partial class MainShellViewModel : ObservableObject
     public void ReturnToList()
     {
         CurrentRoute = MainRoute.List;
-        CurrentViewModel = GetOrCreateList();
+        if (_currentList is not null)
+        {
+            // Reuse the list instance from which the user opened the form
+            // so ViewMode (Table/Cards/Calendar) and active filters are preserved.
+            CurrentViewModel = _currentList;
+            _ = _currentList.LoadAsync();
+        }
+        else
+        {
+            CurrentViewModel = GetOrCreateList();
+        }
     }
 }
